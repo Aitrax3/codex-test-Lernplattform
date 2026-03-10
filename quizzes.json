@@ -1,0 +1,10 @@
+{
+  "Mathematik": [
+    {"frage": "2 + 2 = ?", "antwort": "4"},
+    {"frage": "5 * 3 = ?", "antwort": "15"}
+  ],
+  "Geografie": [
+    {"frage": "Hauptstadt von Frankreich?", "antwort": "Paris"},
+    {"frage": "Höchster Berg der Welt?", "antwort": "Mount Everest"}
+  ]
+}
