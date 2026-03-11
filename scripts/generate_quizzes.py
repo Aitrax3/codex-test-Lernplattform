@@ -205,16 +205,27 @@ def translate_pairs():
     ]
 
 
+def build_vocab_templates(word, translation):
+    return [
+        f"Was bedeutet '{word}' auf Deutsch?",
+        f"Wie lautet das englische Wort für '{translation}'?",
+        f"Wie würdest du '{translation}' auf Englisch sagen?",
+        f"Welches englische Wort beschreibt '{translation}'?",
+    ]
+
+
 def generate_english_vocab():
     questions = []
     for word, translation, aliases in translate_pairs():
-        question = {"frage": f"Was bedeutet '{word}' auf Deutsch?", "antwort": translation}
-        if aliases:
-            question["aliases"] = aliases
-        questions.append(question)
-        reverse = {"frage": f"Wie lautet das englische Wort für '{translation}'?", "antwort": word}
-        questions.append(reverse)
-    return questions[:40]
+        for template in build_vocab_templates(word, translation):
+            entry = {
+                "frage": template,
+                "antwort": word if "englische" in template or "beschreibt" in template else translation,
+            }
+            if aliases and "englische" not in template:
+                entry["aliases"] = aliases
+            questions.append(entry)
+    return questions[:60]
 
 
 def generate_english_verbs():
@@ -272,28 +283,68 @@ def generate_english():
 def generate_history():
     entries = {
         "Deutschland": [
-            {"frage": "Wer war der erste Bundeskanzler Deutschlands?", "antwort": "Konrad Adenauer"},
+            {"frage": "Wer war der erste Bundeskanzler der Bundesrepublik Deutschland?", "antwort": "Konrad Adenauer"},
             {"frage": "In welchem Jahr fiel die Berliner Mauer?", "antwort": "1989"},
             {"frage": "Wann trat das Grundgesetz in Kraft?", "antwort": "1949"},
-            {"frage": "Wann wurde Deutschland wiedervereinigt?", "antwort": "1990"},
+            {"frage": "Wann wurde Deutschland offiziell wiedervereinigt?", "antwort": "1990"},
+            {"frage": "In welchem Jahr wurde Willy Brandt Bundeskanzler?", "antwort": "1969"},
+            {"frage": "Wann trat Gerhard Schröder sein Amt als Kanzler an?", "antwort": "1998"},
         ],
         "Weltgeschichte": [
             {"frage": "Wann begann der Zweite Weltkrieg?", "antwort": "1939"},
             {"frage": "In welchem Jahr endete der Erste Weltkrieg?", "antwort": "1918"},
             {"frage": "Wann wurde die Magna Carta unterzeichnet?", "antwort": "1215"},
             {"frage": "Wann landete der erste Mensch auf dem Mond?", "antwort": "1969"},
+            {"frage": "Wann fiel das Weströmische Reich?", "antwort": "476"},
+            {"frage": "Wann begann die Kalte Krieg-Ära zwischen Ost und West?", "antwort": "1947"},
         ],
         "Epochen": [
             {"frage": "Wann begann die Renaissance in Italien?", "antwort": "1400"},
-            {"frage": "Wann begann die Industrielle Revolution?", "antwort": "1760"},
-            {"frage": "Wann nahm die Französische Revolution ihren Anfang?", "antwort": "1789"},
+            {"frage": "Wann begann die Industrielle Revolution in Großbritannien?", "antwort": "1760"},
+            {"frage": "Wann begann die Französische Revolution?", "antwort": "1789"},
             {"frage": "Wann wurde die Allgemeine Erklärung der Menschenrechte verabschiedet?", "antwort": "1948"},
+            {"frage": "Wann veröffentlichte Isaac Newton die Principia?", "antwort": "1687"},
+            {"frage": "Wann begann die Aufklärung mit der Glorious Revolution?", "antwort": "1688"},
         ],
         "Entdeckungen": [
             {"frage": "Wann wurde Amerika von Kolumbus entdeckt?", "antwort": "1492"},
             {"frage": "In welchem Jahr erfand Gutenberg den Buchdruck?", "antwort": "1450"},
             {"frage": "Wann wurde das Weltall erstmals betreten?", "antwort": "1961"},
             {"frage": "Wann wurde das Römische Reich im Westen gestürzt?", "antwort": "476"},
+            {"frage": "Wann entdeckte Alexander von Humboldt Amerika?", "antwort": "1799"},
+            {"frage": "Wann wurde Penicillin von Alexander Fleming entdeckt?", "antwort": "1928"},
+        ],
+        "Kriege": [
+            {"frage": "Wann endete die Schlacht von Waterloo?", "antwort": "1815"},
+            {"frage": "In welchem Jahr begann der Dreißigjährige Krieg?", "antwort": "1618"},
+            {"frage": "Wann begann der Amerikanische Bürgerkrieg?", "antwort": "1861"},
+            {"frage": "In welchem Jahr wurde der Frieden von Westfalen geschlossen?", "antwort": "1648"},
+            {"frage": "Wann begann der Kriegszustand zwischen Deutschland und Polen (Zweiter Weltkrieg)?", "antwort": "1939"},
+            {"frage": "Wann endete die Sowjetblockade Berlins (Luftbrücke)?", "antwort": "1949"},
+        ],
+        "Wissenschaft": [
+            {"frage": "Wann veröffentlichte Darwin die Evolutionstheorie?", "antwort": "1859"},
+            {"frage": "In welchem Jahr entdeckte Marie Curie das Radium?", "antwort": "1898"},
+            {"frage": "Wann wurde Albert Einsteins Relativitätstheorie bekannt?", "antwort": "1905"},
+            {"frage": "Wann gelang die erste Vollnarkose mit Äther?", "antwort": "1846"},
+            {"frage": "In welchem Jahr startete der erste Satellit Sputnik?", "antwort": "1957"},
+            {"frage": "Wann wurde das menschliche Genom entschlüsselt?", "antwort": "2003"},
+        ],
+        "Politik": [
+            {"frage": "Wann wurde die UNO gegründet?", "antwort": "1945"},
+            {"frage": "In welchem Jahr trat der Vertrag von Maastricht in Kraft?", "antwort": "1993"},
+            {"frage": "Wann wurde die NATO gegründet?", "antwort": "1949"},
+            {"frage": "Wann verabschiedete der Bundestag den Zwei-plus-Vier-Vertrag?", "antwort": "1990"},
+            {"frage": "Wann trat die Berliner Luftbrücke in Kraft?", "antwort": "1948"},
+            {"frage": "In welchem Jahr endete die Apartheid in Südafrika?", "antwort": "1994"},
+        ],
+        "Kultur": [
+            {"frage": "Wann wurde die sogenannte Gutenberg-Bibel gedruckt?", "antwort": "1455"},
+            {"frage": "In welchem Jahr feierte Beethoven seine erste Sinfonie?", "antwort": "1800"},
+            {"frage": "Wann wurde das Bauhaus gegründet?", "antwort": "1919"},
+            {"frage": "Wann wurde die Berliner Philharmonie eröffnet?", "antwort": "1963"},
+            {"frage": "Wann fand die erste Berlinale statt?", "antwort": "1951"},
+            {"frage": "Wann wurde der Rundfunk in Deutschland offiziell gestartet?", "antwort": "1923"},
         ],
     }
     return entries

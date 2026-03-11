@@ -733,6 +733,17 @@
         "antwort": "house"
       },
       {
+        "frage": "Wie würdest du 'Haus' auf Englisch sagen?",
+        "antwort": "Haus",
+        "aliases": [
+          "Wohnhaus"
+        ]
+      },
+      {
+        "frage": "Welches englische Wort beschreibt 'Haus'?",
+        "antwort": "house"
+      },
+      {
         "frage": "Was bedeutet 'school' auf Deutsch?",
         "antwort": "Schule",
         "aliases": [
@@ -741,6 +752,17 @@
       },
       {
         "frage": "Wie lautet das englische Wort für 'Schule'?",
+        "antwort": "school"
+      },
+      {
+        "frage": "Wie würdest du 'Schule' auf Englisch sagen?",
+        "antwort": "Schule",
+        "aliases": [
+          "Lehranstalt"
+        ]
+      },
+      {
+        "frage": "Welches englische Wort beschreibt 'Schule'?",
         "antwort": "school"
       },
       {
@@ -755,11 +777,30 @@
         "antwort": "book"
       },
       {
+        "frage": "Wie würdest du 'Buch' auf Englisch sagen?",
+        "antwort": "Buch",
+        "aliases": [
+          "Lesestoff"
+        ]
+      },
+      {
+        "frage": "Welches englische Wort beschreibt 'Buch'?",
+        "antwort": "book"
+      },
+      {
         "frage": "Was bedeutet 'apple' auf Deutsch?",
         "antwort": "Apfel"
       },
       {
         "frage": "Wie lautet das englische Wort für 'Apfel'?",
+        "antwort": "apple"
+      },
+      {
+        "frage": "Wie würdest du 'Apfel' auf Englisch sagen?",
+        "antwort": "Apfel"
+      },
+      {
+        "frage": "Welches englische Wort beschreibt 'Apfel'?",
         "antwort": "apple"
       },
       {
@@ -774,6 +815,17 @@
         "antwort": "friend"
       },
       {
+        "frage": "Wie würdest du 'Freund' auf Englisch sagen?",
+        "antwort": "Freund",
+        "aliases": [
+          "Kumpel"
+        ]
+      },
+      {
+        "frage": "Welches englische Wort beschreibt 'Freund'?",
+        "antwort": "friend"
+      },
+      {
         "frage": "Was bedeutet 'music' auf Deutsch?",
         "antwort": "Musik"
       },
@@ -782,11 +834,27 @@
         "antwort": "music"
       },
       {
+        "frage": "Wie würdest du 'Musik' auf Englisch sagen?",
+        "antwort": "Musik"
+      },
+      {
+        "frage": "Welches englische Wort beschreibt 'Musik'?",
+        "antwort": "music"
+      },
+      {
         "frage": "Was bedeutet 'song' auf Deutsch?",
         "antwort": "Lied"
       },
       {
         "frage": "Wie lautet das englische Wort für 'Lied'?",
+        "antwort": "song"
+      },
+      {
+        "frage": "Wie würdest du 'Lied' auf Englisch sagen?",
+        "antwort": "Lied"
+      },
+      {
+        "frage": "Welches englische Wort beschreibt 'Lied'?",
         "antwort": "song"
       },
       {
@@ -801,11 +869,30 @@
         "antwort": "movie"
       },
       {
+        "frage": "Wie würdest du 'Film' auf Englisch sagen?",
+        "antwort": "Film",
+        "aliases": [
+          "Kinofilm"
+        ]
+      },
+      {
+        "frage": "Welches englische Wort beschreibt 'Film'?",
+        "antwort": "movie"
+      },
+      {
         "frage": "Was bedeutet 'sun' auf Deutsch?",
         "antwort": "Sonne"
       },
       {
         "frage": "Wie lautet das englische Wort für 'Sonne'?",
+        "antwort": "sun"
+      },
+      {
+        "frage": "Wie würdest du 'Sonne' auf Englisch sagen?",
+        "antwort": "Sonne"
+      },
+      {
+        "frage": "Welches englische Wort beschreibt 'Sonne'?",
         "antwort": "sun"
       },
       {
@@ -817,11 +904,27 @@
         "antwort": "moon"
       },
       {
+        "frage": "Wie würdest du 'Mond' auf Englisch sagen?",
+        "antwort": "Mond"
+      },
+      {
+        "frage": "Welches englische Wort beschreibt 'Mond'?",
+        "antwort": "moon"
+      },
+      {
         "frage": "Was bedeutet 'water' auf Deutsch?",
         "antwort": "Wasser"
       },
       {
         "frage": "Wie lautet das englische Wort für 'Wasser'?",
+        "antwort": "water"
+      },
+      {
+        "frage": "Wie würdest du 'Wasser' auf Englisch sagen?",
+        "antwort": "Wasser"
+      },
+      {
+        "frage": "Welches englische Wort beschreibt 'Wasser'?",
         "antwort": "water"
       },
       {
@@ -833,11 +936,27 @@
         "antwort": "fire"
       },
       {
+        "frage": "Wie würdest du 'Feuer' auf Englisch sagen?",
+        "antwort": "Feuer"
+      },
+      {
+        "frage": "Welches englische Wort beschreibt 'Feuer'?",
+        "antwort": "fire"
+      },
+      {
         "frage": "Was bedeutet 'cold' auf Deutsch?",
         "antwort": "kalt"
       },
       {
         "frage": "Wie lautet das englische Wort für 'kalt'?",
+        "antwort": "cold"
+      },
+      {
+        "frage": "Wie würdest du 'kalt' auf Englisch sagen?",
+        "antwort": "kalt"
+      },
+      {
+        "frage": "Welches englische Wort beschreibt 'kalt'?",
         "antwort": "cold"
       },
       {
@@ -849,6 +968,14 @@
         "antwort": "hot"
       },
       {
+        "frage": "Wie würdest du 'heiß' auf Englisch sagen?",
+        "antwort": "heiß"
+      },
+      {
+        "frage": "Welches englische Wort beschreibt 'heiß'?",
+        "antwort": "hot"
+      },
+      {
         "frage": "Was bedeutet 'laugh' auf Deutsch?",
         "antwort": "lachen"
       },
@@ -857,47 +984,12 @@
         "antwort": "laugh"
       },
       {
-        "frage": "Was bedeutet 'cry' auf Deutsch?",
-        "antwort": "weinen"
+        "frage": "Wie würdest du 'lachen' auf Englisch sagen?",
+        "antwort": "lachen"
       },
       {
-        "frage": "Wie lautet das englische Wort für 'weinen'?",
-        "antwort": "cry"
-      },
-      {
-        "frage": "Was bedeutet 'read' auf Deutsch?",
-        "antwort": "lesen"
-      },
-      {
-        "frage": "Wie lautet das englische Wort für 'lesen'?",
-        "antwort": "read"
-      },
-      {
-        "frage": "Was bedeutet 'write' auf Deutsch?",
-        "antwort": "schreiben"
-      },
-      {
-        "frage": "Wie lautet das englische Wort für 'schreiben'?",
-        "antwort": "write"
-      },
-      {
-        "frage": "Was bedeutet 'run' auf Deutsch?",
-        "antwort": "rennen",
-        "aliases": [
-          "laufen"
-        ]
-      },
-      {
-        "frage": "Wie lautet das englische Wort für 'rennen'?",
-        "antwort": "run"
-      },
-      {
-        "frage": "Was bedeutet 'walk' auf Deutsch?",
-        "antwort": "gehen"
-      },
-      {
-        "frage": "Wie lautet das englische Wort für 'gehen'?",
-        "antwort": "walk"
+        "frage": "Welches englische Wort beschreibt 'lachen'?",
+        "antwort": "laugh"
       }
     ],
     "Verben": [
@@ -1022,7 +1114,7 @@
   "Geschichte": {
     "Deutschland": [
       {
-        "frage": "Wer war der erste Bundeskanzler Deutschlands?",
+        "frage": "Wer war der erste Bundeskanzler der Bundesrepublik Deutschland?",
         "antwort": "Konrad Adenauer"
       },
       {
@@ -1034,8 +1126,16 @@
         "antwort": "1949"
       },
       {
-        "frage": "Wann wurde Deutschland wiedervereinigt?",
+        "frage": "Wann wurde Deutschland offiziell wiedervereinigt?",
         "antwort": "1990"
+      },
+      {
+        "frage": "In welchem Jahr wurde Willy Brandt Bundeskanzler?",
+        "antwort": "1969"
+      },
+      {
+        "frage": "Wann trat Gerhard Schröder sein Amt als Kanzler an?",
+        "antwort": "1998"
       }
     ],
     "Weltgeschichte": [
@@ -1054,6 +1154,14 @@
       {
         "frage": "Wann landete der erste Mensch auf dem Mond?",
         "antwort": "1969"
+      },
+      {
+        "frage": "Wann fiel das Weströmische Reich?",
+        "antwort": "476"
+      },
+      {
+        "frage": "Wann begann die Kalte Krieg-Ära zwischen Ost und West?",
+        "antwort": "1947"
       }
     ],
     "Epochen": [
@@ -1062,16 +1170,24 @@
         "antwort": "1400"
       },
       {
-        "frage": "Wann begann die Industrielle Revolution?",
+        "frage": "Wann begann die Industrielle Revolution in Großbritannien?",
         "antwort": "1760"
       },
       {
-        "frage": "Wann nahm die Französische Revolution ihren Anfang?",
+        "frage": "Wann begann die Französische Revolution?",
         "antwort": "1789"
       },
       {
         "frage": "Wann wurde die Allgemeine Erklärung der Menschenrechte verabschiedet?",
         "antwort": "1948"
+      },
+      {
+        "frage": "Wann veröffentlichte Isaac Newton die Principia?",
+        "antwort": "1687"
+      },
+      {
+        "frage": "Wann begann die Aufklärung mit der Glorious Revolution?",
+        "antwort": "1688"
       }
     ],
     "Entdeckungen": [
@@ -1090,6 +1206,118 @@
       {
         "frage": "Wann wurde das Römische Reich im Westen gestürzt?",
         "antwort": "476"
+      },
+      {
+        "frage": "Wann entdeckte Alexander von Humboldt Amerika?",
+        "antwort": "1799"
+      },
+      {
+        "frage": "Wann wurde Penicillin von Alexander Fleming entdeckt?",
+        "antwort": "1928"
+      }
+    ],
+    "Kriege": [
+      {
+        "frage": "Wann endete die Schlacht von Waterloo?",
+        "antwort": "1815"
+      },
+      {
+        "frage": "In welchem Jahr begann der Dreißigjährige Krieg?",
+        "antwort": "1618"
+      },
+      {
+        "frage": "Wann begann der Amerikanische Bürgerkrieg?",
+        "antwort": "1861"
+      },
+      {
+        "frage": "In welchem Jahr wurde der Frieden von Westfalen geschlossen?",
+        "antwort": "1648"
+      },
+      {
+        "frage": "Wann begann der Kriegszustand zwischen Deutschland und Polen (Zweiter Weltkrieg)?",
+        "antwort": "1939"
+      },
+      {
+        "frage": "Wann endete die Sowjetblockade Berlins (Luftbrücke)?",
+        "antwort": "1949"
+      }
+    ],
+    "Wissenschaft": [
+      {
+        "frage": "Wann veröffentlichte Darwin die Evolutionstheorie?",
+        "antwort": "1859"
+      },
+      {
+        "frage": "In welchem Jahr entdeckte Marie Curie das Radium?",
+        "antwort": "1898"
+      },
+      {
+        "frage": "Wann wurde Albert Einsteins Relativitätstheorie bekannt?",
+        "antwort": "1905"
+      },
+      {
+        "frage": "Wann gelang die erste Vollnarkose mit Äther?",
+        "antwort": "1846"
+      },
+      {
+        "frage": "In welchem Jahr startete der erste Satellit Sputnik?",
+        "antwort": "1957"
+      },
+      {
+        "frage": "Wann wurde das menschliche Genom entschlüsselt?",
+        "antwort": "2003"
+      }
+    ],
+    "Politik": [
+      {
+        "frage": "Wann wurde die UNO gegründet?",
+        "antwort": "1945"
+      },
+      {
+        "frage": "In welchem Jahr trat der Vertrag von Maastricht in Kraft?",
+        "antwort": "1993"
+      },
+      {
+        "frage": "Wann wurde die NATO gegründet?",
+        "antwort": "1949"
+      },
+      {
+        "frage": "Wann verabschiedete der Bundestag den Zwei-plus-Vier-Vertrag?",
+        "antwort": "1990"
+      },
+      {
+        "frage": "Wann trat die Berliner Luftbrücke in Kraft?",
+        "antwort": "1948"
+      },
+      {
+        "frage": "In welchem Jahr endete die Apartheid in Südafrika?",
+        "antwort": "1994"
+      }
+    ],
+    "Kultur": [
+      {
+        "frage": "Wann wurde die sogenannte Gutenberg-Bibel gedruckt?",
+        "antwort": "1455"
+      },
+      {
+        "frage": "In welchem Jahr feierte Beethoven seine erste Sinfonie?",
+        "antwort": "1800"
+      },
+      {
+        "frage": "Wann wurde das Bauhaus gegründet?",
+        "antwort": "1919"
+      },
+      {
+        "frage": "Wann wurde die Berliner Philharmonie eröffnet?",
+        "antwort": "1963"
+      },
+      {
+        "frage": "Wann fand die erste Berlinale statt?",
+        "antwort": "1951"
+      },
+      {
+        "frage": "Wann wurde der Rundfunk in Deutschland offiziell gestartet?",
+        "antwort": "1923"
       }
     ]
   }
