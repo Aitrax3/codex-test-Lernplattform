@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="sticker-wall">
+        {% for sticker in stickers %}
+            <span class="sticker-icon" style="--sticker-index:{{ loop.index0 }};">{{ sticker }}</span>
+        {% endfor %}
+    </div>
+    <div class="card-body">
+        <div class="nav-links">
+            <a href="{{ url_for('choose_topic') }}">Themen</a>
+            <a href="{{ url_for('shop') }}">Shop</a>
+            <a href="{{ url_for('leaderboard') }}">Rangliste</a>
+            <a href="{{ url_for('review') }}">Review</a>
+            <a href="{{ url_for('avatar_design') }}">Avatar</a>
+            <a href="{{ url_for('logout') }}">Abmelden</a>
+        </div>
+        <div class="dashboard-hero">
+            <div class="avatar-preview">
+                <div class="avatar-circle avatar-{{ avatar.shape }}" style="background: {{ avatar.color }};">
+                    <span>{{ avatar.symbol }}</span>
+                </div>
+            </div>
+            <div>
+                <h1>Dashboard</h1>
+                <p class="dashboard-summary">Aktuelles Guthaben: <strong>{{ money }} Punkte</strong></p>
+                <p class="muted">Insgesamt ausgegeben: {{ total_spent }} Punkte</p>
+            </div>
+        </div>
+        <div class="progress-card">
+            <p class="muted">Level {{ progress.level }} · {{ progress.experience }} XP</p>
+            <div class="progress-bar"><span style="width: {{ percent }}%"></span></div>
+            <p class="muted">Nächster Level bei {{ next_level_exp }} XP</p>
+        </div>
+        <section class="achievements">
+            <h2>Achievements</h2>
+            {% if achievements %}
+                <ul>
+                    {% for trophy in achievements %}
+                        <li>{{ trophy }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <ul>
+                    <li class="empty">Noch keine Achievements</li>
+                </ul>
+            {% endif %}
+        </section>
+        <section class="stickers-available">
+            <h2>Freie Sticker (Level {{ progress.level }})</h2>
+            <div class="sticker-available-grid">
+                {% for icon in available_stickers %}
+                    <span class="sticker-available">{{ icon }}</span>
+                {% endfor %}
+            </div>
+            {% if upcoming_tier %}
+                <p class="muted">
+                    Ab Level {{ upcoming_tier.min_level }} schaltest du "{{ upcoming_tier.name }}"-Sticker frei:
+                    {{ upcoming_tier.icons | join(" ") }}
+                </p>
+            {% endif %}
+        </section>
+        <section class="last-quiz">
+            <h2>Letztes Quiz</h2>
+            {% if last_quiz %}
+                <p class="muted">{{ last_quiz.topic }} · {{ last_quiz.subtopic or 'Allgemein' }} · {{ last_quiz.score }} Punkte · {{ last_quiz.timestamp }}</p>
+                <a class="button-link" href="{{ url_for('review') }}">Quiz ansehen</a>
+            {% else %}
+                <p class="muted">Noch kein Quiz abgeschlossen.</p>
+            {% endif %}
+        </section>
+        <section class="purchases">
+            <h2>Alle Käufe</h2>
+            {% if purchases %}
+                <ul>
+                    {% for purchase in purchases %}
+                        <li>
+                            <span>{{ purchase.name }}</span>
+                            <span class="muted">{{ purchase.price }} P · {{ purchase.timestamp }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="muted">Du hast noch keine Einkäufe getätigt.</p>
+            {% endif %}
+        </section>
+    </div>
+</div>
+</body>
+</html>

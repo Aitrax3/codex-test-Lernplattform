@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Anmelden</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="card-body">
+        <h1>Willkommen zurück</h1>
+        <p class="muted">Melde dich mit deinem Benutzernamen und Passwort an oder lege einen neuen Account an.</p>
+        {% if message %}
+            <div class="notification">{{ message }}</div>
+        {% endif %}
+        <form method="post" class="auth-form">
+            <input type="text" name="username" placeholder="Benutzername" required>
+            <input type="password" name="password" placeholder="Passwort" required>
+            <button type="submit">Anmelden</button>
+        </form>
+        <div class="helper-links">
+            <a href="{{ url_for('register') }}">Registrieren</a>
+            <a href="{{ url_for('reset_request') }}">Passwort zurücksetzen</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

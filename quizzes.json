@@ -1,10 +1,752 @@
 {
-  "Mathematik": [
-    {"frage": "2 + 2 = ?", "antwort": "4"},
-    {"frage": "5 * 3 = ?", "antwort": "15"}
-  ],
-  "Geografie": [
-    {"frage": "Hauptstadt von Frankreich?", "antwort": "Paris"},
-    {"frage": "Höchster Berg der Welt?", "antwort": "Mount Everest"}
-  ]
+  "Mathematik": {
+    "Arithmetik": [
+      {
+        "frage": "Was ergibt 12 + 20?",
+        "antwort": "32"
+      },
+      {
+        "frage": "Was ergibt 13 + 21?",
+        "antwort": "34"
+      },
+      {
+        "frage": "Was ergibt 14 + 22?",
+        "antwort": "36"
+      },
+      {
+        "frage": "Was ergibt 15 + 23?",
+        "antwort": "38"
+      },
+      {
+        "frage": "Was ergibt 16 + 24?",
+        "antwort": "40"
+      },
+      {
+        "frage": "Was ergibt 17 + 25?",
+        "antwort": "42"
+      },
+      {
+        "frage": "Was ergibt 18 + 26?",
+        "antwort": "44"
+      },
+      {
+        "frage": "Was ergibt 19 + 27?",
+        "antwort": "46"
+      },
+      {
+        "frage": "Was ergibt 20 + 28?",
+        "antwort": "48"
+      },
+      {
+        "frage": "Was ergibt 21 + 29?",
+        "antwort": "50"
+      },
+      {
+        "frage": "Was ergibt 22 + 30?",
+        "antwort": "52"
+      },
+      {
+        "frage": "Was ergibt 23 + 31?",
+        "antwort": "54"
+      },
+      {
+        "frage": "Was ergibt 24 + 32?",
+        "antwort": "56"
+      },
+      {
+        "frage": "Was ergibt 25 + 33?",
+        "antwort": "58"
+      },
+      {
+        "frage": "Was ergibt 26 + 34?",
+        "antwort": "60"
+      },
+      {
+        "frage": "Was ergibt 27 + 35?",
+        "antwort": "62"
+      },
+      {
+        "frage": "Was ergibt 28 + 36?",
+        "antwort": "64"
+      },
+      {
+        "frage": "Was ergibt 29 + 37?",
+        "antwort": "66"
+      },
+      {
+        "frage": "Was ergibt 30 + 38?",
+        "antwort": "68"
+      },
+      {
+        "frage": "Was ergibt 31 + 39?",
+        "antwort": "70"
+      },
+      {
+        "frage": "Subtrahiere 2 von 22",
+        "antwort": "20"
+      },
+      {
+        "frage": "Subtrahiere 3 von 23",
+        "antwort": "20"
+      },
+      {
+        "frage": "Subtrahiere 4 von 24",
+        "antwort": "20"
+      },
+      {
+        "frage": "Subtrahiere 5 von 25",
+        "antwort": "20"
+      },
+      {
+        "frage": "Subtrahiere 6 von 26",
+        "antwort": "20"
+      },
+      {
+        "frage": "Subtrahiere 7 von 27",
+        "antwort": "20"
+      },
+      {
+        "frage": "Subtrahiere 8 von 28",
+        "antwort": "20"
+      },
+      {
+        "frage": "Subtrahiere 9 von 29",
+        "antwort": "20"
+      },
+      {
+        "frage": "Subtrahiere 10 von 30",
+        "antwort": "20"
+      },
+      {
+        "frage": "Subtrahiere 11 von 31",
+        "antwort": "20"
+      }
+    ],
+    "Multiplikation": [
+      {
+        "frage": "Wieviel ist 5 mal 11?",
+        "antwort": "55"
+      },
+      {
+        "frage": "Wieviel ist 6 mal 12?",
+        "antwort": "72"
+      },
+      {
+        "frage": "Wieviel ist 7 mal 13?",
+        "antwort": "91"
+      },
+      {
+        "frage": "Wieviel ist 8 mal 14?",
+        "antwort": "112"
+      },
+      {
+        "frage": "Wieviel ist 9 mal 15?",
+        "antwort": "135"
+      },
+      {
+        "frage": "Wieviel ist 10 mal 16?",
+        "antwort": "160"
+      },
+      {
+        "frage": "Wieviel ist 11 mal 17?",
+        "antwort": "187"
+      },
+      {
+        "frage": "Wieviel ist 12 mal 18?",
+        "antwort": "216"
+      },
+      {
+        "frage": "Wieviel ist 13 mal 19?",
+        "antwort": "247"
+      },
+      {
+        "frage": "Wieviel ist 14 mal 20?",
+        "antwort": "280"
+      }
+    ],
+    "Division": [
+      {
+        "frage": "Teile 30 durch 2",
+        "antwort": "15"
+      },
+      {
+        "frage": "Teile 33 durch 2",
+        "antwort": "16"
+      },
+      {
+        "frage": "Teile 36 durch 2",
+        "antwort": "18"
+      },
+      {
+        "frage": "Teile 39 durch 2",
+        "antwort": "19"
+      },
+      {
+        "frage": "Teile 42 durch 2",
+        "antwort": "21"
+      }
+    ],
+    "Gleichungen": [
+      {
+        "frage": "Löse x + 5 = 12",
+        "antwort": "7",
+        "alias": [
+          "sieben"
+        ]
+      },
+      {
+        "frage": "Löse 3x = 27",
+        "antwort": "9"
+      },
+      {
+        "frage": "Löse x - 4 = 10",
+        "antwort": "14"
+      },
+      {
+        "frage": "Löse 2x + 4 = 18",
+        "antwort": "7"
+      },
+      {
+        "frage": "Löse 5 + x = 13",
+        "antwort": "8"
+      }
+    ]
+  },
+  "Geografie": {
+    "Hauptstädte": [
+      {
+        "frage": "Hauptstadt von Deutschland?",
+        "antwort": "Berlin",
+        "alias": [
+          "berlin"
+        ]
+      },
+      {
+        "frage": "Hauptstadt von Frankreich?",
+        "antwort": "Paris",
+        "alias": [
+          "paris"
+        ]
+      },
+      {
+        "frage": "Hauptstadt von Italien?",
+        "antwort": "Rom",
+        "alias": [
+          "rome"
+        ]
+      },
+      {
+        "frage": "Hauptstadt von Österreich?",
+        "antwort": "Wien",
+        "alias": [
+          "vienna"
+        ]
+      },
+      {
+        "frage": "Hauptstadt von Spanien?",
+        "antwort": "Madrid",
+        "alias": [
+          "madrid"
+        ]
+      },
+      {
+        "frage": "Hauptstadt von Belgien?",
+        "antwort": "Brüssel",
+        "alias": [
+          "brussels"
+        ]
+      },
+      {
+        "frage": "Hauptstadt von Polen?",
+        "antwort": "Warschau",
+        "alias": [
+          "warsaw"
+        ]
+      },
+      {
+        "frage": "Hauptstadt von Portugal?",
+        "antwort": "Lissabon",
+        "alias": [
+          "lisbon"
+        ]
+      },
+      {
+        "frage": "Hauptstadt von Niederlande?",
+        "antwort": "Amsterdam",
+        "alias": [
+          "amsterdam"
+        ]
+      },
+      {
+        "frage": "Hauptstadt von Schweiz?",
+        "antwort": "Bern",
+        "alias": [
+          "bern"
+        ]
+      },
+      {
+        "frage": "Welche Stadt hat das Kolosseum?",
+        "antwort": "Rom",
+        "alias": [
+          "rome"
+        ]
+      },
+      {
+        "frage": "Welche Hauptstadt gehört zu Kanada?",
+        "antwort": "Ottawa",
+        "alias": [
+          "ottawa"
+        ]
+      },
+      {
+        "frage": "Welche Stadt liegt auf sieben Hügeln?",
+        "antwort": "Rom",
+        "alias": [
+          "rome"
+        ]
+      },
+      {
+        "frage": "Was ist die Hauptstadt von Kanada?",
+        "antwort": "Ottawa",
+        "alias": [
+          "ottawa"
+        ]
+      },
+      {
+        "frage": "Welche Stadt an der Themse ist Hauptstadt Englands?",
+        "antwort": "London",
+        "alias": [
+          "london"
+        ]
+      }
+    ],
+    "Weltwissen": [
+      {
+        "frage": "Welcher Fluss fließt durch Paris?",
+        "antwort": "Seine",
+        "alias": [
+          "seine"
+        ]
+      },
+      {
+        "frage": "Wie viele Länder grenzen an Deutschland?",
+        "antwort": "9",
+        "alias": [
+          "neun"
+        ]
+      },
+      {
+        "frage": "Welcher Kontinent hat die meisten Staaten?",
+        "antwort": "Afrika",
+        "alias": [
+          "africa"
+        ]
+      },
+      {
+        "frage": "In welchem Land liegt der Kilimandscharo?",
+        "antwort": "Tansania",
+        "alias": [
+          "tanzania"
+        ]
+      },
+      {
+        "frage": "Welche Insel gehört zu Frankreich?",
+        "antwort": "Korsika",
+        "alias": [
+          "corsica"
+        ]
+      },
+      {
+        "frage": "Welches Land hat den Rio Grande an der Grenze?",
+        "antwort": "USA",
+        "alias": [
+          "usa",
+          "vereinigte staaten"
+        ]
+      },
+      {
+        "frage": "Welcher Ozean liegt westlich Europas?",
+        "antwort": "Atlantik",
+        "alias": [
+          "atlantic"
+        ]
+      },
+      {
+        "frage": "Welches Land hat die Flagge mit roten und weißen Streifen?",
+        "antwort": "USA",
+        "alias": [
+          "usa"
+        ]
+      },
+      {
+        "frage": "Welches Land liegt südlich von Spanien?",
+        "antwort": "Marokko",
+        "alias": [
+          "morocco"
+        ]
+      },
+      {
+        "frage": "In welchem Land liegt Tokio?",
+        "antwort": "Japan",
+        "alias": [
+          "japan"
+        ]
+      },
+      {
+        "frage": "Welche Inselgruppe gehört zu Frankreich und liegt im Mittelmeer?",
+        "antwort": "Korsika",
+        "alias": [
+          "corsica"
+        ]
+      },
+      {
+        "frage": "Wie heißt der Kontinent unter Europa?",
+        "antwort": "Afrika",
+        "alias": [
+          "africa"
+        ]
+      },
+      {
+        "frage": "Welcher Fluss ist lang und fließt durch Ägypten?",
+        "antwort": "Nil",
+        "alias": [
+          "nile"
+        ]
+      },
+      {
+        "frage": "In welchem Land findest du Venedig?",
+        "antwort": "Italien",
+        "alias": [
+          "italy"
+        ]
+      },
+      {
+        "frage": "Durch welches Land fließt die Donau?",
+        "antwort": "Österreich",
+        "alias": [
+          "austria"
+        ]
+      }
+    ]
+  },
+  "Informatik": {
+    "Abkürzungen": [
+      {
+        "frage": "Wofür steht HTML?",
+        "antwort": "Hypertext Markup Language",
+        "alias": [
+          "markup"
+        ]
+      },
+      {
+        "frage": "Wofür steht CSS?",
+        "antwort": "Cascading Style Sheets",
+        "alias": [
+          "styles"
+        ]
+      },
+      {
+        "frage": "Wofür steht JavaScript?",
+        "antwort": "JavaScript",
+        "alias": [
+          "js"
+        ]
+      },
+      {
+        "frage": "Wofür steht API?",
+        "antwort": "Application Programming Interface",
+        "alias": [
+          "schnittstelle"
+        ]
+      },
+      {
+        "frage": "Wofür steht CPU?",
+        "antwort": "Central Processing Unit",
+        "alias": [
+          "prozessor"
+        ]
+      }
+    ],
+    "Grundbegriffe": [
+      {
+        "frage": "Was macht ein Router?",
+        "antwort": "Verbindet Netzwerke",
+        "alias": [
+          "routing"
+        ]
+      },
+      {
+        "frage": "Wie nennt man Kommentare in Python?",
+        "antwort": "#",
+        "alias": [
+          "hash"
+        ]
+      },
+      {
+        "frage": "Womit beginnt man eine Webadresse?",
+        "antwort": "https",
+        "alias": [
+          "http"
+        ]
+      },
+      {
+        "frage": "Was bedeutet Login?",
+        "antwort": "Anmeldung",
+        "alias": [
+          "einloggen"
+        ]
+      },
+      {
+        "frage": "Was ist ein Bug?",
+        "antwort": "Fehler",
+        "alias": [
+          "error"
+        ]
+      },
+      {
+        "frage": "Was ist RAM?",
+        "antwort": "Arbeitsspeicher",
+        "alias": [
+          "memory"
+        ]
+      },
+      {
+        "frage": "Wie nennt man Programme, die im Hintergrund laufen?",
+        "antwort": "Dienst",
+        "alias": [
+          "service"
+        ]
+      },
+      {
+        "frage": "Was ist ein Browser?",
+        "antwort": "Webbrowser",
+        "alias": [
+          "browser"
+        ]
+      },
+      {
+        "frage": "Was verbindet Netzwerke?",
+        "antwort": "Bridge",
+        "alias": [
+          "brücke"
+        ]
+      },
+      {
+        "frage": "Was ist Cloud?",
+        "antwort": "Internetbasierter Speicher",
+        "alias": [
+          "cloud"
+        ]
+      }
+    ]
+  },
+  "Wissenschaft": {
+    "Physik & Chemie": [
+      {
+        "frage": "Was ist die Einheit der Kraft?",
+        "antwort": "Newton",
+        "alias": [
+          "n"
+        ]
+      },
+      {
+        "frage": "Was misst ein Kompass?",
+        "antwort": "Nord",
+        "alias": [
+          "norden"
+        ]
+      },
+      {
+        "frage": "Welche Energie hat Bewegung?",
+        "antwort": "kinetische Energie",
+        "alias": [
+          "bewegungsenergie"
+        ]
+      },
+      {
+        "frage": "Welche Kraft zieht alles zur Erde?",
+        "antwort": "Schwerkraft",
+        "alias": [
+          "gravitation"
+        ]
+      },
+      {
+        "frage": "Welche Einheit zeigt Spannung?",
+        "antwort": "Volt",
+        "alias": [
+          "v"
+        ]
+      },
+      {
+        "frage": "Was beschreibt Geschwindigkeit?",
+        "antwort": "Weg pro Zeit",
+        "alias": [
+          "speed"
+        ]
+      },
+      {
+        "frage": "Wie nennt man eine Temperaturerhöhung?",
+        "antwort": "Wärme",
+        "alias": [
+          "heat"
+        ]
+      },
+      {
+        "frage": "Was ist ein Elektron?",
+        "antwort": "Teilchen",
+        "alias": [
+          "particle"
+        ]
+      },
+      {
+        "frage": "Was ist eine chemische Reaktion?",
+        "antwort": "Umwandlung",
+        "alias": [
+          "reaction"
+        ]
+      },
+      {
+        "frage": "Was ist Lichtgeschwindigkeit?",
+        "antwort": "299792 km/s",
+        "alias": [
+          "300000 km/s"
+        ]
+      }
+    ],
+    "Biologie & Alltag": [
+      {
+        "frage": "Was zeigt ein Thermometer?",
+        "antwort": "Temperatur",
+        "alias": [
+          "temp"
+        ]
+      },
+      {
+        "frage": "Was ist H2O?",
+        "antwort": "Wasser",
+        "alias": [
+          "water"
+        ]
+      },
+      {
+        "frage": "Wie viele Planeten hat unser Sonnensystem?",
+        "antwort": "8",
+        "alias": [
+          "acht"
+        ]
+      },
+      {
+        "frage": "Was braucht eine Pflanze zum Wachsen?",
+        "antwort": "Sonnenlicht",
+        "alias": [
+          "licht"
+        ]
+      },
+      {
+        "frage": "Was ist ein Gas, das wir zum Atmen benötigen?",
+        "antwort": "Sauerstoff",
+        "alias": [
+          "oxygen"
+        ]
+      },
+      {
+        "frage": "Wie ist der Aggregatzustand von Eis?",
+        "antwort": "fest",
+        "alias": [
+          "solid"
+        ]
+      },
+      {
+        "frage": "Was passiert bei 100°C mit Wasser?",
+        "antwort": "Es kocht",
+        "alias": [
+          "kochen"
+        ]
+      },
+      {
+        "frage": "Wie lange ist eine Stunde?",
+        "antwort": "60 Minuten",
+        "alias": [
+          "sechzig minuten"
+        ]
+      },
+      {
+        "frage": "Was ist das Gegenteil von Tag?",
+        "antwort": "Nacht",
+        "alias": [
+          "night"
+        ]
+      },
+      {
+        "frage": "Woraus bestehen alle Dinge?",
+        "antwort": "Materie",
+        "alias": [
+          "matter"
+        ]
+      },
+      {
+        "frage": "Mit welchem Instrument misst man Luftdruck?",
+        "antwort": "Barometer",
+        "alias": [
+          "barometer"
+        ]
+      },
+      {
+        "frage": "Was macht das Herz?",
+        "antwort": "Pumpt Blut",
+        "alias": [
+          "blut pumpen"
+        ]
+      },
+      {
+        "frage": "Was ist die Hauptquelle für Licht?",
+        "antwort": "Sonne",
+        "alias": [
+          "sun"
+        ]
+      },
+      {
+        "frage": "Wie viele Sekunden hat eine Minute?",
+        "antwort": "60",
+        "alias": [
+          "sechzig"
+        ]
+      },
+      {
+        "frage": "Was ist ein Magnet?",
+        "antwort": "Ein Objekt mit Feld",
+        "alias": [
+          "magnetisch"
+        ]
+      },
+      {
+        "frage": "Was ist Masse?",
+        "antwort": "Menge an Materie",
+        "alias": [
+          "gewicht"
+        ]
+      },
+      {
+        "frage": "Was passiert beim Schmelzen?",
+        "antwort": "fest zu flüssig",
+        "alias": [
+          "schmelzt"
+        ]
+      },
+      {
+        "frage": "Was braucht man für Feuer?",
+        "antwort": "Sauerstoff",
+        "alias": [
+          "oxygen"
+        ]
+      },
+      {
+        "frage": "Was ist ein Stern?",
+        "antwort": "Leuchtkörper",
+        "alias": [
+          "sun"
+        ]
+      }
+    ]
+  }
 }

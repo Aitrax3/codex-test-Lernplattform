@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rangliste</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="sticker-wall">
+        {% for sticker in stickers %}
+            <span class="sticker-icon" style="--sticker-index:{{ loop.index0 }}">{{ sticker }}</span>
+        {% endfor %}
+    </div>
+    <div class="card-body">
+        <div class="nav-links">
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('shop') }}">Shop</a>
+            <a href="{{ url_for('review') }}">Review</a>
+            <a href="{{ url_for('choose_topic') }}">Themen</a>
+            <a href="{{ url_for('avatar_design') }}">Avatar</a>
+            <a href="{{ url_for('logout') }}">Abmelden</a>
+        </div>
+        <h1>Rangliste</h1>
+        <p class="muted">Sortiert nach Guthaben.</p>
+        <table class="leaderboard">
+            <thead>
+                <tr>
+                    <th>Rang</th>
+                    <th>Name</th>
+                    <th>Guthaben</th>
+                    <th>Sticker</th>
+                    <th>Einkäufe</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in rankings %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ entry.name }}</td>
+                    <td>{{ entry.money }}</td>
+                    <td>{{ entry.badges }}</td>
+                    <td>{{ entry.purchases }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

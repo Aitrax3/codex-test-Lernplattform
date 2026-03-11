@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Thema wählen</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="sticker-wall">
+        {% for sticker in stickers %}
+            <span class="sticker-icon" style="--sticker-index:{{ loop.index0 }};">{{ sticker }}</span>
+        {% endfor %}
+    </div>
+    <div class="card-body">
+        <div class="nav-links">
+            <a href="{{ url_for('shop') }}">Shop</a>
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('leaderboard') }}">Rangliste</a>
+            <a href="{{ url_for('review') }}">Review</a>
+            <a href="{{ url_for('logout') }}">Abmelden</a>
+        </div>
+
+        <header class="section-header">
+            <p class="section-tag">Quiz-Bereiche entdecken</p>
+            <h1>Themenübersicht</h1>
+            <p class="section-subtitle">
+                Schlau durchstarten: Wähle ein Thema aus dem großen Pool, starte ein frisches Quiz mit 10
+                unterschiedlichen Fragen und sammle dafür Sticker, Geld und Fortschritt.
+            </p>
+        </header>
+
+        <div class="section-grid">
+            <article class="section-card">
+                <h3>Shop und Avatare</h3>
+                <p>Investiere deine Quiz-Punkte in Sticker, Hintergrundbilder oder individuelle Avatar-Symbole.</p>
+                <a class="button-link" href="{{ url_for('shop') }}">Zum Shop</a>
+            </article>
+            <article class="section-card">
+                <h3>Dashboard</h3>
+                <p>Sieh deine Erfahrung, Ausgaben und Sticker-Sammlung auf einen Blick, inklusive Fortschritt.</p>
+                <a class="button-link" href="{{ url_for('dashboard') }}">Zum Dashboard</a>
+            </article>
+            <article class="section-card">
+                <h3>Rangliste</h3>
+                <p>Vergleiche Guthaben, Sticker und Käufe mit anderen Spielerinnen und Spielern.</p>
+                <a class="button-link" href="{{ url_for('leaderboard') }}">Rangliste öffnen</a>
+            </article>
+            <article class="section-card">
+                <h3>Quiz-Review</h3>
+                <p>Am Ende jedes Quiz kannst du dir deine Antworten samt Erwartung erneut ansehen.</p>
+                <a class="button-link" href="{{ url_for('review') }}">Review ansehen</a>
+            </article>
+        </div>
+
+        <section class="topic-section">
+            {% for section in topic_cards %}
+                <article class="topic-category">
+                    <header class="topic-category-header">
+                        <div class="topic-category-title">
+                            <p class="topic-tag">{{ section.name }}</p>
+                            <h2>{{ section.total_questions }} Fragen</h2>
+                        </div>
+                        <p class="topic-description">{{ section.description }}</p>
+                    </header>
+                    <div class="subtopic-grid">
+                        {% for subtopic in section.subtopics %}
+                            <article class="subtopic-card">
+                                <div class="subtopic-card-top">
+                                    <h3>{{ subtopic.name }}</h3>
+                                    <span class="topic-count">{{ subtopic.count }} Fragen</span>
+                                </div>
+                                <p>{{ subtopic.description }}</p>
+                                <a class="button-link" href="{{ url_for('quiz', topic=section.name, subtopic=subtopic.name) }}">Quiz starten</a>
+                            </article>
+                        {% endfor %}
+                    </div>
+                </article>
+            {% endfor %}
+        </section>
+    </div>
+</div>
+</body>
+</html>

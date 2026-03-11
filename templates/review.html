@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Letztes Quiz</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="sticker-wall">
+        {% for sticker in stickers %}
+            <span class="sticker-icon" style="--sticker-index:{{ loop.index0 }}">{{ sticker }}</span>
+        {% endfor %}
+    </div>
+    <div class="card-body">
+        <div class="nav-links">
+            <a href="{{ url_for('choose_topic') }}">Themen</a>
+            <a href="{{ url_for('leaderboard') }}">Rangliste</a>
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('logout') }}">Abmelden</a>
+        </div>
+        <h1>Quiz nachschauen</h1>
+        {% if last_quiz %}
+            <p class="muted">{{ last_quiz.topic }} · {{ last_quiz.subtopic or 'Allgemein' }} · {{ last_quiz.score }} Punkte · {{ last_quiz.timestamp }}</p>
+            <section class="answers">
+                <ul>
+                    {% for entry in last_quiz.results %}
+                        <li class="{{ 'correct' if entry.correct else 'incorrect' }}">
+                            <strong>{{ entry.frage }}</strong>
+                            <p class="muted">Deine Antwort: {{ entry.answer }} · Erwartet: {{ entry.expected }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </section>
+        {% else %}
+            <p class="muted">Du hast noch kein Quiz abgeschlossen.</p>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>

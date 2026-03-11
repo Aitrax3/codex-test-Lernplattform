@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Avatar gestalten</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="sticker-wall">
+        {% for sticker in stickers %}
+            <span class="sticker-icon" style="--sticker-index:{{ loop.index0 }};">{{ sticker }}</span>
+        {% endfor %}
+    </div>
+    <div class="card-body">
+        <div class="nav-links">
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('leaderboard') }}">Rangliste</a>
+            <a href="{{ url_for('review') }}">Review</a>
+            <a href="{{ url_for('shop') }}">Shop</a>
+            <a href="{{ url_for('logout') }}">Abmelden</a>
+        </div>
+        <h1>Avatar gestalten</h1>
+        {% if message %}
+            <div class="notification">{{ message }}</div>
+        {% endif %}
+        <div class="avatar-preview">
+            <div class="avatar-circle avatar-{{ avatar.shape }}" style="background: {{ avatar.color }};">
+                <span>{{ avatar.symbol }}</span>
+            </div>
+            <p class="muted">Wähle Farbe, Form und Symbol.</p>
+        </div>
+        <section class="collection-section">
+            <h2>Deine Avatare</h2>
+            <div class="collection-grid">
+                {% for item in collection %}
+                    <article class="collection-card {% if avatar.label == item.label %}active{% endif %}">
+                        <div class="avatar-circle avatar-{{ item.shape }}" style="background: {{ item.color }};">
+                            <span>{{ item.symbol }}</span>
+                        </div>
+                        <div>
+                            <strong>{{ item.label }}</strong>
+                            <p class="muted">{{ item.shape|capitalize }} · {{ item.symbol }}</p>
+                        </div>
+                        <form method="post">
+                            <input type="hidden" name="equip_avatar" value="{{ item.label }}">
+                            <button type="submit" {% if avatar.label == item.label %}disabled{% endif %}>
+                                {% if avatar.label == item.label %}Ausgerüstet{% else %}Ausrüsten{% endif %}
+                            </button>
+                        </form>
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
+        <form method="post" class="avatar-form">
+            <label>Farbe</label>
+            <input type="color" name="color" value="{{ avatar.color }}">
+            <label>Form</label>
+            <select name="shape">
+                <option value="circle" {% if avatar.shape == 'circle' %}selected{% endif %}>Kreis</option>
+                <option value="square" {% if avatar.shape == 'square' %}selected{% endif %}>Quadrat</option>
+                <option value="hexagon" {% if avatar.shape == 'hexagon' %}selected{% endif %}>Sechseck</option>
+            </select>
+            <label>Symbol</label>
+            <div class="symbol-grid">
+                {% for symbol in symbols %}
+                    <label class="symbol-option">
+                        <input type="radio" name="symbol" value="{{ symbol }}" {% if avatar.symbol == symbol %}checked{% endif %}>
+                        <span>{{ symbol }}</span>
+                    </label>
+                {% endfor %}
+            </div>
+            <button type="submit">Avatar speichern</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
