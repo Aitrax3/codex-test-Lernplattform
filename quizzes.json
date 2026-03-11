@@ -2,750 +2,1094 @@
   "Mathematik": {
     "Arithmetik": [
       {
-        "frage": "Was ergibt 12 + 20?",
-        "antwort": "32"
+        "frage": "Was ergibt 1 + 4?",
+        "antwort": "5"
       },
       {
-        "frage": "Was ergibt 13 + 21?",
-        "antwort": "34"
+        "frage": "Was ergibt 2 + 5?",
+        "antwort": "7"
       },
       {
-        "frage": "Was ergibt 14 + 22?",
-        "antwort": "36"
+        "frage": "Was ergibt 3 + 6?",
+        "antwort": "9"
       },
       {
-        "frage": "Was ergibt 15 + 23?",
-        "antwort": "38"
+        "frage": "Was ergibt 4 + 7?",
+        "antwort": "11"
       },
       {
-        "frage": "Was ergibt 16 + 24?",
-        "antwort": "40"
+        "frage": "Was ergibt 5 + 8?",
+        "antwort": "13"
       },
       {
-        "frage": "Was ergibt 17 + 25?",
-        "antwort": "42"
+        "frage": "Was ergibt 6 + 9?",
+        "antwort": "15"
       },
       {
-        "frage": "Was ergibt 18 + 26?",
-        "antwort": "44"
+        "frage": "Was ergibt 7 + 10?",
+        "antwort": "17"
       },
       {
-        "frage": "Was ergibt 19 + 27?",
-        "antwort": "46"
+        "frage": "Was ergibt 8 + 11?",
+        "antwort": "19"
       },
       {
-        "frage": "Was ergibt 20 + 28?",
-        "antwort": "48"
+        "frage": "Was ergibt 9 + 12?",
+        "antwort": "21"
       },
       {
-        "frage": "Was ergibt 21 + 29?",
-        "antwort": "50"
+        "frage": "Was ergibt 10 + 13?",
+        "antwort": "23"
       },
       {
-        "frage": "Was ergibt 22 + 30?",
-        "antwort": "52"
+        "frage": "Was ergibt 11 + 14?",
+        "antwort": "25"
       },
       {
-        "frage": "Was ergibt 23 + 31?",
-        "antwort": "54"
+        "frage": "Was ergibt 12 + 15?",
+        "antwort": "27"
       },
       {
-        "frage": "Was ergibt 24 + 32?",
-        "antwort": "56"
+        "frage": "Was ergibt 13 + 16?",
+        "antwort": "29"
       },
       {
-        "frage": "Was ergibt 25 + 33?",
-        "antwort": "58"
+        "frage": "Was ergibt 14 + 17?",
+        "antwort": "31"
       },
       {
-        "frage": "Was ergibt 26 + 34?",
-        "antwort": "60"
+        "frage": "Was ergibt 15 + 18?",
+        "antwort": "33"
       },
       {
-        "frage": "Was ergibt 27 + 35?",
-        "antwort": "62"
+        "frage": "Was ergibt 16 + 19?",
+        "antwort": "35"
       },
       {
-        "frage": "Was ergibt 28 + 36?",
-        "antwort": "64"
+        "frage": "Was ergibt 17 + 20?",
+        "antwort": "37"
       },
       {
-        "frage": "Was ergibt 29 + 37?",
-        "antwort": "66"
+        "frage": "Was ergibt 18 + 21?",
+        "antwort": "39"
       },
       {
-        "frage": "Was ergibt 30 + 38?",
-        "antwort": "68"
+        "frage": "Was ergibt 19 + 22?",
+        "antwort": "41"
       },
       {
-        "frage": "Was ergibt 31 + 39?",
-        "antwort": "70"
+        "frage": "Was ergibt 20 + 23?",
+        "antwort": "43"
       },
       {
-        "frage": "Subtrahiere 2 von 22",
-        "antwort": "20"
+        "frage": "Was ergibt 21 + 24?",
+        "antwort": "45"
       },
       {
-        "frage": "Subtrahiere 3 von 23",
-        "antwort": "20"
+        "frage": "Was ergibt 22 + 25?",
+        "antwort": "47"
       },
       {
-        "frage": "Subtrahiere 4 von 24",
-        "antwort": "20"
+        "frage": "Was ergibt 23 + 26?",
+        "antwort": "49"
       },
       {
-        "frage": "Subtrahiere 5 von 25",
-        "antwort": "20"
+        "frage": "Was ergibt 24 + 27?",
+        "antwort": "51"
       },
       {
-        "frage": "Subtrahiere 6 von 26",
-        "antwort": "20"
-      },
-      {
-        "frage": "Subtrahiere 7 von 27",
-        "antwort": "20"
-      },
-      {
-        "frage": "Subtrahiere 8 von 28",
-        "antwort": "20"
-      },
-      {
-        "frage": "Subtrahiere 9 von 29",
-        "antwort": "20"
-      },
-      {
-        "frage": "Subtrahiere 10 von 30",
-        "antwort": "20"
-      },
-      {
-        "frage": "Subtrahiere 11 von 31",
-        "antwort": "20"
+        "frage": "Was ergibt 25 + 28?",
+        "antwort": "53"
       }
     ],
     "Multiplikation": [
       {
-        "frage": "Wieviel ist 5 mal 11?",
-        "antwort": "55"
+        "frage": "Wieviel ist 2 mal 2?",
+        "antwort": "4"
       },
       {
-        "frage": "Wieviel ist 6 mal 12?",
-        "antwort": "72"
+        "frage": "Wieviel ist 2 mal 3?",
+        "antwort": "6"
       },
       {
-        "frage": "Wieviel ist 7 mal 13?",
-        "antwort": "91"
+        "frage": "Wieviel ist 2 mal 4?",
+        "antwort": "8"
       },
       {
-        "frage": "Wieviel ist 8 mal 14?",
-        "antwort": "112"
+        "frage": "Wieviel ist 2 mal 5?",
+        "antwort": "10"
       },
       {
-        "frage": "Wieviel ist 9 mal 15?",
-        "antwort": "135"
+        "frage": "Wieviel ist 2 mal 6?",
+        "antwort": "12"
       },
       {
-        "frage": "Wieviel ist 10 mal 16?",
-        "antwort": "160"
+        "frage": "Wieviel ist 2 mal 7?",
+        "antwort": "14"
       },
       {
-        "frage": "Wieviel ist 11 mal 17?",
-        "antwort": "187"
+        "frage": "Wieviel ist 2 mal 8?",
+        "antwort": "16"
       },
       {
-        "frage": "Wieviel ist 12 mal 18?",
-        "antwort": "216"
+        "frage": "Wieviel ist 2 mal 9?",
+        "antwort": "18"
       },
       {
-        "frage": "Wieviel ist 13 mal 19?",
-        "antwort": "247"
+        "frage": "Wieviel ist 2 mal 10?",
+        "antwort": "20"
       },
       {
-        "frage": "Wieviel ist 14 mal 20?",
-        "antwort": "280"
+        "frage": "Wieviel ist 2 mal 11?",
+        "antwort": "22"
+      },
+      {
+        "frage": "Wieviel ist 3 mal 2?",
+        "antwort": "6"
+      },
+      {
+        "frage": "Wieviel ist 3 mal 3?",
+        "antwort": "9"
+      },
+      {
+        "frage": "Wieviel ist 3 mal 4?",
+        "antwort": "12"
+      },
+      {
+        "frage": "Wieviel ist 3 mal 5?",
+        "antwort": "15"
+      },
+      {
+        "frage": "Wieviel ist 3 mal 6?",
+        "antwort": "18"
+      },
+      {
+        "frage": "Wieviel ist 3 mal 7?",
+        "antwort": "21"
+      },
+      {
+        "frage": "Wieviel ist 3 mal 8?",
+        "antwort": "24"
+      },
+      {
+        "frage": "Wieviel ist 3 mal 9?",
+        "antwort": "27"
+      },
+      {
+        "frage": "Wieviel ist 3 mal 10?",
+        "antwort": "30"
+      },
+      {
+        "frage": "Wieviel ist 3 mal 11?",
+        "antwort": "33"
+      },
+      {
+        "frage": "Wieviel ist 4 mal 2?",
+        "antwort": "8"
+      },
+      {
+        "frage": "Wieviel ist 4 mal 3?",
+        "antwort": "12"
+      },
+      {
+        "frage": "Wieviel ist 4 mal 4?",
+        "antwort": "16"
+      },
+      {
+        "frage": "Wieviel ist 4 mal 5?",
+        "antwort": "20"
+      },
+      {
+        "frage": "Wieviel ist 4 mal 6?",
+        "antwort": "24"
       }
     ],
     "Division": [
       {
-        "frage": "Teile 30 durch 2",
-        "antwort": "15"
+        "frage": "Wie viel ergibt 4 geteilt durch 2?",
+        "antwort": "2"
       },
       {
-        "frage": "Teile 33 durch 2",
-        "antwort": "16"
+        "frage": "Wie viel ergibt 6 geteilt durch 3?",
+        "antwort": "2"
       },
       {
-        "frage": "Teile 36 durch 2",
-        "antwort": "18"
+        "frage": "Wie viel ergibt 8 geteilt durch 4?",
+        "antwort": "2"
       },
       {
-        "frage": "Teile 39 durch 2",
-        "antwort": "19"
+        "frage": "Wie viel ergibt 10 geteilt durch 5?",
+        "antwort": "2"
       },
       {
-        "frage": "Teile 42 durch 2",
-        "antwort": "21"
+        "frage": "Wie viel ergibt 12 geteilt durch 6?",
+        "antwort": "2"
+      },
+      {
+        "frage": "Wie viel ergibt 14 geteilt durch 7?",
+        "antwort": "2"
+      },
+      {
+        "frage": "Wie viel ergibt 16 geteilt durch 8?",
+        "antwort": "2"
+      },
+      {
+        "frage": "Wie viel ergibt 18 geteilt durch 9?",
+        "antwort": "2"
+      },
+      {
+        "frage": "Wie viel ergibt 20 geteilt durch 10?",
+        "antwort": "2"
+      },
+      {
+        "frage": "Wie viel ergibt 22 geteilt durch 11?",
+        "antwort": "2"
+      },
+      {
+        "frage": "Wie viel ergibt 6 geteilt durch 2?",
+        "antwort": "3"
+      },
+      {
+        "frage": "Wie viel ergibt 9 geteilt durch 3?",
+        "antwort": "3"
+      },
+      {
+        "frage": "Wie viel ergibt 12 geteilt durch 4?",
+        "antwort": "3"
+      },
+      {
+        "frage": "Wie viel ergibt 15 geteilt durch 5?",
+        "antwort": "3"
+      },
+      {
+        "frage": "Wie viel ergibt 18 geteilt durch 6?",
+        "antwort": "3"
+      },
+      {
+        "frage": "Wie viel ergibt 21 geteilt durch 7?",
+        "antwort": "3"
+      },
+      {
+        "frage": "Wie viel ergibt 24 geteilt durch 8?",
+        "antwort": "3"
+      },
+      {
+        "frage": "Wie viel ergibt 27 geteilt durch 9?",
+        "antwort": "3"
+      },
+      {
+        "frage": "Wie viel ergibt 30 geteilt durch 10?",
+        "antwort": "3"
+      },
+      {
+        "frage": "Wie viel ergibt 33 geteilt durch 11?",
+        "antwort": "3"
+      },
+      {
+        "frage": "Wie viel ergibt 8 geteilt durch 2?",
+        "antwort": "4"
+      },
+      {
+        "frage": "Wie viel ergibt 12 geteilt durch 3?",
+        "antwort": "4"
+      },
+      {
+        "frage": "Wie viel ergibt 16 geteilt durch 4?",
+        "antwort": "4"
+      },
+      {
+        "frage": "Wie viel ergibt 20 geteilt durch 5?",
+        "antwort": "4"
+      },
+      {
+        "frage": "Wie viel ergibt 24 geteilt durch 6?",
+        "antwort": "4"
       }
     ],
     "Gleichungen": [
       {
-        "frage": "Löse x + 5 = 12",
-        "antwort": "7",
-        "alias": [
-          "sieben"
-        ]
+        "frage": "Löse: 2x - 2 = 2",
+        "antwort": "2"
       },
       {
-        "frage": "Löse 3x = 27",
-        "antwort": "9"
+        "frage": "Löse: 3x + 2 = 8",
+        "antwort": "2"
       },
       {
-        "frage": "Löse x - 4 = 10",
-        "antwort": "14"
+        "frage": "Löse: 3x - 3 = 6",
+        "antwort": "3"
       },
       {
-        "frage": "Löse 2x + 4 = 18",
+        "frage": "Löse: 3x + 3 = 12",
+        "antwort": "3"
+      },
+      {
+        "frage": "Löse: 4x - 4 = 12",
+        "antwort": "4"
+      },
+      {
+        "frage": "Löse: 3x + 4 = 16",
+        "antwort": "4"
+      },
+      {
+        "frage": "Löse: 5x - 5 = 20",
+        "antwort": "5"
+      },
+      {
+        "frage": "Löse: 3x + 5 = 20",
+        "antwort": "5"
+      },
+      {
+        "frage": "Löse: 6x - 6 = 30",
+        "antwort": "6"
+      },
+      {
+        "frage": "Löse: 3x + 6 = 24",
+        "antwort": "6"
+      },
+      {
+        "frage": "Löse: 7x - 7 = 42",
         "antwort": "7"
       },
       {
-        "frage": "Löse 5 + x = 13",
+        "frage": "Löse: 3x + 7 = 28",
+        "antwort": "7"
+      },
+      {
+        "frage": "Löse: 8x - 8 = 56",
         "antwort": "8"
+      },
+      {
+        "frage": "Löse: 3x + 8 = 32",
+        "antwort": "8"
+      },
+      {
+        "frage": "Löse: 9x - 9 = 72",
+        "antwort": "9"
+      },
+      {
+        "frage": "Löse: 3x + 9 = 36",
+        "antwort": "9"
+      },
+      {
+        "frage": "Löse: 10x - 10 = 90",
+        "antwort": "10"
+      },
+      {
+        "frage": "Löse: 3x + 10 = 40",
+        "antwort": "10"
+      },
+      {
+        "frage": "Löse: 11x - 11 = 110",
+        "antwort": "11"
+      },
+      {
+        "frage": "Löse: 3x + 11 = 44",
+        "antwort": "11"
+      },
+      {
+        "frage": "Löse: 12x - 12 = 132",
+        "antwort": "12"
+      },
+      {
+        "frage": "Löse: 3x + 12 = 48",
+        "antwort": "12"
+      },
+      {
+        "frage": "Löse: 13x - 13 = 156",
+        "antwort": "13"
+      },
+      {
+        "frage": "Löse: 3x + 13 = 52",
+        "antwort": "13"
+      },
+      {
+        "frage": "Löse: 14x - 14 = 182",
+        "antwort": "14"
       }
     ]
   },
   "Geografie": {
     "Hauptstädte": [
       {
-        "frage": "Hauptstadt von Deutschland?",
-        "antwort": "Berlin",
-        "alias": [
-          "berlin"
-        ]
+        "frage": "Was ist die Hauptstadt von Frankreich?",
+        "antwort": "Paris"
       },
       {
-        "frage": "Hauptstadt von Frankreich?",
-        "antwort": "Paris",
-        "alias": [
-          "paris"
-        ]
+        "frage": "Was ist die Hauptstadt von Spanien?",
+        "antwort": "Madrid"
       },
       {
-        "frage": "Hauptstadt von Italien?",
-        "antwort": "Rom",
-        "alias": [
-          "rome"
-        ]
+        "frage": "Was ist die Hauptstadt von Italien?",
+        "antwort": "Rom"
       },
       {
-        "frage": "Hauptstadt von Österreich?",
-        "antwort": "Wien",
-        "alias": [
-          "vienna"
-        ]
+        "frage": "Was ist die Hauptstadt von Österreich?",
+        "antwort": "Wien"
       },
       {
-        "frage": "Hauptstadt von Spanien?",
-        "antwort": "Madrid",
-        "alias": [
-          "madrid"
-        ]
+        "frage": "Was ist die Hauptstadt von Schweiz?",
+        "antwort": "Bern"
       },
       {
-        "frage": "Hauptstadt von Belgien?",
-        "antwort": "Brüssel",
-        "alias": [
-          "brussels"
-        ]
+        "frage": "Was ist die Hauptstadt von Portugal?",
+        "antwort": "Lissabon"
       },
       {
-        "frage": "Hauptstadt von Polen?",
-        "antwort": "Warschau",
-        "alias": [
-          "warsaw"
-        ]
+        "frage": "Was ist die Hauptstadt von Belgien?",
+        "antwort": "Brüssel"
       },
       {
-        "frage": "Hauptstadt von Portugal?",
-        "antwort": "Lissabon",
-        "alias": [
-          "lisbon"
-        ]
+        "frage": "Was ist die Hauptstadt von Niederlande?",
+        "antwort": "Amsterdam"
       },
       {
-        "frage": "Hauptstadt von Niederlande?",
-        "antwort": "Amsterdam",
-        "alias": [
-          "amsterdam"
-        ]
+        "frage": "Was ist die Hauptstadt von Polen?",
+        "antwort": "Warschau"
       },
       {
-        "frage": "Hauptstadt von Schweiz?",
-        "antwort": "Bern",
-        "alias": [
-          "bern"
-        ]
+        "frage": "Was ist die Hauptstadt von Ungarn?",
+        "antwort": "Budapest"
       },
       {
-        "frage": "Welche Stadt hat das Kolosseum?",
-        "antwort": "Rom",
-        "alias": [
-          "rome"
-        ]
+        "frage": "Was ist die Hauptstadt von Tschechien?",
+        "antwort": "Prag"
       },
       {
-        "frage": "Welche Hauptstadt gehört zu Kanada?",
-        "antwort": "Ottawa",
-        "alias": [
-          "ottawa"
-        ]
+        "frage": "Was ist die Hauptstadt von Norwegen?",
+        "antwort": "Oslo"
       },
       {
-        "frage": "Welche Stadt liegt auf sieben Hügeln?",
-        "antwort": "Rom",
-        "alias": [
-          "rome"
-        ]
+        "frage": "Was ist die Hauptstadt von Kroatien?",
+        "antwort": "Zagreb"
+      },
+      {
+        "frage": "Was ist die Hauptstadt von Rumänien?",
+        "antwort": "Bukarest"
+      },
+      {
+        "frage": "Was ist die Hauptstadt von Bulgarien?",
+        "antwort": "Sofia"
+      },
+      {
+        "frage": "Was ist die Hauptstadt von Russland?",
+        "antwort": "Moskau"
       },
       {
         "frage": "Was ist die Hauptstadt von Kanada?",
-        "antwort": "Ottawa",
-        "alias": [
-          "ottawa"
-        ]
+        "antwort": "Ottawa"
       },
       {
-        "frage": "Welche Stadt an der Themse ist Hauptstadt Englands?",
-        "antwort": "London",
-        "alias": [
-          "london"
-        ]
+        "frage": "Was ist die Hauptstadt von Brasilien?",
+        "antwort": "Brasília"
+      },
+      {
+        "frage": "Was ist die Hauptstadt von Argentinien?",
+        "antwort": "Buenos Aires"
+      },
+      {
+        "frage": "Was ist die Hauptstadt von Japan?",
+        "antwort": "Tokio"
+      },
+      {
+        "frage": "Was ist die Hauptstadt von China?",
+        "antwort": "Peking"
+      },
+      {
+        "frage": "Was ist die Hauptstadt von Indien?",
+        "antwort": "Neu-Delhi"
+      },
+      {
+        "frage": "Was ist die Hauptstadt von Australien?",
+        "antwort": "Canberra"
+      },
+      {
+        "frage": "Was ist die Hauptstadt von Ägypten?",
+        "antwort": "Kairo"
+      },
+      {
+        "frage": "Was ist die Hauptstadt von Südafrika?",
+        "antwort": "Pretoria"
       }
     ],
-    "Weltwissen": [
+    "Flüsse": [
       {
-        "frage": "Welcher Fluss fließt durch Paris?",
-        "antwort": "Seine",
-        "alias": [
-          "seine"
-        ]
+        "frage": "Welcher Fluss fließt durch Ägypten?",
+        "antwort": "Nil"
       },
       {
-        "frage": "Wie viele Länder grenzen an Deutschland?",
-        "antwort": "9",
-        "alias": [
-          "neun"
-        ]
+        "frage": "Welcher Fluss fließt durch Österreich?",
+        "antwort": "Donau"
       },
       {
-        "frage": "Welcher Kontinent hat die meisten Staaten?",
-        "antwort": "Afrika",
-        "alias": [
-          "africa"
-        ]
+        "frage": "Welcher Fluss fließt durch Deutschland?",
+        "antwort": "Rhein"
       },
       {
-        "frage": "In welchem Land liegt der Kilimandscharo?",
-        "antwort": "Tansania",
-        "alias": [
-          "tanzania"
-        ]
+        "frage": "Welcher Fluss fließt durch England?",
+        "antwort": "Thames"
       },
       {
-        "frage": "Welche Insel gehört zu Frankreich?",
-        "antwort": "Korsika",
-        "alias": [
-          "corsica"
-        ]
+        "frage": "Welcher Fluss fließt durch Brasilien?",
+        "antwort": "Amazonas"
       },
       {
-        "frage": "Welches Land hat den Rio Grande an der Grenze?",
-        "antwort": "USA",
-        "alias": [
-          "usa",
-          "vereinigte staaten"
-        ]
+        "frage": "Welcher Fluss fließt durch China?",
+        "antwort": "Yangtze"
       },
       {
-        "frage": "Welcher Ozean liegt westlich Europas?",
-        "antwort": "Atlantik",
-        "alias": [
-          "atlantic"
-        ]
+        "frage": "Welcher Fluss fließt durch Indien?",
+        "antwort": "Ganges"
       },
       {
-        "frage": "Welches Land hat die Flagge mit roten und weißen Streifen?",
-        "antwort": "USA",
-        "alias": [
-          "usa"
-        ]
+        "frage": "Welcher Fluss fließt durch Vietnam?",
+        "antwort": "Mekong"
       },
       {
-        "frage": "Welches Land liegt südlich von Spanien?",
-        "antwort": "Marokko",
-        "alias": [
-          "morocco"
-        ]
+        "frage": "Welcher Fluss fließt durch Russland?",
+        "antwort": "Volga"
       },
       {
-        "frage": "In welchem Land liegt Tokio?",
-        "antwort": "Japan",
-        "alias": [
-          "japan"
-        ]
+        "frage": "Welcher Fluss fließt durch Syrien?",
+        "antwort": "Euphrat"
       },
       {
-        "frage": "Welche Inselgruppe gehört zu Frankreich und liegt im Mittelmeer?",
-        "antwort": "Korsika",
-        "alias": [
-          "corsica"
-        ]
+        "frage": "Welcher Fluss fließt durch Irak?",
+        "antwort": "Tigris"
       },
       {
-        "frage": "Wie heißt der Kontinent unter Europa?",
-        "antwort": "Afrika",
-        "alias": [
-          "africa"
-        ]
+        "frage": "Welcher Fluss fließt durch Frankreich?",
+        "antwort": "Seine"
       },
       {
-        "frage": "Welcher Fluss ist lang und fließt durch Ägypten?",
-        "antwort": "Nil",
-        "alias": [
-          "nile"
-        ]
+        "frage": "Welcher Fluss fließt durch Deutschland?",
+        "antwort": "Elbe"
       },
       {
-        "frage": "In welchem Land findest du Venedig?",
-        "antwort": "Italien",
-        "alias": [
-          "italy"
-        ]
+        "frage": "Welcher Fluss fließt durch USA?",
+        "antwort": "Hudson"
       },
       {
-        "frage": "Durch welches Land fließt die Donau?",
-        "antwort": "Österreich",
-        "alias": [
-          "austria"
-        ]
+        "frage": "Welcher Fluss fließt durch Venezuela?",
+        "antwort": "Orinoco"
+      },
+      {
+        "frage": "Welcher Fluss fließt durch Frankreich?",
+        "antwort": "Loire"
+      },
+      {
+        "frage": "Welcher Fluss fließt durch Deutschland?",
+        "antwort": "Weser"
+      },
+      {
+        "frage": "Welcher Fluss fließt durch USA?",
+        "antwort": "Colorado"
+      },
+      {
+        "frage": "Welcher Fluss fließt durch Spanien?",
+        "antwort": "Tajo"
+      }
+    ],
+    "Gebirge": [
+      {
+        "frage": "In welchem Land liegt Zugspitze?",
+        "antwort": "Deutschland"
+      },
+      {
+        "frage": "In welchem Land liegt Matterhorn?",
+        "antwort": "Schweiz"
+      },
+      {
+        "frage": "In welchem Land liegt Mont Blanc?",
+        "antwort": "Frankreich"
+      },
+      {
+        "frage": "In welchem Land liegt Kilimandscharo?",
+        "antwort": "Tansania"
+      },
+      {
+        "frage": "In welchem Land liegt Denali?",
+        "antwort": "USA"
+      },
+      {
+        "frage": "In welchem Land liegt Fuji?",
+        "antwort": "Japan"
+      },
+      {
+        "frage": "In welchem Land liegt Mount Everest?",
+        "antwort": "Nepal"
+      },
+      {
+        "frage": "In welchem Land liegt K2?",
+        "antwort": "Pakistan"
+      },
+      {
+        "frage": "In welchem Land liegt Piz Buin?",
+        "antwort": "Österreich"
+      },
+      {
+        "frage": "In welchem Land liegt Himalaya?",
+        "antwort": "Nepal"
+      },
+      {
+        "frage": "In welchem Land liegt Anden?",
+        "antwort": "Chile"
+      },
+      {
+        "frage": "In welchem Land liegt Rocky Mountains?",
+        "antwort": "Kanada"
+      },
+      {
+        "frage": "In welchem Land liegt Drakensberge?",
+        "antwort": "Südafrika"
+      },
+      {
+        "frage": "In welchem Land liegt Pindos?",
+        "antwort": "Griechenland"
+      },
+      {
+        "frage": "In welchem Land liegt Apenninen?",
+        "antwort": "Italien"
+      },
+      {
+        "frage": "In welchem Land liegt Pyrenäen?",
+        "antwort": "Spanien"
+      }
+    ],
+    "Regionen": [
+      {
+        "frage": "Zu welcher Region gehört Skandinavien?",
+        "antwort": "Nordeuropa"
+      },
+      {
+        "frage": "Zu welcher Region gehört Balkan?",
+        "antwort": "Südosteuropa"
+      },
+      {
+        "frage": "Zu welcher Region gehört Kaukasus?",
+        "antwort": "Südwestasien"
+      },
+      {
+        "frage": "Zu welcher Region gehört Sahara?",
+        "antwort": "Nordafrika"
+      },
+      {
+        "frage": "Zu welcher Region gehört Kanarische Inseln?",
+        "antwort": "Atlantik"
+      },
+      {
+        "frage": "Zu welcher Region gehört Lappland?",
+        "antwort": "Nordeuropa"
+      },
+      {
+        "frage": "Zu welcher Region gehört Sizilien?",
+        "antwort": "Mittelmeer"
+      },
+      {
+        "frage": "Zu welcher Region gehört Normandie?",
+        "antwort": "Frankreich"
+      },
+      {
+        "frage": "Zu welcher Region gehört Provence?",
+        "antwort": "Frankreich"
+      },
+      {
+        "frage": "Zu welcher Region gehört Toskana?",
+        "antwort": "Italien"
+      },
+      {
+        "frage": "Zu welcher Region gehört Dalmatien?",
+        "antwort": "Adria"
+      },
+      {
+        "frage": "Zu welcher Region gehört Korsika?",
+        "antwort": "Mittelmeer"
+      },
+      {
+        "frage": "Zu welcher Region gehört Andalusien?",
+        "antwort": "Spanien"
+      },
+      {
+        "frage": "Zu welcher Region gehört Rheinland?",
+        "antwort": "Deutschland"
+      },
+      {
+        "frage": "Zu welcher Region gehört Sardinien?",
+        "antwort": "Mittelmeer"
       }
     ]
   },
-  "Informatik": {
-    "Abkürzungen": [
+  "Englisch": {
+    "Grundwortschatz": [
       {
-        "frage": "Wofür steht HTML?",
-        "antwort": "Hypertext Markup Language",
-        "alias": [
-          "markup"
+        "frage": "Was bedeutet 'house' auf Deutsch?",
+        "antwort": "Haus",
+        "aliases": [
+          "Wohnhaus"
         ]
       },
       {
-        "frage": "Wofür steht CSS?",
-        "antwort": "Cascading Style Sheets",
-        "alias": [
-          "styles"
+        "frage": "Wie lautet das englische Wort für 'Haus'?",
+        "antwort": "house"
+      },
+      {
+        "frage": "Was bedeutet 'school' auf Deutsch?",
+        "antwort": "Schule",
+        "aliases": [
+          "Lehranstalt"
         ]
       },
       {
-        "frage": "Wofür steht JavaScript?",
-        "antwort": "JavaScript",
-        "alias": [
-          "js"
+        "frage": "Wie lautet das englische Wort für 'Schule'?",
+        "antwort": "school"
+      },
+      {
+        "frage": "Was bedeutet 'book' auf Deutsch?",
+        "antwort": "Buch",
+        "aliases": [
+          "Lesestoff"
         ]
       },
       {
-        "frage": "Wofür steht API?",
-        "antwort": "Application Programming Interface",
-        "alias": [
-          "schnittstelle"
+        "frage": "Wie lautet das englische Wort für 'Buch'?",
+        "antwort": "book"
+      },
+      {
+        "frage": "Was bedeutet 'apple' auf Deutsch?",
+        "antwort": "Apfel"
+      },
+      {
+        "frage": "Wie lautet das englische Wort für 'Apfel'?",
+        "antwort": "apple"
+      },
+      {
+        "frage": "Was bedeutet 'friend' auf Deutsch?",
+        "antwort": "Freund",
+        "aliases": [
+          "Kumpel"
         ]
       },
       {
-        "frage": "Wofür steht CPU?",
-        "antwort": "Central Processing Unit",
-        "alias": [
-          "prozessor"
+        "frage": "Wie lautet das englische Wort für 'Freund'?",
+        "antwort": "friend"
+      },
+      {
+        "frage": "Was bedeutet 'music' auf Deutsch?",
+        "antwort": "Musik"
+      },
+      {
+        "frage": "Wie lautet das englische Wort für 'Musik'?",
+        "antwort": "music"
+      },
+      {
+        "frage": "Was bedeutet 'song' auf Deutsch?",
+        "antwort": "Lied"
+      },
+      {
+        "frage": "Wie lautet das englische Wort für 'Lied'?",
+        "antwort": "song"
+      },
+      {
+        "frage": "Was bedeutet 'movie' auf Deutsch?",
+        "antwort": "Film",
+        "aliases": [
+          "Kinofilm"
         ]
+      },
+      {
+        "frage": "Wie lautet das englische Wort für 'Film'?",
+        "antwort": "movie"
+      },
+      {
+        "frage": "Was bedeutet 'sun' auf Deutsch?",
+        "antwort": "Sonne"
+      },
+      {
+        "frage": "Wie lautet das englische Wort für 'Sonne'?",
+        "antwort": "sun"
+      },
+      {
+        "frage": "Was bedeutet 'moon' auf Deutsch?",
+        "antwort": "Mond"
+      },
+      {
+        "frage": "Wie lautet das englische Wort für 'Mond'?",
+        "antwort": "moon"
+      },
+      {
+        "frage": "Was bedeutet 'water' auf Deutsch?",
+        "antwort": "Wasser"
+      },
+      {
+        "frage": "Wie lautet das englische Wort für 'Wasser'?",
+        "antwort": "water"
+      },
+      {
+        "frage": "Was bedeutet 'fire' auf Deutsch?",
+        "antwort": "Feuer"
+      },
+      {
+        "frage": "Wie lautet das englische Wort für 'Feuer'?",
+        "antwort": "fire"
+      },
+      {
+        "frage": "Was bedeutet 'cold' auf Deutsch?",
+        "antwort": "kalt"
+      },
+      {
+        "frage": "Wie lautet das englische Wort für 'kalt'?",
+        "antwort": "cold"
+      },
+      {
+        "frage": "Was bedeutet 'hot' auf Deutsch?",
+        "antwort": "heiß"
+      },
+      {
+        "frage": "Wie lautet das englische Wort für 'heiß'?",
+        "antwort": "hot"
+      },
+      {
+        "frage": "Was bedeutet 'laugh' auf Deutsch?",
+        "antwort": "lachen"
+      },
+      {
+        "frage": "Wie lautet das englische Wort für 'lachen'?",
+        "antwort": "laugh"
+      },
+      {
+        "frage": "Was bedeutet 'cry' auf Deutsch?",
+        "antwort": "weinen"
+      },
+      {
+        "frage": "Wie lautet das englische Wort für 'weinen'?",
+        "antwort": "cry"
+      },
+      {
+        "frage": "Was bedeutet 'read' auf Deutsch?",
+        "antwort": "lesen"
+      },
+      {
+        "frage": "Wie lautet das englische Wort für 'lesen'?",
+        "antwort": "read"
+      },
+      {
+        "frage": "Was bedeutet 'write' auf Deutsch?",
+        "antwort": "schreiben"
+      },
+      {
+        "frage": "Wie lautet das englische Wort für 'schreiben'?",
+        "antwort": "write"
+      },
+      {
+        "frage": "Was bedeutet 'run' auf Deutsch?",
+        "antwort": "rennen",
+        "aliases": [
+          "laufen"
+        ]
+      },
+      {
+        "frage": "Wie lautet das englische Wort für 'rennen'?",
+        "antwort": "run"
+      },
+      {
+        "frage": "Was bedeutet 'walk' auf Deutsch?",
+        "antwort": "gehen"
+      },
+      {
+        "frage": "Wie lautet das englische Wort für 'gehen'?",
+        "antwort": "walk"
       }
     ],
-    "Grundbegriffe": [
+    "Verben": [
       {
-        "frage": "Was macht ein Router?",
-        "antwort": "Verbindet Netzwerke",
-        "alias": [
-          "routing"
-        ]
+        "frage": "Was bedeutet 'run' auf Deutsch?",
+        "antwort": "rennen"
       },
       {
-        "frage": "Wie nennt man Kommentare in Python?",
-        "antwort": "#",
-        "alias": [
-          "hash"
-        ]
+        "frage": "Was bedeutet 'jump' auf Deutsch?",
+        "antwort": "springen"
       },
       {
-        "frage": "Womit beginnt man eine Webadresse?",
-        "antwort": "https",
-        "alias": [
-          "http"
-        ]
+        "frage": "Was bedeutet 'swim' auf Deutsch?",
+        "antwort": "schwimmen"
       },
       {
-        "frage": "Was bedeutet Login?",
-        "antwort": "Anmeldung",
-        "alias": [
-          "einloggen"
-        ]
+        "frage": "Was bedeutet 'dance' auf Deutsch?",
+        "antwort": "tanzen"
       },
       {
-        "frage": "Was ist ein Bug?",
-        "antwort": "Fehler",
-        "alias": [
-          "error"
-        ]
+        "frage": "Was bedeutet 'sing' auf Deutsch?",
+        "antwort": "singen"
       },
       {
-        "frage": "Was ist RAM?",
-        "antwort": "Arbeitsspeicher",
-        "alias": [
-          "memory"
-        ]
+        "frage": "Was bedeutet 'paint' auf Deutsch?",
+        "antwort": "malen"
       },
       {
-        "frage": "Wie nennt man Programme, die im Hintergrund laufen?",
-        "antwort": "Dienst",
-        "alias": [
-          "service"
-        ]
+        "frage": "Was bedeutet 'write' auf Deutsch?",
+        "antwort": "schreiben"
       },
       {
-        "frage": "Was ist ein Browser?",
-        "antwort": "Webbrowser",
-        "alias": [
-          "browser"
-        ]
+        "frage": "Was bedeutet 'read' auf Deutsch?",
+        "antwort": "lesen"
       },
       {
-        "frage": "Was verbindet Netzwerke?",
-        "antwort": "Bridge",
-        "alias": [
-          "brücke"
-        ]
+        "frage": "Was bedeutet 'sleep' auf Deutsch?",
+        "antwort": "schlafen"
       },
       {
-        "frage": "Was ist Cloud?",
-        "antwort": "Internetbasierter Speicher",
-        "alias": [
-          "cloud"
-        ]
+        "frage": "Was bedeutet 'stand' auf Deutsch?",
+        "antwort": "stehen"
+      },
+      {
+        "frage": "Was bedeutet 'play' auf Deutsch?",
+        "antwort": "spielen"
+      },
+      {
+        "frage": "Was bedeutet 'think' auf Deutsch?",
+        "antwort": "denken"
+      },
+      {
+        "frage": "Was bedeutet 'build' auf Deutsch?",
+        "antwort": "bauen"
+      }
+    ],
+    "Phrasen": [
+      {
+        "frage": "Wie sagt man 'Danke' auf Englisch?",
+        "antwort": "thank you"
+      },
+      {
+        "frage": "Was bedeutet 'Please'?",
+        "antwort": "Bitte"
+      },
+      {
+        "frage": "Wie lautet 'Gute Nacht' auf Englisch?",
+        "antwort": "good night"
+      },
+      {
+        "frage": "Was heißt 'Excuse me'?",
+        "antwort": "Entschuldigung"
+      },
+      {
+        "frage": "Wie sagt man 'Ich verstehe nicht'?",
+        "antwort": "I don't understand"
+      },
+      {
+        "frage": "Was bedeutet 'See you later'?",
+        "antwort": "Bis später"
+      },
+      {
+        "frage": "Wie lautet 'Was kostet das?' auf Englisch?",
+        "antwort": "How much is this?"
+      },
+      {
+        "frage": "Was heißt 'Hilfe' auf Englisch?",
+        "antwort": "help"
+      },
+      {
+        "frage": "Wie sagt man 'Ich habe Hunger'?",
+        "antwort": "I'm hungry"
+      },
+      {
+        "frage": "Was bedeutet 'I'm tired'?",
+        "antwort": "Ich bin müde"
+      }
+    ],
+    "Farben": [
+      {
+        "frage": "Wie heißt 'blau' auf Englisch?",
+        "antwort": "blue"
+      },
+      {
+        "frage": "Wie lautet 'rot' auf Englisch?",
+        "antwort": "red"
+      },
+      {
+        "frage": "Wie lautet 'gelb' auf Englisch?",
+        "antwort": "yellow"
+      },
+      {
+        "frage": "Wie lautet 'grün' auf Englisch?",
+        "antwort": "green"
+      },
+      {
+        "frage": "Was heißt 'rosa' auf Englisch?",
+        "antwort": "pink"
       }
     ]
   },
-  "Wissenschaft": {
-    "Physik & Chemie": [
+  "Geschichte": {
+    "Deutschland": [
       {
-        "frage": "Was ist die Einheit der Kraft?",
-        "antwort": "Newton",
-        "alias": [
-          "n"
-        ]
+        "frage": "Wer war der erste Bundeskanzler Deutschlands?",
+        "antwort": "Konrad Adenauer"
       },
       {
-        "frage": "Was misst ein Kompass?",
-        "antwort": "Nord",
-        "alias": [
-          "norden"
-        ]
+        "frage": "In welchem Jahr fiel die Berliner Mauer?",
+        "antwort": "1989"
       },
       {
-        "frage": "Welche Energie hat Bewegung?",
-        "antwort": "kinetische Energie",
-        "alias": [
-          "bewegungsenergie"
-        ]
+        "frage": "Wann trat das Grundgesetz in Kraft?",
+        "antwort": "1949"
       },
       {
-        "frage": "Welche Kraft zieht alles zur Erde?",
-        "antwort": "Schwerkraft",
-        "alias": [
-          "gravitation"
-        ]
-      },
-      {
-        "frage": "Welche Einheit zeigt Spannung?",
-        "antwort": "Volt",
-        "alias": [
-          "v"
-        ]
-      },
-      {
-        "frage": "Was beschreibt Geschwindigkeit?",
-        "antwort": "Weg pro Zeit",
-        "alias": [
-          "speed"
-        ]
-      },
-      {
-        "frage": "Wie nennt man eine Temperaturerhöhung?",
-        "antwort": "Wärme",
-        "alias": [
-          "heat"
-        ]
-      },
-      {
-        "frage": "Was ist ein Elektron?",
-        "antwort": "Teilchen",
-        "alias": [
-          "particle"
-        ]
-      },
-      {
-        "frage": "Was ist eine chemische Reaktion?",
-        "antwort": "Umwandlung",
-        "alias": [
-          "reaction"
-        ]
-      },
-      {
-        "frage": "Was ist Lichtgeschwindigkeit?",
-        "antwort": "299792 km/s",
-        "alias": [
-          "300000 km/s"
-        ]
+        "frage": "Wann wurde Deutschland wiedervereinigt?",
+        "antwort": "1990"
       }
     ],
-    "Biologie & Alltag": [
+    "Weltgeschichte": [
       {
-        "frage": "Was zeigt ein Thermometer?",
-        "antwort": "Temperatur",
-        "alias": [
-          "temp"
-        ]
+        "frage": "Wann begann der Zweite Weltkrieg?",
+        "antwort": "1939"
       },
       {
-        "frage": "Was ist H2O?",
-        "antwort": "Wasser",
-        "alias": [
-          "water"
-        ]
+        "frage": "In welchem Jahr endete der Erste Weltkrieg?",
+        "antwort": "1918"
       },
       {
-        "frage": "Wie viele Planeten hat unser Sonnensystem?",
-        "antwort": "8",
-        "alias": [
-          "acht"
-        ]
+        "frage": "Wann wurde die Magna Carta unterzeichnet?",
+        "antwort": "1215"
       },
       {
-        "frage": "Was braucht eine Pflanze zum Wachsen?",
-        "antwort": "Sonnenlicht",
-        "alias": [
-          "licht"
-        ]
+        "frage": "Wann landete der erste Mensch auf dem Mond?",
+        "antwort": "1969"
+      }
+    ],
+    "Epochen": [
+      {
+        "frage": "Wann begann die Renaissance in Italien?",
+        "antwort": "1400"
       },
       {
-        "frage": "Was ist ein Gas, das wir zum Atmen benötigen?",
-        "antwort": "Sauerstoff",
-        "alias": [
-          "oxygen"
-        ]
+        "frage": "Wann begann die Industrielle Revolution?",
+        "antwort": "1760"
       },
       {
-        "frage": "Wie ist der Aggregatzustand von Eis?",
-        "antwort": "fest",
-        "alias": [
-          "solid"
-        ]
+        "frage": "Wann nahm die Französische Revolution ihren Anfang?",
+        "antwort": "1789"
       },
       {
-        "frage": "Was passiert bei 100°C mit Wasser?",
-        "antwort": "Es kocht",
-        "alias": [
-          "kochen"
-        ]
+        "frage": "Wann wurde die Allgemeine Erklärung der Menschenrechte verabschiedet?",
+        "antwort": "1948"
+      }
+    ],
+    "Entdeckungen": [
+      {
+        "frage": "Wann wurde Amerika von Kolumbus entdeckt?",
+        "antwort": "1492"
       },
       {
-        "frage": "Wie lange ist eine Stunde?",
-        "antwort": "60 Minuten",
-        "alias": [
-          "sechzig minuten"
-        ]
+        "frage": "In welchem Jahr erfand Gutenberg den Buchdruck?",
+        "antwort": "1450"
       },
       {
-        "frage": "Was ist das Gegenteil von Tag?",
-        "antwort": "Nacht",
-        "alias": [
-          "night"
-        ]
+        "frage": "Wann wurde das Weltall erstmals betreten?",
+        "antwort": "1961"
       },
       {
-        "frage": "Woraus bestehen alle Dinge?",
-        "antwort": "Materie",
-        "alias": [
-          "matter"
-        ]
-      },
-      {
-        "frage": "Mit welchem Instrument misst man Luftdruck?",
-        "antwort": "Barometer",
-        "alias": [
-          "barometer"
-        ]
-      },
-      {
-        "frage": "Was macht das Herz?",
-        "antwort": "Pumpt Blut",
-        "alias": [
-          "blut pumpen"
-        ]
-      },
-      {
-        "frage": "Was ist die Hauptquelle für Licht?",
-        "antwort": "Sonne",
-        "alias": [
-          "sun"
-        ]
-      },
-      {
-        "frage": "Wie viele Sekunden hat eine Minute?",
-        "antwort": "60",
-        "alias": [
-          "sechzig"
-        ]
-      },
-      {
-        "frage": "Was ist ein Magnet?",
-        "antwort": "Ein Objekt mit Feld",
-        "alias": [
-          "magnetisch"
-        ]
-      },
-      {
-        "frage": "Was ist Masse?",
-        "antwort": "Menge an Materie",
-        "alias": [
-          "gewicht"
-        ]
-      },
-      {
-        "frage": "Was passiert beim Schmelzen?",
-        "antwort": "fest zu flüssig",
-        "alias": [
-          "schmelzt"
-        ]
-      },
-      {
-        "frage": "Was braucht man für Feuer?",
-        "antwort": "Sauerstoff",
-        "alias": [
-          "oxygen"
-        ]
-      },
-      {
-        "frage": "Was ist ein Stern?",
-        "antwort": "Leuchtkörper",
-        "alias": [
-          "sun"
-        ]
+        "frage": "Wann wurde das Römische Reich im Westen gestürzt?",
+        "antwort": "476"
       }
     ]
   }
