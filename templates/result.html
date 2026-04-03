@@ -12,16 +12,9 @@
         {% endfor %}
     </div>
     <div class="card-body">
-        <div class="nav-links">
-            <a href="{{ url_for('choose_topic') }}">Themen</a>
-            <a href="{{ url_for('shop') }}">Shop</a>
-            <a href="{{ url_for('dashboard') }}">Dashboard</a>
-            <a href="{{ url_for('leaderboard') }}">Rangliste</a>
-            <a href="{{ url_for('review') }}">Review</a>
-            <a href="{{ url_for('logout') }}">Abmelden</a>
-        </div>
+        {% include "_nav_links.html" %}
         <h1>Quiz beendet!</h1>
-        <p class="muted">{{ topic }} · {{ subtopic }}</p>
+        <p class="muted">{{ topic }} · {{ subtopic }} · {{ mode_label }}</p>
         <p>Du hast {{ score }} von {{ total }} Punkten erreicht!</p>
         <p>Dein Geldkonto: {{ money }}</p>
         {% if sticker_awarded %}
@@ -45,6 +38,15 @@
                         </li>
                     {% endfor %}
                 </ul>
+            </section>
+        {% endif %}
+        {% if ai_feedback %}
+            <section class="section-card ai-feedback">
+                <h2>KI-Analyse</h2>
+                <p><strong>Erkenntnis:</strong> {{ ai_feedback.analysis }}</p>
+                <p><strong>Empfohlenes Thema:</strong> {{ ai_feedback.topic }}</p>
+                <p><strong>Übungstipp:</strong> {{ ai_feedback.recommendation }}</p>
+                <p><strong>Praxisidee:</strong> {{ ai_feedback.practice }}</p>
             </section>
         {% endif %}
     </div>

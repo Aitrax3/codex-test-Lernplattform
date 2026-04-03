@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Feedback</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="sticker-wall">
+        {% for sticker in stickers %}
+            <span class="sticker-icon" style="--sticker-index:{{ loop.index0 }};">{{ sticker }}</span>
+        {% endfor %}
+    </div>
+    <div class="card-body">
+        {% include "_nav_links.html" %}
+        <h1>Feedback</h1>
+        {% if ai_feedback %}
+            <section class="section-card ai-feedback">
+                <h2>KI-Analyse</h2>
+                <p><strong>Erkenntnis:</strong> {{ ai_feedback.analysis }}</p>
+                <p><strong>Empfohlenes Thema:</strong> {{ ai_feedback.topic }}</p>
+                <p><strong>Übungstipp:</strong> {{ ai_feedback.recommendation }}</p>
+                <p><strong>Praxisidee:</strong> {{ ai_feedback.practice }}</p>
+            </section>
+        {% else %}
+            <p class="muted">Nach deinem nächsten Quiz siehst du hier die KI-Auswertung.</p>
+        {% endif %}
+        <section class="section-card feedback-chat">
+            <h2>Chat mit deinem Lernassistenten</h2>
+            {% if chat_error %}
+                <div class="notification">{{ chat_error }}</div>
+            {% endif %}
+            <div class="chat-history">
+                {% for message in chat_history %}
+                    <div class="chat-bubble {{ 'user' if message.role == 'user' else 'assistant' }}">
+                        <span>{{ message.content }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+            <form method="post" class="chat-form">
+                <textarea name="message" rows="3" placeholder="Frag den Lernassistenten nach Fehlern oder Übungstipps"></textarea>
+                <button type="submit">Antwort erhalten</button>
+            </form>
+        </section>
+    </div>
+</div>
+</body>
+</html>

@@ -1,3 +1,4 @@
+import logging
 import os
 from datetime import datetime, timedelta
 from flask import Flask, render_template, render_template_string, request, redirect, url_for, session, jsonify
@@ -6,8 +7,43 @@ import requests
 from difflib import SequenceMatcher
 from werkzeug.security import generate_password_hash, check_password_hash
 from jinja2 import TemplateNotFound
+from logging.handlers import RotatingFileHandler
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+
+
+def load_env_file(path):
+    if not os.path.exists(path):
+        return
+    with open(path, "r", encoding="utf-8") as file:
+        for raw_line in file:
+            line = raw_line.strip()
+            if not line or line.startswith("#"):
+                continue
+            if "=" not in line:
+                continue
+            key, value = line.split("=", 1)
+            key = key.strip()
+            value = value.strip().strip('"').strip("'")
+            os.environ.setdefault(key, value)
+
+
+load_env_file(os.path.join(BASE_DIR, ".env"))
+
+LOG_DIR = os.path.join(BASE_DIR, "logs")
+os.makedirs(LOG_DIR, exist_ok=True)
+
+ai_logger = logging.getLogger("ai_chat")
+ai_logger.setLevel(logging.DEBUG)
+if not ai_logger.handlers:
+    handler = RotatingFileHandler(
+        os.path.join(LOG_DIR, "ai_chat.log"),
+        maxBytes=512 * 1024,
+        backupCount=3,
+        encoding="utf-8",
+    )
+    handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(message)s"))
+    ai_logger.addHandler(handler)
 QUIZZES_PATH = os.path.join(BASE_DIR, "quizzes.json")
 USERS_PATH = os.path.join(BASE_DIR, "users.json")
 CLASSES_PATH = os.path.join(BASE_DIR, "classes.json")
@@ -21,30 +57,9 @@ app.secret_key = "supersecret"
 
 NAV_MENU = [
     {"endpoint": "dashboard", "label": "Dashboard"},
-    {"endpoint": "choose_topic", "label": "Themen", "roles": ["student"]},
-    {"endpoint": "leaderboard", "label": "Rangliste", "roles": ["student"]},
-    {"endpoint": "review", "label": "Review", "roles": ["student"]},
-    {
-        "endpoint": "teacher_portal",
-        "label": "Feedback",
-        "roles": ["teacher"],
-        "fragment": "feedback",
-        "view": "feedback-register",
-    },
-    {
-        "endpoint": "teacher_portal",
-        "label": "Klassenregister",
-        "roles": ["teacher"],
-        "fragment": "class-overview",
-        "view": "class-register",
-    },
-    {
-        "endpoint": "teacher_portal",
-        "label": "Lehrer-Modus",
-        "roles": ["teacher"],
-        "fragment": "teacher-hub",
-        "view": "teacher-hub",
-    },
+    {"endpoint": "feedback", "label": "Feedback"},
+    {"endpoint": "class_register", "label": "Klasse", "roles": ["teacher"]},
+    {"endpoint": "teacher_portal", "label": "Lehrer", "roles": ["teacher"]},
     {"endpoint": "shop", "label": "Shop"},
     {"endpoint": "avatar_design", "label": "Avatar"},
     {"endpoint": "logout", "label": "Abmelden"},
@@ -69,11 +84,14 @@ def inject_nav_links():
             fragment = entry.get("fragment")
             if fragment:
                 url = f"{url}#{fragment}"
+        current = request.endpoint
+        active = current == entry["endpoint"]
         nav_links.append(
             {
                 "url": url,
                 "label": entry["label"],
                 "view": entry.get("view"),
+                "active": active,
             }
         )
     return {"nav_links": nav_links}
@@ -427,6 +445,274 @@ def build_quiz_questions(topic, subtopic, mode, count=10):
     return questions
 
 
+def _format_results_for_feedback(results):
+    if not results:
+        return "Keine Antworten vorhanden."
+    lines = []
+    for entry in results:
+        status = "richtig" if entry.get("correct") else "falsch"
+        answer = entry.get("answer", "–")
+        expected = entry.get("expected", "–")
+        lines.append(f"{entry.get('frage')} ({status}) – deine Antwort: {answer} – erwartet: {expected}")
+    return " | ".join(lines)
+
+
+def generate_openai_feedback_summary(topic, subtopic, mode, results):
+    if not openai_configured():
+        raise RuntimeError("OpenAI nicht konfiguriert.")
+    ai_logger.debug("Request feedback summary topic=%s subtopic=%s mode=%s answers=%d", topic, subtopic, mode, len(results))
+    payload_lines = [
+        f"Feedback für {topic} · {subtopic} · Modus {MODE_LABELS.get(mode, mode.title())}.",
+        f"Fragenstatus: {_format_results_for_feedback(results)}",
+        "Bewerte Schwächen, gib klare Übungstipps und nenne ein Thema, das weiter geübt werden sollte.",
+    ]
+    messages = [
+        {
+            "role": "system",
+            "content": (
+                "Du bist ein hilfreicher Lernberater in der Schule. "
+                "Antworte präzise, freundlich und gib Empfehlungen zur Übung. "
+                "Wenn ein Schüler dich beleidigt, ignoriere die Anfrage und erinnere an respektvolles Verhalten. "
+                "Gib nur ein JSON-Objekt zurück, das mindestens die Felder "
+                "\"analysis\", \"recommendation\", \"topic\", \"practice\" enthält."
+            ),
+        },
+        {"role": "user", "content": "\n".join(payload_lines)},
+    ]
+    payload = {
+        "model": OPENAI_MODEL,
+        "messages": messages,
+        "temperature": 0.4,
+        "max_tokens": 220,
+    }
+    try:
+        response = requests.post(
+            OPENAI_API_URL,
+            headers={
+                "Authorization": f"Bearer {OPENAI_API_KEY}",
+                "Content-Type": "application/json",
+            },
+            json=payload,
+            timeout=OPENAI_TIMEOUT,
+        )
+        response.raise_for_status()
+    except requests.RequestException as exc:
+        ai_logger.exception("OpenAI feedback request failed for %s/%s/%s", topic, subtopic, mode)
+        raise RuntimeError(f"OpenAI-Anfrage fehlgeschlagen: {exc}") from exc
+    data = response.json()
+    choices = data.get("choices") or []
+    if not choices:
+        ai_logger.warning("OpenAI feedback returned no choices for %s/%s/%s", topic, subtopic, mode)
+        raise RuntimeError("OpenAI hat keine Antwort geliefert.")
+    message_data = choices[0].get("message") or choices[0]
+    content = (
+        message_data.get("content", "")
+        if isinstance(message_data, dict)
+        else message_data.get("text", "")
+    )
+    parsed = _extract_json_payload(content)
+    summary = {
+        "analysis": parsed.get("analysis"),
+        "recommendation": parsed.get("recommendation"),
+        "topic": parsed.get("topic") or subtopic,
+        "practice": parsed.get("practice"),
+    }
+    missing = [key for key, value in summary.items() if not value]
+    if missing:
+        ai_logger.warning("OpenAI feedback missing fields %s for %s/%s/%s", missing, topic, subtopic, mode)
+        raise RuntimeError(f"OpenAI-Antwort unvollständig: fehlende Felder {missing}")
+    ai_logger.info("Generated feedback summary for %s/%s/%s: %s", topic, subtopic, mode, summary)
+    return summary
+
+
+def fallback_feedback_summary(topic, subtopic, results):
+    incorrect = [entry for entry in results if not entry.get("correct")]
+    weak_topic = subtopic if incorrect else topic
+    practice_suggestion = (
+        "Konzentriere dich auf ähnliche Aufgaben, z. B. weitere Quizfragen aus dem selben Unterthema."
+    )
+    analysis = (
+        "Einige Antworten waren nicht korrekt, nimm dir Zeit für Wiederholungen."
+        if incorrect
+        else "Du hast alle Fragen richtig beantwortet, weiter so!"
+    )
+    if incorrect:
+        practice_suggestion = (
+            f"Übe besonders {weak_topic} mit gezielten Wiederholungsaufgaben oder Karteikarten."
+        )
+        ai_logger.info("Fallback feedback triggered due to incorrect answers for %s/%s (count=%d)", topic, subtopic, len(incorrect))
+    return {
+        "analysis": analysis,
+        "recommendation": practice_suggestion,
+        "topic": weak_topic,
+        "practice": f"Erstelle 5 Beispielaufgaben und löse sie nochmal gezielt, achte auf die Definitionen von {weak_topic}.",
+    }
+
+
+def build_student_feedback_summary(user, topic, subtopic, mode, results):
+    try:
+        return generate_openai_feedback_summary(topic, subtopic, mode, results)
+    except RuntimeError:
+        return fallback_feedback_summary(topic, subtopic, results)
+
+
+def should_ignore_message(text):
+    low = (text or "").lower()
+    ignore_keywords = {"dumm", "idiot", "scheiße", "arsch", "fuck", "hässlich", "hass", "beleid"}
+    return any(keyword in low for keyword in ignore_keywords)
+
+
+def generate_chatbot_response(user_message, recent_history):
+    ai_logger.debug("Chatbot request message=%s history=%s", user_message, [entry.get("content") for entry in recent_history])
+    if should_ignore_message(user_message):
+        ai_logger.warning("Ignored inappropriate chat message: %s", user_message)
+        return {
+            "role": "assistant",
+            "content": "Ich antworte nur auf respektvolle Fragen. Bitte formuliere deine Anfrage freundlich.",
+        }
+    messages = [
+        {
+            "role": "system",
+            "content": (
+                "Du bist ein unterstützender Lerncoach. Gib konkrete Tipps, analysiere Fehler und "
+                "vermeide es, beleidigende oder nicht ernst gemeinte Nachrichten zu beantworten."
+            ),
+        }
+    ]
+    messages.extend(recent_history)
+    messages.append({"role": "user", "content": user_message})
+    if not openai_configured():
+        ai_logger.info("OpenAI not configured for chat; returning offline guidance")
+        return {
+            "role": "assistant",
+            "content": (
+                "Ich kann dir gerade keine externe Hilfe bieten. Schau dir deine letzten Fehler an "
+                "und oder wiederhole das Thema Schritt für Schritt."
+            ),
+        }
+    payload = {
+        "model": OPENAI_MODEL,
+        "messages": messages,
+        "temperature": 0.45,
+        "max_tokens": 200,
+    }
+    try:
+        response = requests.post(
+            OPENAI_API_URL,
+            headers={
+                "Authorization": f"Bearer {OPENAI_API_KEY}",
+                "Content-Type": "application/json",
+            },
+            json=payload,
+            timeout=OPENAI_TIMEOUT,
+        )
+    except requests.RequestException as exc:
+        ai_logger.exception("Chatbot OpenAI request failed")
+        return {
+            "role": "assistant",
+            "content": (
+                "Die Verbindung zum Assistenten ist momentan gestört. Versuch es gleich noch einmal."
+            ),
+        }
+    if not response.ok:
+        ai_logger.warning("Chatbot response returned status=%s", response.status_code)
+        return {
+            "role": "assistant",
+            "content": (
+                "Ich konnte gerade keine Antwort abrufen. Versuch es gleich erneut oder formuliere dein Anliegen anders."
+            ),
+        }
+    payload_data = response.json()
+    choices = payload_data.get("choices") or []
+    if not choices:
+        return {
+            "role": "assistant",
+            "content": "Der Assistent hat keine Antwort generiert."
+        }
+    message = choices[0].get("message") or {}
+    content = message.get("content", "").strip() or "Keine Antwort erhalten."
+    ai_logger.info("Chatbot response generated: %s", content)
+    return {"role": "assistant", "content": content}
+
+
+def aggregate_teacher_classes(username, classes, users):
+    teacher_classes = []
+    for code, data in sorted(classes.items()):
+        if data.get("teacher") != username:
+            continue
+        structured_assignments = []
+        for assignment in reversed(data.get("assignments", [])):
+            if not assignment_is_visible(assignment):
+                continue
+            open_status = is_deadline_open(assignment.get("deadline"))
+            grace_msg = None
+            if not open_status:
+                grace_msg = grace_remaining_display(assignment)
+            status_label = (
+                "Offen"
+                if open_status
+                else "Verlängert"
+                if grace_msg
+                else "Abgelaufen"
+            )
+            structured_assignments.append(
+                {
+                    "id": assignment["id"],
+                    "topic": assignment["topic"],
+                    "subtopic": assignment["subtopic"],
+                    "mode": assignment["mode"],
+                    "mode_label": MODE_LABELS.get(assignment["mode"], assignment["mode"].title()),
+                    "created": assignment.get("created"),
+                    "deadline": assignment.get("deadline"),
+                    "deadline_display": format_deadline_display(assignment.get("deadline")),
+                    "is_open": open_status,
+                    "status_label": status_label,
+                    "grace_message": grace_msg,
+                    "feedback": list(reversed(assignment.get("feedback", []))),
+                }
+            )
+        teacher_classes.append(
+            {
+                "code": code,
+                "name": data.get("name"),
+                "students": build_student_stats(data.get("students", []), users),
+                "assignments": structured_assignments,
+            }
+        )
+    class_choices = [
+        {"code": entry["code"], "label": f"{entry['name']} ({entry['code']})"}
+        for entry in teacher_classes
+    ]
+    return teacher_classes, class_choices
+
+
+def build_teacher_feedback_rows(teacher_classes, users):
+    rows = []
+    for klass in teacher_classes:
+            for student_entry in klass.get("students", []):
+                student_name = student_entry.get("name")
+                if not student_name:
+                    continue
+                user = users.get(student_name, {})
+                last_quiz = user.get("last_quiz") or {}
+                last_feedback = user.get("last_ai_feedback") or {}
+            rows.append(
+                {
+                    "student": student_name,
+                    "class": klass["name"],
+                    "last_score": last_quiz.get("score"),
+                    "last_topic": last_quiz.get("topic"),
+                    "last_subtopic": last_quiz.get("subtopic"),
+                    "analysis": last_feedback.get("analysis"),
+                    "weak_topic": last_feedback.get("topic"),
+                    "recommendation": last_feedback.get("recommendation"),
+                    "practice": last_feedback.get("practice"),
+                    "updated": last_quiz.get("timestamp"),
+                }
+            )
+    return rows
+
+
 def create_user(users, username, password, role="student", class_code=None):
     if username in users:
         return False, "Benutzername existiert bereits."
@@ -468,7 +754,7 @@ def update_achievements(user):
     user["achievements"] = sorted(achievements)
 
 
-def record_quiz_history(user, topic, subtopic, mode, results, score):
+def record_quiz_history(user, topic, subtopic, mode, results, score, feedback_summary=None):
     entry = {
         "topic": topic,
         "subtopic": subtopic,
@@ -477,6 +763,8 @@ def record_quiz_history(user, topic, subtopic, mode, results, score):
         "score": score,
         "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M"),
     }
+    if feedback_summary:
+        entry["feedback"] = feedback_summary
     user["last_quiz"] = entry
     history = user.setdefault("quiz_history", [])
     history.append(entry)
@@ -801,25 +1089,7 @@ def teacher_portal():
     message = None
     if request.method == "POST":
         action = request.form.get("action")
-        if action == "create_class":
-            class_name = request.form.get("class_name", "").strip()
-            if not class_name:
-                message = "Gib einen Klassennamen ein."
-            else:
-                code = generate_class_code(classes)
-                classes[code] = {
-                    "name": class_name,
-                    "teacher": username,
-                    "students": [],
-                    "assignments": [],
-                }
-                save_classes(classes)
-                user.setdefault("classes", [])
-                if code not in user["classes"]:
-                    user["classes"].append(code)
-                save_users(users)
-                message = f"Klasse '{class_name}' erstellt. Code: {code}"
-        elif action == "assign_quiz":
+        if action == "assign_quiz":
             class_code = request.form.get("class_code")
             target = request.form.get("assignment_target")
             mode = request.form.get("mode")
@@ -859,49 +1129,13 @@ def teacher_portal():
                     )
         else:
             message = "Aktion nicht erkannt."
-    teacher_classes = []
-    for code, data in sorted(classes.items()):
-        if data.get("teacher") != username:
-            continue
-        students = data.get("students", [])
-        structured_assignments = []
-        for assignment in reversed(data.get("assignments", [])):
-            if not assignment_is_visible(assignment):
-                continue
-            open_status = is_deadline_open(assignment.get("deadline"))
-            grace_msg = None
-            if not open_status:
-                grace_msg = grace_remaining_display(assignment)
-            if open_status:
-                status_label = "Offen"
-            elif grace_msg:
-                status_label = "Verlängert"
-            else:
-                status_label = "Abgelaufen"
-            structured_assignments.append({
-                "id": assignment["id"],
-                "topic": assignment["topic"],
-                "subtopic": assignment["subtopic"],
-                "mode": assignment["mode"],
-                "mode_label": MODE_LABELS.get(assignment["mode"], assignment["mode"].title()),
-                "created": assignment.get("created"),
-                "deadline": assignment.get("deadline"),
-                "deadline_display": format_deadline_display(assignment.get("deadline")),
-                "is_open": open_status,
-                "status_label": status_label,
-                "grace_message": grace_msg,
-                "feedback": list(reversed(assignment.get("feedback", []))),
-            })
-        teacher_classes.append({
-            "code": code,
-            "name": data.get("name"),
-            "students": build_student_stats(students, users),
-            "assignments": structured_assignments,
-        })
-    teacher_class_choices = [
-        {"code": entry["code"], "label": f"{entry['name']} ({entry['code']})"}
-        for entry in teacher_classes
-    ]
+    teacher_classes, teacher_class_choices = aggregate_teacher_classes(username, classes, users)
+    all_assignments = []
+    for klass in teacher_classes:
+        for assignment in klass.get("assignments", []):
+            entry = assignment.copy()
+            entry["class_name"] = klass["name"]
+            all_assignments.append(entry)
     selected_class_code = request.args.get("class", teacher_class_choices[0]["code"] if teacher_class_choices else None)
     selected_class = classes.get(selected_class_code) if selected_class_code else None
     student_overview = student_submission_overview(selected_class, users) if selected_class else []
@@ -923,6 +1157,88 @@ def teacher_portal():
         selected_class_code=selected_class_code,
         student_overview=student_overview,
         selected_class_name=selected_class.get("name") if selected_class else None,
+        all_assignments=all_assignments,
+    )
+
+
+@app.route("/teacher/classes", methods=["GET", "POST"])
+def class_register():
+    if "username" not in session:
+        return redirect(url_for("index"))
+    users = load_users()
+    username = session["username"]
+    user = ensure_user_profile(users, username)
+    if user.get("role") != "teacher":
+        return redirect(url_for("choose_topic"))
+    classes = load_classes()
+    stickers = recent_stickers(users, username)
+    message = None
+    if request.method == "POST":
+        class_name = request.form.get("class_name", "").strip()
+        if not class_name:
+            message = "Gib einen Klassennamen ein."
+        else:
+            code = generate_class_code(classes)
+            classes[code] = {
+                "name": class_name,
+                "teacher": username,
+                "students": [],
+                "assignments": [],
+            }
+            save_classes(classes)
+            user.setdefault("classes", [])
+            if code not in user["classes"]:
+                user["classes"].append(code)
+            save_users(users)
+            message = f"Klasse '{class_name}' erstellt. Code: {code}"
+    teacher_classes, _ = aggregate_teacher_classes(username, classes, users)
+    return render_template(
+        "teacher_classes.html",
+        stickers=stickers,
+        message=message,
+        teacher_classes=teacher_classes,
+    )
+
+
+@app.route("/feedback", methods=["GET", "POST"])
+def feedback():
+    if "username" not in session:
+        return redirect(url_for("index"))
+    users = load_users()
+    username = session["username"]
+    user = ensure_user_profile(users, username)
+    stickers = recent_stickers(users, username)
+    classes = load_classes()
+    if user.get("role") == "teacher":
+        teacher_classes, _ = aggregate_teacher_classes(username, classes, users)
+        rows = build_teacher_feedback_rows(teacher_classes, users)
+        return render_template(
+            "teacher_feedback.html",
+            stickers=stickers,
+            teacher_classes=teacher_classes,
+            feedback_rows=rows,
+        )
+    chat_history = session.get("feedback_chat", [])
+    chat_error = None
+    if request.method == "POST":
+        message_text = request.form.get("message", "").strip()
+        if not message_text:
+            chat_error = "Bitte gib eine Frage oder ein Problem ein."
+        else:
+            assistant_msg = generate_chatbot_response(
+                message_text, chat_history[-6:] if chat_history else []
+            )
+            chat_history.append({"role": "user", "content": message_text})
+            chat_history.append(assistant_msg)
+            chat_history = chat_history[-10:]
+            session["feedback_chat"] = chat_history
+    ai_feedback = user.get("last_ai_feedback")
+    return render_template(
+        "feedback.html",
+        stickers=stickers,
+        chat_history=chat_history,
+        ai_feedback=ai_feedback,
+        chat_error=chat_error,
     )
 
 # Quizseite
@@ -1011,11 +1327,21 @@ def quiz(topic, subtopic, mode):
                 available = unlocked_sticker_icons(user["progress"]["level"])
                 sticker = random.choice(available)
                 user["stickers"].append(sticker)
-            correct_count = sum(1 for entry in quiz_state.get("results", []) if entry["correct"])
+            results = quiz_state.get("results", [])
+            correct_count = sum(1 for entry in results if entry["correct"])
             award_experience(user, correct_count)
             update_achievements(user)
-            results = quiz_state.get("results", [])
-            record_quiz_history(user, topic, subtopic, mode, results, session["score"])
+            ai_feedback = build_student_feedback_summary(user, topic, subtopic, mode, results)
+            user["last_ai_feedback"] = ai_feedback
+            record_quiz_history(
+                user,
+                topic,
+                subtopic,
+                mode,
+                results,
+                session["score"],
+                feedback_summary=ai_feedback,
+            )
             save_users(users)
             classes_dirty = False
             if class_assignment:
@@ -1045,6 +1371,7 @@ def quiz(topic, subtopic, mode):
                 subtopic=subtopic,
                 mode_label=MODE_LABELS.get(mode, mode.title()),
                 assignment_id=assignment_id,
+                ai_feedback=ai_feedback,
             )
 
     frage = questions[index]["frage"]

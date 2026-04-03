@@ -17,217 +17,77 @@
         {% if message %}
             <div class="notification">{{ message }}</div>
         {% endif %}
-        <section class="teacher-view teacher-view--active" data-view="teacher-hub" id="teacher-hub">
-            <div class="teacher-grid">
-                <article class="section-card">
-                    <h2>Neue Klasse erstellen</h2>
+        <section class="teacher-grid">
+            <article class="section-card">
+                <h2>Quiz als Aufgabe zuweisen</h2>
+                {% if teacher_class_choices %}
                     <form method="post" class="teacher-form">
-                        <input type="hidden" name="action" value="create_class">
-                        <input type="text" name="class_name" placeholder="Klassenname" required>
-                        <button type="submit">Klasse erstellen</button>
-                    </form>
-                </article>
-                <article class="section-card">
-                    <h2>Quiz als Aufgabe zuweisen</h2>
-                    {% if teacher_class_choices %}
-                        <form method="post" class="teacher-form">
-                            <input type="hidden" name="action" value="assign_quiz">
-                            <label for="class_select">Klasse</label>
-                            <select name="class_code" id="class_select" required>
-                                <option value="">Klasse wählen</option>
-                                {% for choice in teacher_class_choices %}
-                                    <option value="{{ choice.code }}">{{ choice.label }}</option>
-                                {% endfor %}
-                            </select>
-                            <label for="assignment_target">Thema / Unterthema</label>
-                            <select name="assignment_target" id="assignment_target" required>
-                                <option value="">Wähle ein Thema</option>
-                                {% for option in topic_options %}
-                                    <option value="{{ option.value }}">{{ option.label }}</option>
-                                {% endfor %}
-                            </select>
-                            <label for="mode_select">Modus</label>
-                            <select name="mode" id="mode_select" required>
-                                <option value="">Modus wählen</option>
-                                {% for key, label in mode_labels.items() %}
-                                    <option value="{{ key }}">{{ label }}</option>
-                                {% endfor %}
-                            </select>
-                            <label for="deadline_input">Deadline (optional)</label>
-                            <input type="datetime-local" name="deadline" id="deadline_input">
-                            <button type="submit">Quiz verteilen</button>
-                        </form>
-                    {% else %}
-                        <p class="muted">Erstelle zuerst eine Klasse, um Quizzes zuzuweisen.</p>
-                    {% endif %}
-                </article>
-            </div>
-        </section>
-        <section class="teacher-view" data-view="class-register" id="class-overview">
-            {% if teacher_classes %}
-                <div class="class-summary">
-                    <h2>Klassenübersicht</h2>
-                    {% for klass in teacher_classes %}
-                        <article class="class-card">
-                            <header>
-                                <h3>{{ klass.name }} · {{ klass.code }}</h3>
-                                <p class="muted">{{ klass.students|length }} Schüler*innen</p>
-                            </header>
-                            <div class="class-content">
-                                <div>
-                                    <h4>Aktive Aufgaben</h4>
-                                    {% if klass.assignments %}
-                                        <ul class="assignment-list">
-                                            {% for assignment in klass.assignments %}
-                                                <li>
-                                                    <strong>{{ assignment.topic }} · {{ assignment.subtopic }}</strong>
-                                                    <p class="muted">
-                                                        {{ assignment.mode_label }} · {{ assignment.created }} · Deadline: {{ assignment.deadline_display }} · {{ assignment.status_label }}
-                                                    </p>
-                                                    {% if assignment.feedback %}
-                                                        <div class="feedback-list">
-                                                            {% for note in assignment.feedback %}
-                                                                <p><strong>{{ note.student }}</strong>: {{ note.message }} <span class="muted">{{ note.timestamp }}</span></p>
-                                                            {% endfor %}
-                                                        </div>
-                                                    {% else %}
-                                                        <p class="muted">Noch kein Feedback.</p>
-                                                    {% endif %}
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
-                                    {% else %}
-                                        <p class="muted">Noch keine Aufgaben verteilt.</p>
-                                    {% endif %}
-                                </div>
-                                <div>
-                                    <h4>Schüler*innen-Nutzung</h4>
-                                    {% if klass.students %}
-                                        <table class="usage-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Quizzes</th>
-                                                    <th>XP</th>
-                                                    <th>Zuletzt</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {% for student in klass.students %}
-                                                    <tr>
-                                                        <td>{{ student.name }}</td>
-                                                        <td>{{ student.quizzes }}</td>
-                                                        <td>{{ student.experience }}</td>
-                                                        <td>{{ student.last_quiz or '–' }}</td>
-                                                    </tr>
-                                                {% endfor %}
-                                            </tbody>
-                                        </table>
-                                    {% else %}
-                                        <p class="muted">Noch keine Schüler*innen angemeldet.</p>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </article>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <p class="muted">Du hast noch keine Klassen angelegt.</p>
-            {% endif %}
-        </section>
-        <section class="teacher-view" data-view="feedback-register" id="feedback">
-            {% if teacher_class_choices %}
-                <div class="feedback-register">
-                    <h2>Feedback-Register</h2>
-                    <form method="get" class="class-switcher">
-                        <label for="class-select">Klasse wählen</label>
-                        <select name="class" id="class-select" onchange="this.form.submit()">
+                        <input type="hidden" name="action" value="assign_quiz">
+                        <label for="class_select">Klasse</label>
+                        <select name="class_code" id="class_select" required>
+                            <option value="">Klasse wählen</option>
                             {% for choice in teacher_class_choices %}
-                                <option value="{{ choice.code }}" {% if choice.code == selected_class_code %}selected{% endif %}>
-                                    {{ choice.label }}
-                                </option>
+                                <option value="{{ choice.code }}">{{ choice.label }}</option>
                             {% endfor %}
                         </select>
+                        <label for="assignment_target">Thema / Unterthema</label>
+                        <select name="assignment_target" id="assignment_target" required>
+                            <option value="">Wähle ein Thema</option>
+                            {% for option in topic_options %}
+                                <option value="{{ option.value }}">{{ option.label }}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="mode_select">Modus</label>
+                        <select name="mode" id="mode_select" required>
+                            <option value="">Modus wählen</option>
+                            {% for key, label in mode_labels.items() %}
+                                <option value="{{ key }}">{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="deadline_input">Deadline (optional)</label>
+                        <input type="datetime-local" name="deadline" id="deadline_input">
+                        <button type="submit">Quiz verteilen</button>
                     </form>
-                    {% if student_overview %}
-                        <table class="feedback-table">
-                            <thead>
-                                <tr>
-                                    <th>Schüler*in</th>
-                                    <th>Letzte Abgabe</th>
-                                    <th>Richtigkeit</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for entry in student_overview %}
-                                    <tr>
-                                        <td>{{ entry.name }}</td>
-                                        <td>{{ entry.submission }}</td>
-                                        <td>{{ entry.percent }}</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    {% else %}
-                        <p class="muted">Noch keine Abgaben vorhanden.</p>
-                    {% endif %}
-                </div>
+                {% else %}
+                    <p class="muted">Erstelle zuerst eine Klasse, um Quizzes zuzuweisen.</p>
+                {% endif %}
+            </article>
+            <article class="section-card">
+                <h2>Deine Klassen</h2>
+                <p class="muted">{{ teacher_classes|length }} Klassen verwalten</p>
+                {% if teacher_classes %}
+                    <ul class="class-teaser">
+                        {% for klass in teacher_classes %}
+                            <li>
+                                <strong>{{ klass.name }}</strong>
+                                <span class="muted">
+                                    {{ klass.students|length }} Schüler*innen · {{ klass.assignments|length }} Aufgaben
+                                </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="muted">Noch keine Klassen angelegt.</p>
+                {% endif %}
+            </article>
+        </section>
+        <section class="section-card">
+            <h2>Aktuelle Aufgaben</h2>
+            {% if all_assignments %}
+                <ul class="assignment-list">
+                    {% for assignment in all_assignments %}
+                        <li>
+                            <strong>{{ assignment.topic }} · {{ assignment.subtopic }}</strong>
+                            <p class="muted">
+                                Klasse: {{ assignment.class_name }} · {{ assignment.mode_label }} · Deadline: {{ assignment.deadline_display }} · {{ assignment.status_label }}
+                            </p>
+                        </li>
+                    {% endfor %}
+                </ul>
             {% else %}
-                <p class="muted">Erstelle zuerst eine Klasse, um Feedback zu sehen.</p>
+                <p class="muted">Noch keine Aufgaben zugewiesen.</p>
             {% endif %}
         </section>
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const teacherViews = document.querySelectorAll(".teacher-view");
-                if (!teacherViews.length) {
-                    return;
-                }
-                const viewByName = {};
-                teacherViews.forEach((view) => {
-                    viewByName[view.dataset.view] = view;
-                });
-                const hashMap = {
-                    "": "teacher-hub",
-                    "#": "teacher-hub",
-                    "#teacher-hub": "teacher-hub",
-                    "#class-overview": "class-register",
-                    "#feedback": "feedback-register",
-                };
-                const updateActiveView = (name) => {
-                    Object.keys(viewByName).forEach((key) => {
-                        viewByName[key].classList.toggle(
-                            "teacher-view--active",
-                            key === name
-                        );
-                    });
-                    const navLinks = document.querySelectorAll(".nav-links a[data-view]");
-                    navLinks.forEach((link) => {
-                        link.classList.toggle("is-active", link.dataset.view === name);
-                    });
-                };
-                const applyHash = () => {
-                    const hash = window.location.hash;
-                    const target = hashMap[hash] || hashMap[""];
-                    updateActiveView(target);
-                };
-                const navLinks = document.querySelectorAll(".nav-links a[data-view]");
-                navLinks.forEach((link) => {
-                    link.addEventListener("click", (event) => {
-                        const targetView = link.dataset.view;
-                        if (!targetView || !viewByName[targetView]) {
-                            return;
-                        }
-                        event.preventDefault();
-                        const fragment = link.getAttribute("href").split("#")[1] || "";
-                        const newHash = fragment ? `#${fragment}` : "";
-                        history.replaceState(null, "", `${window.location.pathname}${newHash}`);
-                        updateActiveView(targetView);
-                    });
-                });
-                window.addEventListener("hashchange", applyHash);
-                applyHash();
-            });
-        </script>
     </div>
 </div>
 </body>

@@ -27,5 +27,7 @@
 - Sticker werden bereits ab acht richtigen Antworten vergeben, und das Ergebnis weist darauf hin, sobald du knapp danebenlagst oder die Schwelle erreichst.
 - Die Antwortlogik akzeptiert Aliasformen und erlaubt leichte Abweichungen, damit Antworten wie „Paris“ vs. „paris“, „JS“ vs. „JavaScript“ oder „Berlin“ vs. „berlin“ trotzdem als richtig gelten.
 - `quizzes.json` erweitert um neue Themen (Mathematik, Geografie, Informatik, Physik) mit jeweils vier anspruchsvolleren Fragen, damit die Lernplattform schwierigeres Wissen abfragt.
-- Navigation und Lehrer-Modus: Die Hauptnavigation erreicht nun alle Seiten (Dashboard, Shop, Avatar, Abmelden plus Lehrer-spezifische „Feedback“, „Klassenregister“ und „Lehrer-Modus“), während die Lehrerseite die drei Bereiche als eigenständige Views darstellt, die beim Klick auf die Nav-Links jeweils die komplette Ansicht unterhalb austauschen.  
+- Navigation: Eine einzige Menüleiste zeigt jetzt Dashboard, Feedback, Klasse, Lehrer, Shop, Avatar und Abmelden; Lehrer-Links sind nur für Lehrer sichtbar und markieren den aktiven Bereich klar.
+- KI-Feedback & Lehrerübersicht: Nach jedem Quiz liefert die KI eine Analyse, Empfehlungen und ein Übungsprojekt, es gibt zudem einen Chat für Schüler plus ein separates Feedback-Register für Lehrkräfte (Tabellensicht) sowie eine eigene Klassenregister-Seite, damit Aufgaben-, Feedback- und Klassensteuerung getrennt bleiben.
+- Umfeld: Die `.env`-Datei im Projektstamm wird jetzt direkt beim Start eingelesen, damit API-Schlüssel (z. B. `OPENAI_API_KEY`) ohne zusätzliche Export-Schritte verfügbar sind.
 - Konfiguration: `.env` wurde zur `.gitignore` hinzugefügt und mit einem Template-Eintrag für `OPENAI_API_KEY` versehen, damit sensible Schlüssel nicht im Repo landen.

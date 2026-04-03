@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Feedback-Register</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="sticker-wall">
+        {% for sticker in stickers %}
+            <span class="sticker-icon" style="--sticker-index:{{ loop.index0 }};">{{ sticker }}</span>
+        {% endfor %}
+    </div>
+    <div class="card-body">
+        {% include "_nav_links.html" %}
+        <h1>Feedback-Register</h1>
+        {% if feedback_rows %}
+            <section class="section-card">
+                <table class="feedback-table">
+                    <thead>
+                        <tr>
+                            <th>Schüler*in</th>
+                            <th>Klasse</th>
+                            <th>Letzter Score</th>
+                            <th>Empfohlenes Thema</th>
+                            <th>Analyse</th>
+                            <th>Übungstipps</th>
+                            <th>Zuletzt</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in feedback_rows %}
+                            <tr>
+                                <td>{{ row.student }}</td>
+                                <td>{{ row.class }}</td>
+                                <td>{{ row.last_score or '–' }}</td>
+                                <td>{{ row.weak_topic or '–' }}</td>
+                                <td>{{ row.analysis or '–' }}</td>
+                                <td>{{ row.recommendation or '–' }}</td>
+                                <td>{{ row.updated or '–' }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+        {% else %}
+            <p class="muted">Noch keine Feedback-Daten vorhanden.</p>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>
