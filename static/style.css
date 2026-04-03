@@ -219,6 +219,42 @@ body {
     flex: 1;
 }
 
+.mode-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.mode-card {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 16px;
+    padding: 1rem;
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.mode-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.mode-tag {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.35em;
+    color: #6366f1;
+    margin: 0;
+}
+
+.mode-count {
+    font-size: 0.85rem;
+    color: #475569;
+}
+
 .topic-card-top {
     display: flex;
     justify-content: space-between;
@@ -418,6 +454,12 @@ a:hover {
 
 .nav-links a:hover {
     border-color: rgba(37, 99, 235, 0.6);
+}
+
+.nav-links a.is-active {
+    background: rgba(99, 102, 241, 0.15);
+    border-color: #6366f1;
+    color: #312e81;
 }
 
 .notification {
@@ -733,4 +775,251 @@ a:hover {
     100% {
         transform: translateY(-14px) rotate(calc(var(--sticker-index, 0) * 9deg));
     }
+}
+
+.assignment-banner {
+    margin: 1.5rem 0;
+    background: rgba(248, 250, 252, 0.9);
+    border: 1px solid rgba(15, 23, 42, 0.1);
+    border-radius: 16px;
+    text-align: left;
+    padding: 1.25rem;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.assignment-banner ul {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0;
+    display: grid;
+    gap: 0.75rem;
+}
+
+.assignment-banner li {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    padding: 0.85rem 1rem;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.teacher-grid {
+    margin-bottom: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+}
+
+.teacher-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    text-align: left;
+}
+
+.teacher-form label {
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #475569;
+}
+
+.teacher-form select,
+.teacher-form input {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border-radius: 12px;
+    border: 1px solid rgba(15, 23, 42, 0.2);
+    background: rgba(248, 250, 252, 0.95);
+    font: inherit;
+}
+
+.class-summary {
+    text-align: left;
+}
+
+.class-card {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    border-radius: 20px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 15px 30px rgba(15, 23, 42, 0.08);
+}
+
+.class-card header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.class-card h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.class-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.class-content > div {
+    flex: 1;
+    min-width: 220px;
+}
+
+.assignment-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.feedback-list {
+    margin-top: 0.65rem;
+    padding: 0.65rem 0.9rem;
+    background: rgba(37, 99, 235, 0.05);
+    border-radius: 10px;
+    border: 1px solid rgba(37, 99, 235, 0.2);
+}
+
+.feedback-list p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #1e1f29;
+    display: flex;
+    justify-content: space-between;
+    gap: 0.35rem;
+}
+
+.usage-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.usage-table th,
+.usage-table td {
+    padding: 0.35rem 0;
+    text-align: left;
+}
+
+.usage-table th {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #6b7280;
+}
+
+.usage-table tbody tr:not(:last-child) td {
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.assignments-panel {
+    margin: 1.5rem 0;
+    text-align: left;
+}
+
+.assignment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+}
+
+.assignment-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 18px;
+    padding: 1.3rem;
+    border: 1px solid rgba(15, 23, 42, 0.09);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.assignment-card h3 {
+    margin: 0;
+    font-size: 1.15rem;
+}
+
+.assignment-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.feedback-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.feedback-form textarea {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid rgba(15, 23, 42, 0.2);
+    padding: 0.85rem 1rem;
+    font: inherit;
+    resize: vertical;
+}
+
+.feedback-register {
+    margin-top: 1.5rem;
+    text-align: left;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 1.5rem;
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.class-switcher {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.class-switcher select {
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    border: 1px solid rgba(15, 23, 42, 0.2);
+    background: rgba(248, 250, 252, 0.95);
+    font: inherit;
+}
+
+.feedback-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}
+
+.feedback-table th,
+.feedback-table td {
+    padding: 0.55rem 0;
+    text-align: left;
+}
+
+.feedback-table thead th {
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+.feedback-table tbody tr:not(:last-child) td {
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.teacher-view {
+    display: none;
+    text-align: left;
+}
+
+.teacher-view--active {
+    display: block;
 }
