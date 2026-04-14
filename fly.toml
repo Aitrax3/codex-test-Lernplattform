@@ -2,8 +2,7 @@ app = "loopwise"
 primary_region = "fra"
 
 [build]
-  builder = "heroku/buildpacks:20"
-  buildpacks = ["heroku/python"]
+  dockerfile = "Dockerfile"
 
 [env]
   PORT = "8080"
