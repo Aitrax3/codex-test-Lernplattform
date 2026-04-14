@@ -1,0 +1,13 @@
+.env
+logs
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.db
+data/
+*.log
+Dockerfile
+docker-compose*.yml
+*.swp
+.DS_Store
