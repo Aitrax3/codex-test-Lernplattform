@@ -1,26 +1,29 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Registrieren</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
-<div class="container">
-    <div class="card-body">
-        <h1>Neuen Account erstellen</h1>
-        {% if message %}
-            <div class="notification">{{ message }}</div>
-        {% endif %}
-        <form method="post" class="auth-form">
+{% extends "base.html" %}
+
+{% block title %}Registrieren · Lernplattform{% endblock %}
+{% block page_title %}Neuen Account erstellen{% endblock %}
+{% block page_subtitle %}Willkommen! Wähle deine Rolle und starte durch{% endblock %}
+{% block page_content %}
+    {% if message %}
+        <div class="notification">{{ message }}</div>
+    {% endif %}
+    <article class="panel" style="max-width:480px; margin:0 auto;">
+        <h2>Account-Details</h2>
+        <form method="post" class="register-form">
             <input type="text" name="username" placeholder="Benutzername" required>
             <input type="password" name="password" placeholder="Passwort" required>
             <input type="password" name="confirm" placeholder="Passwort bestätigen" required>
-            <button type="submit">Registrieren</button>
+            <label for="role">Rolle</label>
+            <select class="primary-select" name="role" id="role">
+                <option value="student" {% if selected_role == "student" %}selected{% endif %}>Schüler</option>
+                <option value="teacher" {% if selected_role == "teacher" %}selected{% endif %}>Lehrer</option>
+            </select>
+            <input type="text" name="class_code" placeholder="Klassen-Code (Schüler)" value="{{ class_code_value }}">
+            <small class="muted-block">Klassen-Code bekommst du von deiner Lehrkraft (nur für Schüler*innen).</small>
+            <button class="primary-action" type="submit">Registrieren</button>
         </form>
-        <div class="helper-links">
-            <a href="{{ url_for('index') }}">Zurück zur Anmeldung</a>
+        <div class="muted-block" style="margin-top:1rem;">
+            <a class="button-link secondary" href="{{ url_for('index') }}">Zurück zur Anmeldung</a>
         </div>
-    </div>
-</div>
-</body>
-</html>
+    </article>
+{% endblock %}

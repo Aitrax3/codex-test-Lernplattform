@@ -1,83 +1,84 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Thema wählen</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
-<div class="container">
-    <div class="sticker-wall">
-        {% for sticker in stickers %}
-            <span class="sticker-icon" style="--sticker-index:{{ loop.index0 }};">{{ sticker }}</span>
-        {% endfor %}
-    </div>
-    <div class="card-body">
-        <div class="nav-links">
-            <a href="{{ url_for('shop') }}">Shop</a>
-            <a href="{{ url_for('dashboard') }}">Dashboard</a>
-            <a href="{{ url_for('leaderboard') }}">Rangliste</a>
-            <a href="{{ url_for('review') }}">Review</a>
-            <a href="{{ url_for('logout') }}">Abmelden</a>
-        </div>
+{% extends "base.html" %}
 
-        <header class="section-header">
-            <p class="section-tag">Quiz-Bereiche entdecken</p>
-            <h1>Themenübersicht</h1>
-            <p class="section-subtitle">
-                Schlau durchstarten: Wähle ein Thema aus dem großen Pool, starte ein frisches Quiz mit 10
-                unterschiedlichen Fragen und sammle dafür Sticker, Geld und Fortschritt.
-            </p>
-        </header>
-
-        <div class="section-grid">
-            <article class="section-card">
-                <h3>Shop und Avatare</h3>
-                <p>Investiere deine Quiz-Punkte in Sticker, Hintergrundbilder oder individuelle Avatar-Symbole.</p>
-                <a class="button-link" href="{{ url_for('shop') }}">Zum Shop</a>
+{% block title %}Themenübersicht · Lernplattform{% endblock %}
+{% block page_title %}Themenübersicht{% endblock %}
+{% block page_subtitle %}Entdecke Quizbereiche und starte neue Herausforderungen{% endblock %}
+{% block page_content %}
+    <div class="topics-shell">
+        <aside class="topics-register">
+            <p class="register-label">Themen-Register</p>
+            <ul class="register-list">
+                {% for section in topic_cards %}
+                    <li>{{ section.name }}</li>
+                {% endfor %}
+            </ul>
+            <div class="register-note">
+                <p>Wähle nur ein Fach, wir übernehmen den Rest – offene Schwächen haben Vorrang.</p>
+            </div>
+        </aside>
+        <div class="topics-main">
+            <article class="panel panel-quick-links">
+                <h2>Kurzübersicht</h2>
+                <div class="grid-two">
+                    <div class="card">
+                        <h3>Shop &amp; Avatare</h3>
+                        <p class="muted-block">Investiere Punkte oder passe dein Avatar-Design an.</p>
+                        <a class="button-link" href="{{ url_for('shop') }}">Zum Shop</a>
+                    </div>
+                    <div class="card">
+                        <h3>Review</h3>
+                        <p class="muted-block">Sieh dir Antworten aus früheren Quizzes an.</p>
+                        <a class="button-link" href="{{ url_for('review') }}">Review ansehen</a>
+                    </div>
+                    <div class="card">
+                        <h3>Rangliste</h3>
+                        <p class="muted-block">Vergleiche dein Guthaben und Sticker.</p>
+                        <a class="button-link" href="{{ url_for('leaderboard') }}">Rangliste öffnen</a>
+                    </div>
+                </div>
             </article>
-            <article class="section-card">
-                <h3>Dashboard</h3>
-                <p>Sieh deine Erfahrung, Ausgaben und Sticker-Sammlung auf einen Blick, inklusive Fortschritt.</p>
-                <a class="button-link" href="{{ url_for('dashboard') }}">Zum Dashboard</a>
-            </article>
-            <article class="section-card">
-                <h3>Rangliste</h3>
-                <p>Vergleiche Guthaben, Sticker und Käufe mit anderen Spielerinnen und Spielern.</p>
-                <a class="button-link" href="{{ url_for('leaderboard') }}">Rangliste öffnen</a>
-            </article>
-            <article class="section-card">
-                <h3>Quiz-Review</h3>
-                <p>Am Ende jedes Quiz kannst du dir deine Antworten samt Erwartung erneut ansehen.</p>
-                <a class="button-link" href="{{ url_for('review') }}">Review ansehen</a>
-            </article>
-        </div>
-
-        <section class="topic-section">
-            {% for section in topic_cards %}
-                <article class="topic-category">
-                    <header class="topic-category-header">
-                        <div class="topic-category-title">
-                            <p class="topic-tag">{{ section.name }}</p>
-                            <h2>{{ section.total_questions }} Fragen</h2>
-                        </div>
-                        <p class="topic-description">{{ section.description }}</p>
-                    </header>
-                    <div class="subtopic-grid">
-                        {% for subtopic in section.subtopics %}
-                            <article class="subtopic-card">
-                                <div class="subtopic-card-top">
-                                    <h3>{{ subtopic.name }}</h3>
-                                    <span class="topic-count">{{ subtopic.count }} Fragen</span>
-                                </div>
-                                <p>{{ subtopic.description }}</p>
-                                <a class="button-link" href="{{ url_for('quiz', topic=section.name, subtopic=subtopic.name) }}">Quiz starten</a>
-                            </article>
+            {% if student_assignments %}
+                <article class="panel">
+                    <h2>Hausaufgaben für {{ class_name or 'deine Klasse' }}</h2>
+                    <div class="assignment-grid">
+                        {% for assignment in student_assignments %}
+                            <div class="assignment-card">
+                                <h3>{{ assignment.topic }} · {{ assignment.subtopic }}</h3>
+                                <p class="muted-block">{{ assignment.mode_label }} · Deadline: {{ assignment.deadline }}</p>
+                                <p class="muted-block">Zugewiesen: {{ assignment.created }}</p>
+                                <a class="button-link secondary" href="#">Details</a>
+                            </div>
                         {% endfor %}
                     </div>
                 </article>
-            {% endfor %}
-        </section>
+            {% endif %}
+            {% if blocking_weakness %}
+                <article class="panel panel-warning">
+                    <h2>Offene Schwäche</h2>
+                    <p class="muted-block">
+                        Wir arbeiten gerade an {{ blocking_weakness.topic }} · {{ blocking_weakness.subtopic }} ({{ blocking_weakness.issue or 'weitere Übung' }}).
+                        Sobald die Schwäche gelöst ist, kannst du ein neues Fach starten.
+                    </p>
+                </article>
+            {% endif %}
+            <section class="topics-overview">
+                <div class="topic-card-grid">
+                    {% for section in topic_cards %}
+                        <article class="topic-card">
+                            <div>
+                                <strong>{{ section.name }}</strong>
+                                <p class="muted-block">{{ section.description }}</p>
+                                <p class="muted-block">
+                                    {{ section.total_questions }} Fragen verfügbar
+                                </p>
+                            </div>
+                            <div class="topic-card-actions">
+                                <a class="button-link" href="{{ url_for('start_subject', topic_slug=section.slug) }}">Quiz starten</a>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
     </div>
-</div>
-</body>
-</html>
+{% endblock %}

@@ -13,7 +13,7 @@
         {% endif %}
         <form method="post" class="auth-form">
             <input type="text" name="username" placeholder="Benutzername" required>
-            <button type="submit">Code generieren</button>
+            <button class="primary-action" type="submit">Code generieren</button>
         </form>
         {% if code %}
             <p class="muted">Dein Reset-Code: <strong>{{ code }}</strong></p>
