@@ -6,12 +6,12 @@
     --panel-alt: rgba(20, 8, 10, 0.98);
     --text: #fefefe;
     --muted: #f3b3b3;
-    --accent: #dc2626;
-    --accent-soft: rgba(220, 38, 38, 0.18);
-    --accent-2: #991b1b;
+    --accent: #ef4444;
+    --accent-soft: rgba(239, 68, 68, 0.18);
+    --accent-2: #dc2626;
     --accent-dashboard: #ea580c;
     --border: rgba(255, 255, 255, 0.18);
-    --glow: rgba(220, 38, 38, 0.45);
+    --glow: rgba(239, 68, 68, 0.55);
 }
 
 * {
@@ -26,6 +26,11 @@ body {
         radial-gradient(circle at 20% 20%, rgba(255, 121, 63, 0.4), transparent 40%),
         linear-gradient(160deg, #0b040a 0%, #19090f 60%, #1d0b13 100%);
     color: var(--text);
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+    accent-color: var(--accent);
 }
 
 .login-page,
@@ -170,13 +175,15 @@ body {
     font-weight: 600;
     font-size: 1rem;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 20px 35px rgba(239, 68, 68, 0.35);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    box-shadow: 0 20px 35px rgba(239, 68, 68, 0.35), 0 0 18px rgba(239, 68, 68, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .auth-form button:hover {
     transform: translateY(-1px);
-    box-shadow: 0 25px 40px rgba(239, 68, 68, 0.45);
+    box-shadow: 0 25px 40px rgba(239, 68, 68, 0.45), 0 0 24px var(--glow);
+    filter: brightness(1.06) saturate(1.05);
 }
 
 .primary-action {
@@ -189,14 +196,16 @@ body {
     font-size: 1rem;
     letter-spacing: 0.03em;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 20px 35px rgba(239, 68, 68, 0.35);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    box-shadow: 0 20px 35px rgba(239, 68, 68, 0.35), 0 0 18px rgba(239, 68, 68, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .primary-action:hover,
 .primary-action:focus-visible {
     transform: translateY(-1px);
-    box-shadow: 0 25px 40px rgba(239, 68, 68, 0.45);
+    box-shadow: 0 25px 40px rgba(239, 68, 68, 0.45), 0 0 24px var(--glow);
+    filter: brightness(1.06) saturate(1.05);
 }
 
 .primary-action.full-width {
@@ -863,14 +872,15 @@ details summary::-webkit-details-marker {
     text-decoration: none;
     font-weight: 600;
     border: none;
-    box-shadow: 0 18px 35px rgba(239, 68, 68, 0.35);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 18px 35px rgba(239, 68, 68, 0.35), 0 0 18px rgba(239, 68, 68, 0.18);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
     letter-spacing: 0.03em;
 }
 
 .button-link:hover {
     transform: translateY(-2px);
-    box-shadow: 0 25px 45px rgba(239, 68, 68, 0.4);
+    box-shadow: 0 25px 45px rgba(239, 68, 68, 0.4), 0 0 24px var(--glow);
+    filter: brightness(1.06) saturate(1.05);
 }
 
 .button-link--disabled {
@@ -897,6 +907,34 @@ details summary::-webkit-details-marker {
     border: 1px solid var(--border);
     padding: 0.9rem;
     resize: vertical;
+}
+
+.feedback-form input[type="text"],
+.feedback-form input[type="email"],
+.feedback-form input[type="password"],
+.feedback-form textarea {
+    width: 100%;
+    border-radius: 14px;
+    padding: 0.9rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    outline: none;
+}
+
+.feedback-form input[type="text"]::placeholder,
+.feedback-form input[type="email"]::placeholder,
+.feedback-form input[type="password"]::placeholder,
+.feedback-form textarea::placeholder {
+    color: rgba(254, 254, 254, 0.65);
+}
+
+.feedback-form input[type="text"]:focus,
+.feedback-form input[type="email"]:focus,
+.feedback-form input[type="password"]:focus,
+.feedback-form textarea:focus {
+    border-color: rgba(239, 68, 68, 0.65);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
 }
 
 .quiz-actions {
@@ -950,9 +988,19 @@ details summary::-webkit-details-marker {
     border: none;
     border-radius: 12px;
     padding: 0.8rem 1rem;
-    background: var(--accent);
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
     color: #fff;
     font-weight: 600;
+    box-shadow: 0 18px 35px rgba(239, 68, 68, 0.28), 0 0 18px rgba(239, 68, 68, 0.18);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.feedback-form button:hover,
+.feedback-form button:focus-visible {
+    transform: translateY(-1px);
+    box-shadow: 0 22px 40px rgba(239, 68, 68, 0.35), 0 0 24px var(--glow);
+    filter: brightness(1.06) saturate(1.05);
 }
 
 .quiz-exit {
@@ -1240,7 +1288,16 @@ details summary::-webkit-details-marker {
     background: linear-gradient(135deg, var(--accent), var(--accent-2));
     color: #fff;
     font-weight: 600;
-    box-shadow: 0 18px 35px rgba(239, 68, 68, 0.35);
+    box-shadow: 0 18px 35px rgba(239, 68, 68, 0.35), 0 0 18px rgba(239, 68, 68, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chat-form button:hover,
+.chat-form button:focus-visible {
+    transform: translateY(-1px);
+    box-shadow: 0 22px 40px rgba(239, 68, 68, 0.4), 0 0 24px var(--glow);
+    filter: brightness(1.06) saturate(1.05);
 }
 
 .chat-status {
@@ -1306,9 +1363,14 @@ details summary::-webkit-details-marker {
     width: 100%;
 }
 
+.primary-select option {
+    background: #ffffff;
+    color: #0b040a;
+}
+
 .primary-select:focus-visible {
     transform: translateY(-1px);
-    box-shadow: 0 20px 45px rgba(14, 165, 233, 0.45);
+    box-shadow: 0 20px 45px rgba(239, 68, 68, 0.35), 0 0 24px var(--glow);
     outline: none;
 }
 
