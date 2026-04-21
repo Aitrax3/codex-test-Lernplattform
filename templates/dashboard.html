@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard · Lernplattform{% endblock %}
+{% block title %}Dashboard · LoopWise{% endblock %}
 {% block page_title %}Dashboard{% endblock %}
 {% block page_subtitle %}Deine Fortschritte, Aufgaben und Quizerlebnisse auf einen Blick{% endblock %}
 {% block hero_extra %}
@@ -13,9 +13,6 @@
 {% block page_content %}
     {% if assignment_error %}
         <div class="notification">{{ assignment_error }}</div>
-    {% endif %}
-    {% if discord_status %}
-        <div class="notification">{{ discord_status }}</div>
     {% endif %}
     <div class="panel-grid">
         <article class="panel">
@@ -77,44 +74,6 @@
             </div>
         </article>
     </div>
-    {% if assignments %}
-        <article class="panel">
-            <h2>Klassen-Aufgaben {% if class_name %}({{ class_name }}){% endif %}</h2>
-            {% if feedback_note %}
-                <div class="notification">{{ feedback_note }}</div>
-            {% endif %}
-            <div class="assignment-grid">
-                {% for assignment in assignments %}
-                    <article class="assignment-card">
-                        <h3>{{ assignment.topic }} · {{ assignment.subtopic }}</h3>
-                        <span class="status-pill">{{ assignment.status_label }}</span>
-                        <p class="assignment-meta">
-                            {{ assignment.mode_label }} · Deadline: {{ assignment.deadline_display }}{% if assignment.grace_message %} · Verlängerung: {{ assignment.grace_message }}{% endif %}
-                        </p>
-                        <div class="assignment-actions">
-                            {% if assignment.start_allowed %}
-                                <a class="button-link shop-action" href="{{ url_for('quiz', topic=assignment.topic, subtopic=assignment.subtopic, mode=assignment.mode, assignment_id=assignment.id) }}">Quiz starten</a>
-                            {% else %}
-                                <span class="muted-block">Start gesperrt oder bereits abgeschlossen</span>
-                            {% endif %}
-                            <span class="muted-block">{{ assignment.feedback_count }} Feedbacks</span>
-                        </div>
-                        <form method="post" class="feedback-form">
-                            <input type="hidden" name="action" value="feedback">
-                            <input type="hidden" name="assignment_id" value="{{ assignment.id }}">
-                            <textarea name="feedback" rows="2" placeholder="Feedback an deine Lehrkraft"></textarea>
-                            <button class="primary-action" type="submit">Feedback senden</button>
-                        </form>
-                    </article>
-                {% endfor %}
-            </div>
-        </article>
-    {% else %}
-        <article class="panel panel-alt">
-            <h2>Keine Aufgaben</h2>
-            <p class="muted-block">Deine Lehrkraft hat aktuell keine Aufgaben zugeteilt oder alles ist erledigt.</p>
-        </article>
-    {% endif %}
     <article class="panel">
         <h2>Alle Käufe</h2>
         {% if purchases %}

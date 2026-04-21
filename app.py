@@ -8,6 +8,7 @@ from difflib import SequenceMatcher
 from werkzeug.security import generate_password_hash, check_password_hash
 from jinja2 import TemplateNotFound
 from logging.handlers import RotatingFileHandler
+from flask_wtf.csrf import CSRFProtect
 from urllib.parse import urlencode
 from sqlalchemy import (
     create_engine,
@@ -64,7 +65,27 @@ app = Flask(
     template_folder=os.path.join(BASE_DIR, "templates"),
     static_folder=os.path.join(BASE_DIR, "static"),
 )
-app.secret_key = "supersecret"
+
+# Generate secure secret key from environment or create a random one
+app.secret_key = os.getenv("FLASK_SECRET_KEY")
+if not app.secret_key:
+    # In production, this MUST be set via environment variable
+    import warnings
+    warnings.warn(
+        "FLASK_SECRET_KEY not set. Using random key (OK for development only). "
+        "Set FLASK_SECRET_KEY environment variable for production.",
+        RuntimeWarning
+    )
+    app.secret_key = secrets.token_urlsafe(32)
+
+# Security headers for session cookies
+app.config["SESSION_COOKIE_SECURE"] = os.getenv("FLASK_ENV") == "production"
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(hours=24)
+
+# Initialize CSRF protection
+csrf = CSRFProtect(app)
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 DISCORD_CLIENT_ID = os.getenv("DISCORD_CLIENT_ID")
@@ -73,7 +94,7 @@ DISCORD_REDIRECT_URI = os.getenv("DISCORD_REDIRECT_URI")
 DISCORD_SERVER_ID = os.getenv("DISCORD_SERVER_ID")
 DISCORD_CHAT_CHANNEL = os.getenv("DISCORD_CHAT_CHANNEL")
 
-DISCORD_AUTHORIZE_URL = "https://discord.com/api/oauth2/authorize"
+DISCORD_AUTHORIZE_URL = "https://discord.com/oauth2/authorize"
 DISCORD_TOKEN_URL = "https://discord.com/api/oauth2/token"
 DISCORD_USER_URL = "https://discord.com/api/users/@me"
 
@@ -210,21 +231,50 @@ def _fetch_discord_user_id(access_token):
         raise RuntimeError("Discord-Antwort enthält keine Nutzer-ID.")
     return discord_id
 
+
+def _handle_discord_callback(code):
+    if not code:
+        session["discord_oauth_status"] = "Discord-Code fehlt."
+        target = "dashboard" if session.get("username") else "index"
+        return redirect(url_for(target))
+    try:
+        token = _exchange_discord_code(code)
+        discord_id = _fetch_discord_user_id(token)
+    except RuntimeError as exc:
+        session["discord_oauth_status"] = str(exc)
+        target = "dashboard" if session.get("username") else "index"
+        return redirect(url_for(target))
+    username = session.get("username")
+    if username:
+        users = load_users()
+        ensure_user_profile(users, username)
+        persist_discord_link(username, discord_id)
+        session["discord_oauth_status"] = "Discord-Konto erfolgreich verknüpft."
+        return redirect(url_for("dashboard"))
+    linked_user = find_username_by_discord_id(discord_id)
+    if linked_user:
+        session["username"] = linked_user
+        session["discord_oauth_status"] = "Du bist jetzt per Discord eingeloggt."
+        return redirect(url_for("dashboard"))
+    session["discord_oauth_status"] = "Kein Account ist mit dieser Discord-ID verknüpft."
+    return redirect(url_for("index"))
+
 NAV_MENU = [
     {"endpoint": "choose_topic", "label": "Inhalte"},
     {"endpoint": "dashboard", "label": "Dashboard"},
+    {"endpoint": "assignments", "label": "Aufgaben", "roles": ["student"]},
     {"endpoint": "feedback", "label": "Schüler"},
     {"endpoint": "chat", "label": "Chat"},
     {"endpoint": "class_register", "label": "Klasse", "roles": ["teacher"]},
     {"endpoint": "teacher_portal", "label": "Aufgaben", "roles": ["teacher"]},
     {"endpoint": "shop", "label": "Shop"},
     {"endpoint": "avatar_design", "label": "Avatar"},
-    {"endpoint": "logout", "label": "Abmelden"},
 ]
 
 
 @app.context_processor
 def inject_nav_links():
+    from flask_wtf.csrf import generate_csrf
     username = session.get("username")
     users = load_users()
     user = users.get(username) if username else None
@@ -261,6 +311,7 @@ def inject_nav_links():
         "greeting_name": greeting_name,
         "sticker_strip": stickers,
         "current_year": datetime.now().year,
+        "csrf_token": generate_csrf,
     }
 
 # Quizzes laden
@@ -642,10 +693,14 @@ def _prepare_question_payload(question, topic, subtopic, mode, signature):
     return payload
 
 
-def _get_first_open_weakness(user):
+def _get_first_open_weakness(user, topic=None, subtopic=None):
     entries = []
     for skill_key, entry in user.get("weaknesses", {}).items():
         if entry.get("open"):
+            if topic and subtopic:
+                skill_topic, skill_subtopic = _split_skill_key(skill_key)
+                if skill_topic != topic or skill_subtopic != subtopic:
+                    continue
             entries.append(entry)
     if not entries:
         return None
@@ -657,13 +712,16 @@ def _get_first_open_weakness(user):
     return entries[0]
 
 
-def _active_weakness_skill(user):
+def _active_weakness_skill(user, topic=None, subtopic=None):
     skill_key = user.get("weakness_loop")
     if skill_key:
+        skill_topic, skill_subtopic = _split_skill_key(skill_key)
+        if topic and subtopic and (skill_topic != topic or skill_subtopic != subtopic):
+            return None
         entry = user.get("weaknesses", {}).get(skill_key)
         if entry and entry.get("open"):
             return skill_key
-    fallback = _get_first_open_weakness(user)
+    fallback = _get_first_open_weakness(user, topic, subtopic)
     if fallback:
         skill_key = fallback.get("skillId") or fallback.get("skill")
         if skill_key:
@@ -915,7 +973,7 @@ def generate_openrouter_question(
         {
             "role": "system",
             "content": (
-                "Du bist ein Quizautor für Lernplattformen, der präzise deutsche Fragen erstellt und JSON zurückgibt."
+                "Du bist ein Quizautor für LoopWise, der präzise deutsche Fragen erstellt und JSON zurückgibt."
                 " Halte dich strikt an die Vorgabe, nur JSON ohne erklärenden Text zu liefern."
             ),
         },
@@ -1315,14 +1373,8 @@ def normalize_ai_response(text):
     cleaned = cleaned.replace("\\", "")
     cleaned = re.sub(r"(?m)^#{1,6}\s*", "", cleaned)
     cleaned = re.sub(r"\*\*(.*?)\*\*", r"\1", cleaned)
-    cleaned = re.sub(r"(?m)^([*+-])\s*", r"\1 ", cleaned)
-    cleaned = re.sub(
-        r"(?m)^\d+\.\s*",
-        lambda m: f"{m.group(0).strip()} ",
-        cleaned,
-    )
     cleaned = re.sub(r"[`~]+", "", cleaned)
-    cleaned = re.sub(r"\s{2,}", " ", cleaned)
+    cleaned = re.sub(r"\s{3,}", " ", cleaned)
     cleaned = re.sub(r"\n\s*\n", "\n\n", cleaned)
     return cleaned
 
@@ -1341,16 +1393,15 @@ def generate_chatbot_response(user_message, recent_history):
             "content": (
                 "Du bist ein cooler und super hilfsbereiter Lern-Buddy für Kinder. Deine Sprache ist "
                 "einfach, locker und macht Spaß. Sprich so, dass jedes zehnjährige Kind deine Erklärungen "
-                "sofort kapiert. Halte deine Sätze kurz, die Wörter super einfach und zerlege komplizierte "
-                "Themen in viele kleine, leicht verdauliche Häppchen. Jeder einzelne Punkt oder Gedanke "
-                "bekommt seinen eigenen klaren Absatz. Sei ermutigend und unterstützend: Deine Positivität "
-                "kommt daher, dass du den Kindern hilfst, neue Dinge zu lernen und Fortschritte zu machen. "
-                "Leite sie mit klaren, machbaren Schritten zur Verbesserung an, nutze viele Beispiele und "
-                "zeige mit Wiederholungen, wie sie besser werden können. Deine Antworten sind immer freundlich "
-                "und hilfsbereit. Konzentriere dich darauf, zu unterstützen und zu erklären, statt "
-                "übermäßiges Lob oder unnötige Komplimente zu verteilen. Reagiere nur auf freundliche "
-                "und respektvolle Fragen, vermeide alles, was wie ein trockenes Schulbuch klingt, und "
-                "lasse fettgedruckten Text (wie ** **) sowie übermäßige Formatierung weg."
+                "sofort kapiert.\n\n"
+                "Strukturiere deine Antworten übersichtlich und sauber:\n"
+                "• Halte Sätze kurz und Wörter einfach\n"
+                "• Zerlege komplizierte Themen in kleine, leicht verdauliche Häppchen\n"
+                "• Jeder Gedanke bekommt seinen eigenen Absatz\n"
+                "• Nutze Bulletpoints oder Nummern bei mehreren Schritten\n\n"
+                "Sei immer ermutigend, unterstützend und hilfsbereit. Nutze viele Beispiele und "
+                "zeige mit Wiederholungen, wie dein Gesprächspartner besser werden kann. Reagiere "
+                "nur auf freundliche und respektvolle Fragen. Vermeide übermäßige Formatierung."
             ),
         }
     ]
@@ -1369,7 +1420,6 @@ def generate_chatbot_response(user_message, recent_history):
         "model": OPENROUTER_MODEL,
         "messages": messages,
         "temperature": 0.45,
-        "max_tokens": 200,
     }
     try:
         response = requests.post(
@@ -1499,9 +1549,24 @@ def build_teacher_feedback_rows(teacher_classes, users):
     return rows
 
 
+def validate_password(password):
+    """Validate password meets minimum security requirements."""
+    if not password:
+        return False, "Passwort erforderlich."
+    if len(password) < 8:
+        return False, "Passwort muss mindestens 8 Zeichen lang sein."
+    return True, "OK"
+
+
 def create_user(users, username, password, role="student", class_code=None):
     if username in users:
         return False, "Benutzername existiert bereits."
+    
+    # Validate password strength
+    password_valid, password_msg = validate_password(password)
+    if not password_valid:
+        return False, password_msg
+    
     entry = {
         "password_hash": generate_password_hash(password, method="pbkdf2:sha256"),
         "role": role,
@@ -1561,7 +1626,8 @@ def record_quiz_history(user, topic, subtopic, mode, results, score, duration_se
 
 
 def generate_reset_code():
-    return secrets.token_hex(3)
+    """Generate cryptographically secure reset code (32 bytes = 256 bits)."""
+    return secrets.token_urlsafe(32)
 
 
 def parse_deadline(value):
@@ -1756,6 +1822,8 @@ def student_submission_overview(class_data, users):
 # Startseite / Login
 @app.route("/", methods=["GET", "POST"])
 def index():
+    if request.method == "GET" and request.args.get("code"):
+        return _handle_discord_callback(request.args.get("code"))
     message = None
     if request.method == "POST":
         username = request.form.get("username", "").strip()
@@ -1823,6 +1891,7 @@ def register():
 
 
 @app.route("/auth/validate_account", methods=["POST"])
+@csrf.exempt
 def validate_account():
     payload = request.get_json() or {}
     username = (payload.get("username") or "").strip()
@@ -1865,14 +1934,19 @@ def reset_confirm():
         if not user:
             message = "Benutzer nicht gefunden."
         elif not code or code != user.get("reset_code"):
-            message = "Falscher Code."
+            message = "Falscher Code oder Code abgelaufen."
         elif not password or password != confirm:
             message = "Passwörter stimmen nicht überein."
         else:
-            user["password_hash"] = generate_password_hash(password, method="pbkdf2:sha256")
-            user["reset_code"] = None
-            save_users(users)
-            message = "Passwort wurde aktualisiert."
+            # Validate password strength
+            password_valid, password_msg = validate_password(password)
+            if not password_valid:
+                message = password_msg
+            else:
+                user["password_hash"] = generate_password_hash(password, method="pbkdf2:sha256")
+                user["reset_code"] = None
+                save_users(users)
+                message = "Passwort wurde aktualisiert."
     return render_template("reset_confirm.html", message=message)
 
 
@@ -2169,32 +2243,7 @@ def discord_authorize():
 
 @app.route("/auth/discord/callback")
 def discord_callback():
-    code = request.args.get("code")
-    if not code:
-        session["discord_oauth_status"] = "Discord-Code fehlt."
-        target = "dashboard" if session.get("username") else "index"
-        return redirect(url_for(target))
-    try:
-        token = _exchange_discord_code(code)
-        discord_id = _fetch_discord_user_id(token)
-    except RuntimeError as exc:
-        session["discord_oauth_status"] = str(exc)
-        target = "dashboard" if session.get("username") else "index"
-        return redirect(url_for(target))
-    username = session.get("username")
-    if username:
-        users = load_users()
-        ensure_user_profile(users, username)
-        persist_discord_link(username, discord_id)
-        session["discord_oauth_status"] = "Discord-Konto erfolgreich verknüpft."
-        return redirect(url_for("dashboard"))
-    linked_user = find_username_by_discord_id(discord_id)
-    if linked_user:
-        session["username"] = linked_user
-        session["discord_oauth_status"] = "Du bist jetzt per Discord eingeloggt."
-        return redirect(url_for("dashboard"))
-    session["discord_oauth_status"] = "Kein Account ist mit dieser Discord-ID verknüpft."
-    return redirect(url_for("index"))
+    return _handle_discord_callback(request.args.get("code"))
 
 # Quizseite
 @app.route("/quiz/<topic>/<subtopic>/<mode>", methods=["GET", "POST"])
@@ -2207,7 +2256,7 @@ def quiz(topic, subtopic, mode):
     username = session["username"]
     user = ensure_user_profile(users, username)
     weakness_pending = session.pop("weakness_loop_pending", False)
-    weakness_skill = None if weakness_pending else _active_weakness_skill(user)
+    weakness_skill = None if weakness_pending else _active_weakness_skill(user, topic, subtopic)
     forced_topic, forced_subtopic = topic, subtopic
     forced_mode = mode
     if weakness_skill:
@@ -2331,7 +2380,7 @@ def quiz(topic, subtopic, mode):
         _, weakness_entry, _ = _record_skill_answer(user, skill_key, current_question.get("signature"), quiz_state.get("mode"), correct)
         save_users(users)
         if quiz_state["type"] == "weakness":
-            active_skill = _active_weakness_skill(user)
+            active_skill = _active_weakness_skill(user, forced_topic, forced_subtopic)
             if active_skill == weakness_skill:
                 next_question, signature, selected_mode, _ = _fetch_question_for_skill(user, weakness_skill, quiz_state.get("mode"))
                 if not next_question:
@@ -2513,11 +2562,38 @@ def dashboard():
     classes = load_classes()
     if cleanup_all_classes(classes):
         save_classes(classes)
+    return render_template(
+        "dashboard.html",
+        money=user["money"],
+        purchases=purchases,
+        total_spent=total_spent,
+        avatar=user["avatar"],
+        stickers=recent_stickers(users, username),
+        progress=progress,
+        percent=percent,
+        next_level_exp=next_level_exp,
+        achievements=user["achievements"],
+        last_quiz=user.get("last_quiz"),
+        available_stickers=available_stickers,
+        upcoming_tier=upcoming_tier,
+        mode_labels=MODE_LABELS,
+    )
+
+
+@app.route("/assignments", methods=["GET", "POST"])
+def assignments():
+    if "username" not in session:
+        return redirect(url_for("index"))
+    users = load_users()
+    username = session["username"]
+    user = ensure_user_profile(users, username)
+    classes = load_classes()
+    if cleanup_all_classes(classes):
+        save_classes(classes)
     class_assignments = []
     class_name = None
     feedback_note = None
     assignment_error = session.pop("assignment_error", None)
-    discord_status = session.pop("discord_oauth_status", None)
     class_data = None
     if user.get("role") == "student" and user.get("class_code"):
         class_data = classes.get(user["class_code"])
@@ -2579,26 +2655,14 @@ def dashboard():
                 "feedback_count": len(assignment.get("feedback", [])),
             })
     return render_template(
-        "dashboard.html",
-        money=user["money"],
-        purchases=purchases,
-        total_spent=total_spent,
-        avatar=user["avatar"],
-        stickers=recent_stickers(users, username),
-        progress=progress,
-        percent=percent,
-        next_level_exp=next_level_exp,
-        achievements=user["achievements"],
-        last_quiz=user.get("last_quiz"),
-        available_stickers=available_stickers,
-        upcoming_tier=upcoming_tier,
+        "assignments.html",
         assignments=class_assignments,
         class_code=user.get("class_code"),
         class_name=class_name,
         feedback_note=feedback_note,
         assignment_error=assignment_error,
-        discord_status=discord_status,
         mode_labels=MODE_LABELS,
+        stickers=recent_stickers(users, username),
     )
 
 
@@ -2699,6 +2763,7 @@ def avatar_design():
 
 
 @app.route("/api/generate-question", methods=["POST"])
+@csrf.exempt
 def api_generate_question():
     payload = request.get_json(silent=True) or {}
     topic = payload.get("topic", "Allgemein")
@@ -2715,6 +2780,7 @@ def api_generate_question():
 
 
 @app.route("/api/answer", methods=["POST"])
+@csrf.exempt
 def api_answer():
     username = session.get("username")
     if not username:
@@ -2752,6 +2818,7 @@ def api_answer():
 
 
 @app.route("/api/next-question", methods=["GET"])
+@csrf.exempt
 def api_next_question():
     username = session.get("username")
     if not username:
@@ -2810,6 +2877,7 @@ def api_next_question():
 
 
 @app.route("/api/progress", methods=["GET"])
+@csrf.exempt
 def api_progress():
     username = session.get("username")
     if not username:
@@ -2868,14 +2936,14 @@ def api_progress():
 @app.errorhandler(TemplateNotFound)
 def handle_missing_template(error):
     template_name = getattr(error, "name", "unbekannt")
-    return render_template_string(
-        """<!DOCTYPE html>
-<html><head><title>Datei nicht gefunden</title></head><body>
-<div style='font-family:Inter,system-ui,sans-serif;padding:2rem;text-align:center;'>
-<h1>Template '{{ template_name }}' fehlt</h1>
-<p>Bitte lege die Datei unter <code>templates/{{ template_name }}</code> ab.</p>
-</div></body></html>""",
-        template_name=template_name,
+    # Properly escape template name to prevent injection
+    return (
+        "<!DOCTYPE html>\n"
+        "<html><head><title>Datei nicht gefunden</title></head><body>\n"
+        "<div style='font-family:Inter,system-ui,sans-serif;padding:2rem;text-align:center;'>\n"
+        f"<h1>Template nicht gefunden</h1>\n"
+        f"<p>Die Vorlagendatei konnte nicht geladen werden.</p>\n"
+        "</div></body></html>"
     ), 500
 
 if __name__ == "__main__":

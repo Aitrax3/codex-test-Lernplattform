@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Feedback · Lernplattform{% endblock %}
+{% block title %}Feedback · LoopWise{% endblock %}
 {% block page_title %}Lernassistent{% endblock %}
 {% block page_subtitle %}KI-Auswertung und Chat für deine Fragen{% endblock %}
 {% block page_content %}
@@ -29,9 +29,10 @@
                     id="chat-message"
                     name="message"
                     rows="5"
-                    placeholder="Frag die KI nach Fehlern, Tipps oder nächsten Schritten"
+                    placeholder="Füge hier Text ein oder kopiere Inhalte für die KI-Eingabe"
                 ></textarea>
                 <div class="chat-actions">
+                    <button type="button" class="secondary-action" id="paste-from-clipboard">Text einfügen</button>
                     <button class="primary-action" type="submit">Antwort erhalten</button>
                 </div>
                 <div class="chat-status" id="chat-status" aria-live="polite"></div>
@@ -71,6 +72,38 @@
                     history.scrollTop = history.scrollHeight;
                 }
             });
+            var pasteButton = document.getElementById("paste-from-clipboard");
+            var messageTextarea = document.getElementById("chat-message");
+            if (pasteButton && messageTextarea) {
+                pasteButton.addEventListener("click", function () {
+                    if (!navigator.clipboard || !navigator.clipboard.readText) {
+                        if (statusEl) {
+                            statusEl.textContent = "Zwischenablage wird nicht unterstützt.";
+                        }
+                        return;
+                    }
+                    navigator.clipboard
+                        .readText()
+                        .then(function (text) {
+                            if (!text) {
+                                if (statusEl) {
+                                    statusEl.textContent = "Zwischenablage ist leer.";
+                                }
+                                return;
+                            }
+                            messageTextarea.value = text;
+                            messageTextarea.focus();
+                            if (statusEl) {
+                                statusEl.textContent = "Text aus der Zwischenablage eingefügt.";
+                            }
+                        })
+                        .catch(function () {
+                            if (statusEl) {
+                                statusEl.textContent = "Konnte den Text aus der Zwischenablage nicht lesen.";
+                            }
+                        });
+                });
+            }
         });
     </script>
 {% endblock %}

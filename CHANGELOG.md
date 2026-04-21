@@ -26,7 +26,7 @@
 - Die Ergebnisseite zeigt jetzt direkt, ob jede Antwort richtig war und listet neben deiner Antwort die erwartete Antwort; die Stickerhülle bleibt weiter sichtbar.
 - Sticker werden bereits ab acht richtigen Antworten vergeben, und das Ergebnis weist darauf hin, sobald du knapp danebenlagst oder die Schwelle erreichst.
 - Die Antwortlogik akzeptiert Aliasformen und erlaubt leichte Abweichungen, damit Antworten wie „Paris“ vs. „paris“, „JS“ vs. „JavaScript“ oder „Berlin“ vs. „berlin“ trotzdem als richtig gelten.
-- `quizzes.json` erweitert um neue Themen (Mathematik, Geografie, Informatik, Physik) mit jeweils vier anspruchsvolleren Fragen, damit die Lernplattform schwierigeres Wissen abfragt.
+- `quizzes.json` erweitert um neue Themen (Mathematik, Geografie, Informatik, Physik) mit jeweils vier anspruchsvolleren Fragen, damit die LoopWise schwierigeres Wissen abfragt.
 - Navigation: Eine einzige Menüleiste zeigt jetzt Dashboard, Feedback, Klasse, Lehrer, Shop, Avatar und Abmelden; Lehrer-Links sind nur für Lehrer sichtbar und markieren den aktiven Bereich klar.
 - KI-Feedback & Lehrerübersicht: Nach jedem Quiz liefert die KI eine Analyse, Empfehlungen und ein Übungsprojekt, es gibt zudem einen Chat für Schüler plus ein separates Feedback-Register für Lehrkräfte (Tabellensicht) sowie eine eigene Klassenregister-Seite, damit Aufgaben-, Feedback- und Klassensteuerung getrennt bleiben.
 - Umfeld: Die `.env`-Datei im Projektstamm wird jetzt direkt beim Start eingelesen, damit API-Schlüssel (z. B. `OPENAI_API_KEY`) ohne zusätzliche Export-Schritte verfügbar sind.
