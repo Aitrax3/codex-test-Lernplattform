@@ -18,7 +18,7 @@
                 {% include "_nav_links.html" %}
                 <p class="hero-tagline">Alle Aufgaben abgeschlossen</p>
                 <h1>Quiz beendet!</h1>
-                <p class="muted">{{ topic }} · {{ subtopic }} · {{ mode_label }}</p>
+                <p class="muted">{{ topic }} · {{ subtopic }}</p>
                 <div class="result-score">
                     <p>Du hast <strong>{{ score }} / {{ total }}</strong> Punkte erreicht.</p>
                     <p>Dein Geldkonto: <strong>{{ money }}</strong></p>
@@ -26,7 +26,7 @@
                 {% if sticker_awarded %}
                     <div class="notification">Perfekt! Du bekommst einen neuen Sticker.</div>
                 {% else %}
-                    <p class="muted">Sticker gibt es ab {{ sticker_threshold }} richtigen Antworten.</p>
+                    <p class="muted">Sticker gibt es ab {{ sticker_threshold }} richtigen Antworten hintereinander.</p>
                 {% endif %}
                 <div class="action-row">
                     <a class="button-link" href="{{ url_for('choose_topic') }}">Weitere Themen</a>

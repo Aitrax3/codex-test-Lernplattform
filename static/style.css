@@ -815,17 +815,19 @@ details summary::-webkit-details-marker {
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 1rem;
     margin-top: 1rem;
+    max-width: 980px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .assignment-card {
     background: var(--panel-alt);
     border-radius: 20px;
-    padding: 1.25rem;
+    padding: 1rem 1.1rem;
     border: 1px solid rgba(239, 68, 68, 0.35);
     display: flex;
     flex-direction: column;
     gap: 0.65rem;
-    min-height: 220px;
     box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55);
 }
 

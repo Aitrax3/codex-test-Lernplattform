@@ -2,7 +2,7 @@
 
 {% block title %}Themenübersicht · LoopWise{% endblock %}
 {% block page_title %}Themenübersicht{% endblock %}
-{% block page_subtitle %}Entdecke Quizbereiche und starte neue Herausforderungen{% endblock %}
+{% block page_subtitle %}Wähle ein Fach – offene Schwächen haben Vorrang{% endblock %}
 {% block page_content %}
     <div class="topics-shell">
         <aside class="topics-register">
@@ -22,7 +22,7 @@
                 <div class="grid-two">
                     <div class="card">
                         <h3>Shop &amp; Avatare</h3>
-                        <p class="muted-block">Investiere Punkte oder passe dein Avatar-Design an.</p>
+                        <p class="muted-block">Schalte neue Emoji-Avatare frei und rüste sie aus.</p>
                         <a class="button-link" href="{{ url_for('shop') }}">Zum Shop</a>
                     </div>
                     <div class="card">
@@ -44,9 +44,9 @@
                         {% for assignment in student_assignments %}
                             <div class="assignment-card">
                                 <h3>{{ assignment.topic }} · {{ assignment.subtopic }}</h3>
-                                <p class="muted-block">{{ assignment.mode_label }} · Deadline: {{ assignment.deadline }}</p>
+                                <p class="muted-block">Deadline: {{ assignment.deadline }}</p>
                                 <p class="muted-block">Zugewiesen: {{ assignment.created }}</p>
-                                <a class="button-link secondary" href="#">Details</a>
+                                <a class="button-link secondary" href="{{ url_for('assignments') }}">Alle Aufgaben</a>
                             </div>
                         {% endfor %}
                     </div>

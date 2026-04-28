@@ -464,11 +464,32 @@ def inject_nav_links():
 with open(QUIZZES_PATH, "r", encoding="utf-8") as f:
     quizzes = json.load(f)
 
-SHOP_ITEMS = [
-    {"name": "Sticker", "price": 50, "description": "Gib deinem Profil einen glitzernden Sticker.", "type": "sticker"},
-    {"name": "Hintergrundbild", "price": 100, "description": "Versetze den Hintergrund in sanfte Farben.", "type": "background"},
-    {"name": "Avatar", "price": 150, "description": "Schalte ein neues Avatar-Design frei und rüste es direkt aus.", "type": "avatar"},
+AVATAR_SHOP_PRICE = 300
+AVATAR_SHOP_EMOJIS = [
+    "😀", "😎", "🤖", "👻", "🐱", "🐶", "🦊", "🐼", "🐸", "🐵",
+    "🐯", "🦁", "🐨", "🐰", "🐻", "🐻‍❄️", "🐙", "🦄", "🐲", "🐥",
+    "🐢", "🦋", "🐝", "🦉", "🦖", "🐬", "🦈", "🦩", "🐉", "🦦",
+    "🌙", "⭐", "⚡", "🔥", "💎", "🌈", "🍀", "🍉", "🍕", "🎧",
+    "🎮", "🏀", "⚽", "🏆", "🧠", "📚", "🧪", "🛰️", "🪐", "🚀",
 ]
+
+AVATAR_SHOP_COLORS = [
+    "#2563eb", "#7c3aed", "#db2777", "#0ea5e9", "#059669",
+    "#f97316", "#e11d48", "#14b8a6", "#f59e0b", "#22c55e",
+]
+
+
+def shop_avatar_items():
+    return [
+        {
+            "name": emoji,
+            "emoji": emoji,
+            "price": AVATAR_SHOP_PRICE,
+            "description": "Neuer Emoji-Avatar für deine Sammlung.",
+            "type": "avatar_emoji",
+        }
+        for emoji in AVATAR_SHOP_EMOJIS
+    ]
 
 STICKER_TIERS = [
     {"min_level": 1, "name": "Anfänger", "icons": ["🌟", "🎯", "🚀", "💡"]},
@@ -535,10 +556,10 @@ OPENROUTER_TIMEOUT = int(os.getenv("OPENROUTER_TIMEOUT", "20"))
 ai_logger.info("OpenRouter key loaded: %s", bool(OPENROUTER_API_KEY))
 
 TOPIC_DESCRIPTIONS = {
-    "Mathematik": "Rechentricks und Denksport in drei Schwierigkeitsstufen.",
-    "Geografie": "Landkarten, Hauptstädte und Flüsse mit klaren Modus-Beschreibungen.",
-    "Englisch": "Vokabeln, Verben und Phrasen sezierter Sprachwelten im Grundwortschatz.",
-    "Geschichte": "Epochen, Entdeckungen und Weltgeschichte mit klaren Modi und Kontext-Hooks.",
+    "Mathematik": "Rechentricks, Kopfrechnen und Denksport für deine nächsten Lernschleifen.",
+    "Geografie": "Landkarten, Hauptstädte und Weltwissen – kurz, klar, trainierbar.",
+    "Englisch": "Vokabeln, Verben und Phrasen, die du wirklich im Alltag brauchst.",
+    "Geschichte": "Epochen, Entdeckungen und Weltgeschichte als schnelle Wissens-Checks.",
 }
 
 
@@ -1304,6 +1325,7 @@ def ensure_user_profile(users, username):
     user.setdefault("money", 0)
     user.setdefault("purchases", [])
     user.setdefault("stickers", [])
+    user.setdefault("correct_streak", 0)
     avatar = user.get("avatar")
     if not isinstance(avatar, dict):
         avatar = default_avatar_state()
@@ -1373,6 +1395,34 @@ def unlock_avatar(user):
     collection.append(entry.copy())
     user["avatar"] = entry.copy()
     return entry
+
+
+def unlock_emoji_avatar(user, emoji):
+    collection = user.setdefault("avatar_collection", [])
+    owned = {entry.get("label") for entry in collection}
+    if emoji in owned:
+        return None
+    entry = {
+        "label": emoji,
+        "color": random.choice(AVATAR_SHOP_COLORS),
+        "shape": "circle",
+        "symbol": emoji,
+    }
+    collection.append(entry.copy())
+    return entry
+
+
+def award_sticker_if_streak(user, threshold=8):
+    if threshold <= 0:
+        return False
+    streak = int(user.get("correct_streak") or 0)
+    if streak < threshold:
+        return False
+    available = unlocked_sticker_icons(user.get("progress", {}).get("level", 1))
+    sticker = random.choice(available)
+    user.setdefault("stickers", []).append(sticker)
+    user["correct_streak"] = streak - threshold
+    return True
 
 
 def build_topic_cards():
@@ -2524,6 +2574,7 @@ def quiz(topic, subtopic, mode):
     )
     if needs_reset:
         session["score"] = 0
+        session["sticker_awarded_in_quiz"] = False
         if weakness_skill:
             question, signature, selected_mode, _ = _fetch_question_for_skill(user, weakness_skill, forced_mode)
             if not question:
@@ -2594,6 +2645,7 @@ def quiz(topic, subtopic, mode):
             session.pop("quiz_state", None)
             session.pop("score", None)
             session.pop("quiz_start_at", None)
+            session.pop("sticker_awarded_in_quiz", None)
             return redirect(url_for("choose_topic"))
         user_answer = request.form["answer"]
         current_question = questions[index]
@@ -2602,6 +2654,11 @@ def quiz(topic, subtopic, mode):
         correct = is_correct(user_answer, answer_for_check, current_question.get("aliases"))
         if correct:
             session["score"] += 1
+            user["correct_streak"] = int(user.get("correct_streak") or 0) + 1
+            if award_sticker_if_streak(user, threshold=8):
+                session["sticker_awarded_in_quiz"] = True
+        else:
+            user["correct_streak"] = 0
         entry_expected = expected_answer or current_question.get("antwort") or "Keine Angabe"
         quiz_state.setdefault("results", []).append({
             "frage": current_question["frage"],
@@ -2662,12 +2719,8 @@ def quiz(topic, subtopic, mode):
             user = users[username]
             user["money"] += session["score"] * 10
             total_questions = len(questions)
-            sticker_threshold = min(8, total_questions)
-            sticker_awarded = session["score"] >= sticker_threshold
-            if sticker_awarded:
-                available = unlocked_sticker_icons(user["progress"]["level"])
-                sticker = random.choice(available)
-                user["stickers"].append(sticker)
+            sticker_threshold = 8
+            sticker_awarded = bool(session.get("sticker_awarded_in_quiz"))
             results = quiz_state.get("results", [])
             correct_count = sum(1 for entry in results if entry["correct"])
             award_experience(user, correct_count)
@@ -2703,6 +2756,7 @@ def quiz(topic, subtopic, mode):
             score = session["score"]
             session.pop("score")
             session.pop("quiz_start_at", None)
+            session.pop("sticker_awarded_in_quiz", None)
             stickers = recent_stickers(users, username)
             session.pop("quiz_state", None)
             sticker_strip = stickers or STICKER_TIERS[0]["icons"]
@@ -2747,9 +2801,10 @@ def shop():
     stickers = recent_stickers(users, username)
     message = None
     user = users[username]
+    items = shop_avatar_items()
     if request.method == "POST":
         item_name = request.form.get("item")
-        item = next((i for i in SHOP_ITEMS if i["name"] == item_name), None)
+        item = next((i for i in items if i["name"] == item_name), None)
         if item is None:
             message = "Ungültiger Artikel."
         elif users[username]["money"] < item["price"]:
@@ -2762,17 +2817,19 @@ def shop():
                 "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M")
             }
             user["purchases"].append(record)
-            if item.get("type") == "avatar":
-                new_avatar = unlock_avatar(user)
-                message = f"Avatar {new_avatar['label']} freigeschaltet und direkt ausgerüstet!"
+            unlocked = unlock_emoji_avatar(user, item.get("emoji") or item["name"])
+            if unlocked:
+                message = f"Neuer Avatar freigeschaltet: {unlocked['symbol']}. Du kannst ihn unter Avatar gestalten ausrüsten."
+                save_users(users)
+                stickers = recent_stickers(users, username)
             else:
-                message = f"{item['name']} erfolgreich gekauft!"
-            save_users(users)
-            stickers = recent_stickers(users, username)
+                message = "Diesen Avatar hast du schon – Kauf wurde nicht durchgeführt."
+                user["money"] += item["price"]
+                user["purchases"].pop()
     return render_template(
         "shop.html",
         money=users[username]["money"],
-        items=SHOP_ITEMS,
+        items=items,
         purchases=list(reversed(users[username]["purchases"][-5:])),
         message=message,
         avatar=users[username]["avatar"],

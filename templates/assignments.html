@@ -2,7 +2,7 @@
 
 {% block title %}Aufgaben · LoopWise{% endblock %}
 {% block page_title %}Aufgaben{% endblock %}
-{% block page_subtitle %}Deine zugewiesenen Klassenaufgaben{% endblock %}
+{% block page_subtitle %}Deine aktuellen Klassenaufgaben{% endblock %}
 {% block page_content %}
     {% if assignment_error %}
         <div class="notification">{{ assignment_error }}</div>
@@ -14,11 +14,15 @@
         <div class="assignment-grid">
             {% for assignment in assignments %}
                 <article class="assignment-card">
-                    <h3>{{ assignment.topic }} · {{ assignment.subtopic }}</h3>
-                    <span class="status-pill">{{ assignment.status_label }}</span>
-                    <p class="assignment-meta">
-                        {{ assignment.mode_label }} · Deadline: {{ assignment.deadline_display }}{% if assignment.grace_message %} · Verlängerung: {{ assignment.grace_message }}{% endif %}
-                    </p>
+                    <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:1rem;">
+                        <div>
+                            <h3 style="margin:0;">{{ assignment.topic }} · {{ assignment.subtopic }}</h3>
+                            <p class="assignment-meta" style="margin:0.3rem 0 0;">
+                                Deadline: {{ assignment.deadline_display }}{% if assignment.grace_message %} · Verlängerung: {{ assignment.grace_message }}{% endif %}
+                            </p>
+                        </div>
+                        <span class="status-pill">{{ assignment.status_label }}</span>
+                    </div>
                     <div class="assignment-actions">
                         {% if assignment.start_allowed %}
                             <a class="button-link shop-action" href="{{ url_for('quiz', topic=assignment.topic, subtopic=assignment.subtopic, mode=assignment.mode, assignment_id=assignment.id) }}">Quiz starten</a>

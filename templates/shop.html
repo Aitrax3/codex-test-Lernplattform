@@ -2,7 +2,7 @@
 
 {% block title %}Shop · LoopWise{% endblock %}
 {% block page_title %}Shop{% endblock %}
-{% block page_subtitle %}Investiere Punkte in Sticker, Hintergründe und Avatare{% endblock %}
+{% block page_subtitle %}Schalte neue Emoji-Avatare frei{% endblock %}
 {% block page_content %}
     {% if message %}
         <div class="notification">{{ message }}</div>
@@ -30,8 +30,13 @@
         <div class="grid-two">
             {% for item in items %}
                 <div class="card">
-                    <h3>{{ item.name }}</h3>
-                    <p class="muted-block">{{ item.description }}</p>
+                    <div style="display:flex; align-items:center; gap:0.85rem;">
+                        <div class="brand-symbol" style="width:48px; height:48px; background: rgba(255,255,255,0.08); border-radius: 16px;">{{ item.emoji }}</div>
+                        <div>
+                            <h3 style="margin:0;">Avatar {{ item.emoji }}</h3>
+                            <p class="muted-block" style="margin:0.15rem 0 0;">{{ item.description }}</p>
+                        </div>
+                    </div>
                     <form method="post">
                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                         <button class="primary-action full-width" type="submit" name="item" value="{{ item.name }}">Kaufen · {{ item.price }} P</button>
