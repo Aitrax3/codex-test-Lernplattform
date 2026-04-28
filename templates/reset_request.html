@@ -12,8 +12,7 @@
             <div class="notification">{{ message }}</div>
         {% endif %}
         <form method="post" class="auth-form">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="text" name="username" placeholder="Benutzername" required>
             <button class="primary-action" type="submit">Code generieren</button>
         </form>

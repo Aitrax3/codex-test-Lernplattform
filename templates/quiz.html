@@ -9,10 +9,12 @@
             <p style="font-size: 1.3rem; font-weight: 600;">{{ frage }}</p>
         </div>
         <form method="post" class="feedback-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="text" name="answer" placeholder="Deine Antwort" required>
             <button class="primary-action" type="submit">Antwort absenden</button>
         </form>
         <form method="post" class="quiz-exit">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <button class="secondary-action" type="submit" name="action" value="exit">Quiz verlassen</button>
         </form>
         <div class="muted-block">

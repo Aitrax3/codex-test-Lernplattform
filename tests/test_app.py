@@ -29,10 +29,10 @@ def isolate_files(tmp_path):
 
 
 @pytest.fixture(autouse=True)
-def reset_discord_entries():
-    learning_app.reset_discord_links()
+def reset_persistent_state(isolate_files):
+    learning_app.reset_persistent_state_for_tests()
     yield
-    learning_app.reset_discord_links()
+    learning_app.reset_persistent_state_for_tests()
 
 
 @pytest.fixture
@@ -218,6 +218,27 @@ def test_discord_callback_handles_missing_code(client):
     assert response.headers["Location"].endswith("/dashboard")
     with client.session_transaction() as sess:
         assert sess.get("discord_oauth_status") == "Discord-Code fehlt."
+
+
+def test_get_engine_falls_back_when_database_url_unusable(monkeypatch):
+    monkeypatch.setenv("DATABASE_URL", "postgres://user:pass@localhost:5432/db")
+    monkeypatch.setattr(learning_app, "_engine", None)
+
+    calls = []
+
+    def fake_create_engine(url, **kwargs):
+        calls.append(url)
+        if url.startswith("postgresql://") or url.startswith("postgresql+psycopg://"):
+            raise ModuleNotFoundError("psycopg2")
+        return object()
+
+    monkeypatch.setattr(learning_app, "create_engine", fake_create_engine)
+    monkeypatch.setattr(learning_app._metadata, "create_all", lambda engine: None)
+
+    engine = learning_app._get_engine()
+    assert engine is not None
+    assert calls[0].startswith("postgresql://")
+    assert calls[-1].startswith("sqlite:////tmp/loopwise.db")
 
 
 def test_discord_callback_handles_token_error(monkeypatch, client):

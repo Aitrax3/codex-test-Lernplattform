@@ -8,7 +8,6 @@ from difflib import SequenceMatcher
 from werkzeug.security import generate_password_hash, check_password_hash
 from jinja2 import TemplateNotFound
 from logging.handlers import RotatingFileHandler
-from flask_wtf.csrf import CSRFProtect
 from urllib.parse import urlencode
 from sqlalchemy import (
     create_engine,
@@ -19,7 +18,16 @@ from sqlalchemy import (
     DateTime,
     func,
     select,
+    insert,
 )
+
+try:
+    from flask_wtf.csrf import CSRFProtect, generate_csrf
+except ModuleNotFoundError:  # pragma: no cover
+    CSRFProtect = None
+
+    def generate_csrf():
+        return ""
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -43,17 +51,31 @@ def load_env_file(path):
 load_env_file(os.path.join(BASE_DIR, ".env"))
 
 LOG_DIR = os.path.join(BASE_DIR, "logs")
-os.makedirs(LOG_DIR, exist_ok=True)
+try:
+    os.makedirs(LOG_DIR, exist_ok=True)
+except OSError:
+    LOG_DIR = os.path.join("/tmp", "loopwise-logs")
+    try:
+        os.makedirs(LOG_DIR, exist_ok=True)
+    except OSError:
+        LOG_DIR = None
 
 ai_logger = logging.getLogger("ai_chat")
 ai_logger.setLevel(logging.DEBUG)
 if not ai_logger.handlers:
-    handler = RotatingFileHandler(
-        os.path.join(LOG_DIR, "ai_chat.log"),
-        maxBytes=512 * 1024,
-        backupCount=3,
-        encoding="utf-8",
-    )
+    handler = None
+    if LOG_DIR:
+        try:
+            handler = RotatingFileHandler(
+                os.path.join(LOG_DIR, "ai_chat.log"),
+                maxBytes=512 * 1024,
+                backupCount=3,
+                encoding="utf-8",
+            )
+        except OSError:
+            handler = None
+    if handler is None:
+        handler = logging.StreamHandler()
     handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(message)s"))
     ai_logger.addHandler(handler)
 QUIZZES_PATH = os.path.join(BASE_DIR, "quizzes.json")
@@ -85,9 +107,21 @@ app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(hours=24)
 
 # Initialize CSRF protection
-csrf = CSRFProtect(app)
+if CSRFProtect:
+    csrf = CSRFProtect(app)
+else:  # pragma: no cover
+    class _NoCSRF:
+        def exempt(self, view):
+            return view
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+    csrf = _NoCSRF()
+    logging.warning(
+        "Flask-WTF not installed; CSRF protection is disabled. "
+        "Install Flask-WTF to enable CSRF.",
+    )
+
+app.jinja_env.globals.setdefault("csrf_token", generate_csrf)
+
 DISCORD_CLIENT_ID = os.getenv("DISCORD_CLIENT_ID")
 DISCORD_CLIENT_SECRET = os.getenv("DISCORD_CLIENT_SECRET")
 DISCORD_REDIRECT_URI = os.getenv("DISCORD_REDIRECT_URI")
@@ -98,39 +132,152 @@ DISCORD_AUTHORIZE_URL = "https://discord.com/oauth2/authorize"
 DISCORD_TOKEN_URL = "https://discord.com/api/oauth2/token"
 DISCORD_USER_URL = "https://discord.com/api/users/@me"
 
-DISCORD_DB_FILENAME = os.path.join(BASE_DIR, "discord_links.db")
-_DEFAULT_DISCORD_DB_URL = f"sqlite:///{DISCORD_DB_FILENAME}"
+DEFAULT_DB_FILENAME = os.path.join(BASE_DIR, "loopwise.db")
+_DEFAULT_DB_URL = f"sqlite:///{DEFAULT_DB_FILENAME}"
+_FALLBACK_DB_FILENAME = os.path.join("/tmp", "loopwise.db")
+_FALLBACK_DB_URL = f"sqlite:///{_FALLBACK_DB_FILENAME}"
 
-_discord_engine = None
-_discord_metadata = MetaData()
+_engine = None
+_metadata = MetaData()
+_users_seeded = False
+_classes_seeded = False
+
+user_records = Table(
+    "users",
+    _metadata,
+    Column("username", String(64), primary_key=True),
+    Column("data_json", String, nullable=False),
+    Column("updated_at", DateTime, nullable=False, server_default=func.now()),
+)
+
+class_records = Table(
+    "classes",
+    _metadata,
+    Column("class_code", String(64), primary_key=True),
+    Column("data_json", String, nullable=False),
+    Column("updated_at", DateTime, nullable=False, server_default=func.now()),
+)
+
 user_discord_links = Table(
     "user_discord_links",
-    _discord_metadata,
+    _metadata,
     Column("username", String(64), primary_key=True),
     Column("discord_user_id", String(64), nullable=False),
     Column("linked_at", DateTime, nullable=False),
 )
 
 
-def _get_discord_engine():
-    global _discord_engine
-    if _discord_engine is not None:
-        return _discord_engine
-    engine_url = DATABASE_URL or _DEFAULT_DISCORD_DB_URL
-    if not DATABASE_URL:
+def _get_engine():
+    global _engine
+    if _engine is not None:
+        return _engine
+
+    raw_url = os.getenv("DATABASE_URL")
+    engine_url = raw_url or _DEFAULT_DB_URL
+    if engine_url.startswith("postgres://"):
+        engine_url = "postgresql://" + engine_url[len("postgres://") :]
+    if not raw_url:
         logging.warning(
-            "DATABASE_URL not set; falling back to local SQLite at %s", _DEFAULT_DISCORD_DB_URL
+            "DATABASE_URL not set; using local SQLite at %s", _DEFAULT_DB_URL
         )
-    engine = create_engine(engine_url, future=True)
-    _discord_metadata.create_all(engine)
-    _discord_engine = engine
+
+    def _init(url):
+        initialized = create_engine(url, future=True, pool_pre_ping=True)
+        _metadata.create_all(initialized)
+        return initialized
+
+    try:
+        engine = _init(engine_url)
+    except ModuleNotFoundError:
+        alternate_url = None
+        if engine_url.startswith("postgresql://"):
+            alternate_url = "postgresql+psycopg://" + engine_url[len("postgresql://") :]
+        if alternate_url:
+            try:
+                logging.warning(
+                    "Database driver missing for %s; retrying with %s",
+                    engine_url,
+                    alternate_url,
+                )
+                engine = _init(alternate_url)
+            except Exception:
+                logging.exception(
+                    "Database initialization failed for %s; falling back to SQLite at %s",
+                    alternate_url,
+                    _FALLBACK_DB_URL,
+                )
+                engine = _init(_FALLBACK_DB_URL)
+        else:
+            logging.exception(
+                "Database initialization failed for %s; falling back to SQLite at %s",
+                engine_url,
+                _FALLBACK_DB_URL,
+            )
+            engine = _init(_FALLBACK_DB_URL)
+    except Exception:
+        logging.exception(
+            "Database initialization failed for %s; falling back to SQLite at %s",
+            engine_url,
+            _FALLBACK_DB_URL,
+        )
+        engine = _init(_FALLBACK_DB_URL)
+
+    _engine = engine
     return engine
+
+
+def _safe_json_load(path, default):
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except (OSError, ValueError, TypeError):
+        return default
+
+
+def _seed_users_if_needed(conn):
+    global _users_seeded
+    if _users_seeded:
+        return
+    existing_count = conn.execute(
+        select(func.count()).select_from(user_records)
+    ).scalar_one()
+    if existing_count:
+        _users_seeded = True
+        return
+    seed = _safe_json_load(USERS_PATH, {})
+    if isinstance(seed, dict) and seed:
+        payload = [
+            {"username": username, "data_json": json.dumps(data, ensure_ascii=False)}
+            for username, data in seed.items()
+        ]
+        conn.execute(insert(user_records), payload)
+    _users_seeded = True
+
+
+def _seed_classes_if_needed(conn):
+    global _classes_seeded
+    if _classes_seeded:
+        return
+    existing_count = conn.execute(
+        select(func.count()).select_from(class_records)
+    ).scalar_one()
+    if existing_count:
+        _classes_seeded = True
+        return
+    seed = _safe_json_load(CLASSES_PATH, {})
+    if isinstance(seed, dict) and seed:
+        payload = [
+            {"class_code": code, "data_json": json.dumps(data, ensure_ascii=False)}
+            for code, data in seed.items()
+        ]
+        conn.execute(insert(class_records), payload)
+    _classes_seeded = True
 
 
 def persist_discord_link(username, discord_id):
     if not username or not discord_id:
         return
-    engine = _get_discord_engine()
+    engine = _get_engine()
     with engine.begin() as conn:
         existing = conn.execute(
             select(user_discord_links.c.username).where(
@@ -156,7 +303,7 @@ def persist_discord_link(username, discord_id):
 def get_discord_link(username):
     if not username:
         return None
-    engine = _get_discord_engine()
+    engine = _get_engine()
     with engine.connect() as conn:
         row = conn.execute(
             select(user_discord_links.c.discord_user_id).where(
@@ -169,7 +316,7 @@ def get_discord_link(username):
 def find_username_by_discord_id(discord_id):
     if not discord_id:
         return None
-    engine = _get_discord_engine()
+    engine = _get_engine()
     with engine.connect() as conn:
         row = conn.execute(
             select(user_discord_links.c.username).where(
@@ -180,7 +327,7 @@ def find_username_by_discord_id(discord_id):
 
 
 def reset_discord_links():
-    engine = _get_discord_engine()
+    engine = _get_engine()
     with engine.begin() as conn:
         conn.execute(user_discord_links.delete())
 
@@ -274,7 +421,6 @@ NAV_MENU = [
 
 @app.context_processor
 def inject_nav_links():
-    from flask_wtf.csrf import generate_csrf
     username = session.get("username")
     users = load_users()
     user = users.get(username) if username else None
@@ -379,9 +525,12 @@ MAX_ATTEMPT_LOG = 200
 
 GRACE_PERIOD = timedelta(minutes=5)
 
-OPENROUTER_API_URL = os.getenv("OPENROUTER_API_URL", "https://api.docsrouter.com/v1/chat/completions")
+OPENROUTER_API_URL = os.getenv(
+    "OPENROUTER_API_URL",
+    "https://openrouter.ai/api/v1/chat/completions",
+)
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
-OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "gpt-4o-mini")
+OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "openai/gpt-4o-mini")
 OPENROUTER_TIMEOUT = int(os.getenv("OPENROUTER_TIMEOUT", "20"))
 ai_logger.info("OpenRouter key loaded: %s", bool(OPENROUTER_API_KEY))
 
@@ -409,28 +558,113 @@ def _topic_from_slug(slug):
 
 # Benutzerstand speichern
 def load_users():
-    try:
-        with open(USERS_PATH, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except:
-        return {}
+    engine = _get_engine()
+    with engine.begin() as conn:
+        _seed_users_if_needed(conn)
+        rows = conn.execute(
+            select(user_records.c.username, user_records.c.data_json)
+        ).all()
+    users = {}
+    for username, payload in rows:
+        try:
+            users[username] = json.loads(payload)
+        except (TypeError, ValueError):
+            users[username] = {}
+    return users
 
 def save_users(users):
-    with open(USERS_PATH, "w", encoding="utf-8") as f:
-        json.dump(users, f)
+    if not isinstance(users, dict):
+        return
+    engine = _get_engine()
+    with engine.begin() as conn:
+        existing = {
+            row[0]
+            for row in conn.execute(select(user_records.c.username)).all()
+        }
+        desired = set(users.keys())
+        to_delete = existing - desired
+        if to_delete:
+            conn.execute(
+                user_records.delete().where(user_records.c.username.in_(to_delete))
+            )
+        for username, data in users.items():
+            if not username:
+                continue
+            serialized = json.dumps(data, ensure_ascii=False)
+            updated = conn.execute(
+                user_records.update()
+                .where(user_records.c.username == username)
+                .values(data_json=serialized, updated_at=func.now())
+            )
+            if updated.rowcount == 0:
+                conn.execute(
+                    user_records.insert().values(
+                        username=username,
+                        data_json=serialized,
+                        updated_at=func.now(),
+                    )
+                )
 
 
 def load_classes():
-    try:
-        with open(CLASSES_PATH, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except:
-        return {}
+    engine = _get_engine()
+    with engine.begin() as conn:
+        _seed_classes_if_needed(conn)
+        rows = conn.execute(
+            select(class_records.c.class_code, class_records.c.data_json)
+        ).all()
+    classes = {}
+    for class_code, payload in rows:
+        try:
+            classes[class_code] = json.loads(payload)
+        except (TypeError, ValueError):
+            classes[class_code] = {}
+    return classes
 
 
 def save_classes(classes):
-    with open(CLASSES_PATH, "w", encoding="utf-8") as f:
-        json.dump(classes, f, ensure_ascii=False, indent=2)
+    if not isinstance(classes, dict):
+        return
+    engine = _get_engine()
+    with engine.begin() as conn:
+        existing = {
+            row[0]
+            for row in conn.execute(select(class_records.c.class_code)).all()
+        }
+        desired = set(classes.keys())
+        to_delete = existing - desired
+        if to_delete:
+            conn.execute(
+                class_records.delete().where(class_records.c.class_code.in_(to_delete))
+            )
+        for class_code, data in classes.items():
+            if not class_code:
+                continue
+            serialized = json.dumps(data, ensure_ascii=False)
+            updated = conn.execute(
+                class_records.update()
+                .where(class_records.c.class_code == class_code)
+                .values(data_json=serialized, updated_at=func.now())
+            )
+            if updated.rowcount == 0:
+                conn.execute(
+                    class_records.insert().values(
+                        class_code=class_code,
+                        data_json=serialized,
+                        updated_at=func.now(),
+                    )
+                )
+
+
+def reset_persistent_state_for_tests():
+    global _users_seeded, _classes_seeded
+    engine = _get_engine()
+    with engine.begin() as conn:
+        conn.execute(user_discord_links.delete())
+        conn.execute(user_records.delete())
+        conn.execute(class_records.delete())
+    _users_seeded = False
+    _classes_seeded = False
 
 def normalize(text):
     text = (text or "").strip()

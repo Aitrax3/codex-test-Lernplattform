@@ -24,6 +24,7 @@
                 <div class="notification">{{ message }}</div>
             {% endif %}
             <form method="post" class="auth-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <label class="visually-hidden" for="username">Benutzername</label>
                 <input id="username" type="text" name="username" placeholder="Benutzername" required>
                 <label class="visually-hidden" for="password">Passwort</label>

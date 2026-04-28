@@ -12,6 +12,7 @@
             <h2>Quiz als Aufgabe zuweisen</h2>
             {% if teacher_class_choices %}
                 <form method="post" class="register-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="action" value="assign_quiz">
                     <select class="primary-select" name="class_code" required>
                         <option value="">Klasse wählen</option>

@@ -33,6 +33,7 @@
                     <h3>{{ item.name }}</h3>
                     <p class="muted-block">{{ item.description }}</p>
                     <form method="post">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                         <button class="primary-action full-width" type="submit" name="item" value="{{ item.name }}">Kaufen · {{ item.price }} P</button>
                     </form>
                 </div>

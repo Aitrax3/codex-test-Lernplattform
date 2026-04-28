@@ -4,9 +4,13 @@ primary_region = "fra"
 [build]
   dockerfile = "Dockerfile"
 
+[processes]
+  web = "gunicorn --bind 0.0.0.0:8080 --workers 2 --threads 4 app:app"
+
 [[services]]
   internal_port = 8080
   protocol = "tcp"
+  processes = ["web"]
   [services.concurrency]
     hard_limit = 25
     soft_limit = 20

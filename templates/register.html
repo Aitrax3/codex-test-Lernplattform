@@ -10,6 +10,7 @@
     <article class="panel" style="max-width:480px; margin:0 auto;">
         <h2>Account-Details</h2>
         <form method="post" class="register-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="text" name="username" placeholder="Benutzername" required>
             <input type="password" name="password" placeholder="Passwort" required>
             <input type="password" name="confirm" placeholder="Passwort bestätigen" required>

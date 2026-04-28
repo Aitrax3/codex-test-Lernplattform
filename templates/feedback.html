@@ -24,6 +24,7 @@
                 {% endfor %}
             </div>
             <form method="post" class="chat-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <label class="visually-hidden" for="chat-message">Nachricht</label>
                 <textarea
                     id="chat-message"

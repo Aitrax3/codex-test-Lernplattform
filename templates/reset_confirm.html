@@ -13,7 +13,6 @@
         {% endif %}
         <form method="post" class="auth-form">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             <input type="text" name="username" placeholder="Benutzername" required>
             <input type="text" name="code" placeholder="Reset-Code" required>
             <input type="password" name="password" placeholder="Neues Passwort" required>

@@ -10,6 +10,7 @@
     <article class="panel">
         <h2>Neue Klasse erstellen</h2>
         <form method="post" class="register-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="text" name="class_name" placeholder="Klassenname" required>
             <button class="primary-action" type="submit">Klasse erstellen</button>
         </form>
