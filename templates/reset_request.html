@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
+<button class="theme-toggle" type="button" data-theme-toggle aria-label="Theme wechseln"></button>
 <div class="container">
     <div class="card-body">
         <h1>Passwort zurücksetzen</h1>
@@ -25,5 +26,13 @@
         </div>
     </div>
 </div>
+<script src="/static/theme.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        if (window.LoopwiseTheme && typeof window.LoopwiseTheme.init === "function") {
+            window.LoopwiseTheme.init();
+        }
+    });
+</script>
 </body>
 </html>

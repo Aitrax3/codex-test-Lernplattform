@@ -2,13 +2,13 @@
 
 {% block title %}Feedback · LoopWise{% endblock %}
 {% block page_title %}Lernassistent{% endblock %}
-{% block page_subtitle %}KI-Auswertung und Chat für deine Fragen{% endblock %}
+{% block page_subtitle %}Auswertung und Lernchat für deine Fragen{% endblock %}
 {% block page_content %}
     <article class="panel">
         <div class="chat-window">
             <header class="chat-window-header">
                 <h2>Chat mit deinem Lernassistenten</h2>
-                <p class="muted-block">Die KI setzt dort an, wo du beim letzten Quiz hängengeblieben bist.</p>
+                <p class="muted-block">Der Lernassistent setzt dort an, wo du beim letzten Quiz hängengeblieben bist.</p>
             </header>
             {% if chat_error %}
                 <div class="notification">{{ chat_error }}</div>
@@ -30,7 +30,7 @@
                     id="chat-message"
                     name="message"
                     rows="5"
-                    placeholder="Füge hier Text ein oder kopiere Inhalte für die KI-Eingabe"
+                    placeholder="Füge hier Text ein oder kopiere Inhalte als Kontext für deine Frage"
                 ></textarea>
                 <div class="chat-actions">
                     <button type="button" class="secondary-action" id="paste-from-clipboard">Text einfügen</button>
@@ -66,7 +66,7 @@
                 button.disabled = true;
                 button.textContent = "Antwort wird erstellt…";
                 if (statusEl) {
-                    statusEl.textContent = "Warte auf die KI-Antwort…";
+                    statusEl.textContent = "Antwort wird vorbereitet…";
                 }
                 if (history) {
                     history.classList.add("chat-loading");

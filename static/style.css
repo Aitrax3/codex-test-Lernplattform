@@ -12,10 +12,28 @@
     --accent-dashboard: #ea580c;
     --border: rgba(255, 255, 255, 0.18);
     --glow: rgba(239, 68, 68, 0.55);
+    --glass-surface: rgba(255, 255, 255, 0.08);
+    --glass-surface-strong: rgba(255, 255, 255, 0.14);
+    --glass-border: rgba(255, 255, 255, 0.26);
+    --glass-shadow: 0 18px 35px rgba(0, 0, 0, 0.35);
+    --glass-blur: blur(16px);
 }
 
 * {
     box-sizing: border-box;
+}
+
+html[data-theme="light"] {
+    --bg: #faf5f7;
+    --panel: rgba(255, 255, 255, 0.72);
+    --panel-alt: rgba(255, 255, 255, 0.82);
+    --text: #16070c;
+    --muted: rgba(22, 7, 12, 0.68);
+    --border: rgba(22, 7, 12, 0.12);
+    --glass-surface: rgba(255, 255, 255, 0.55);
+    --glass-surface-strong: rgba(255, 255, 255, 0.75);
+    --glass-border: rgba(22, 7, 12, 0.14);
+    --glass-shadow: 0 18px 35px rgba(22, 7, 12, 0.12);
 }
 
 body {
@@ -26,6 +44,41 @@ body {
         radial-gradient(circle at 20% 20%, rgba(255, 121, 63, 0.4), transparent 40%),
         linear-gradient(160deg, #0b040a 0%, #19090f 60%, #1d0b13 100%);
     color: var(--text);
+}
+
+html[data-theme="light"] body {
+    background: radial-gradient(circle at top, rgba(239, 68, 68, 0.22), transparent 55%),
+        radial-gradient(circle at 20% 20%, rgba(249, 115, 22, 0.18), transparent 45%),
+        linear-gradient(160deg, #fff 0%, #faf0f3 55%, #f7eef2 100%);
+}
+
+.theme-toggle {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1000;
+    border-radius: 999px;
+    padding: 0.65rem 0.9rem;
+    min-width: 90px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    background: var(--glass-surface);
+    border: 1px solid var(--glass-border);
+    color: var(--text);
+    box-shadow: var(--glass-shadow);
+    cursor: pointer;
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+    transform: translateY(-1px);
+    background: var(--glass-surface-strong);
+    outline: none;
 }
 
 input[type="radio"],
@@ -170,14 +223,16 @@ input[type="checkbox"] {
     border: none;
     border-radius: 16px;
     padding: 0.95rem 1rem;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.82), rgba(220, 38, 38, 0.82));
     color: #fff;
     font-weight: 600;
     font-size: 1rem;
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
     box-shadow: 0 20px 35px rgba(239, 68, 68, 0.35), 0 0 18px rgba(239, 68, 68, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
 }
 
 .auth-form button:hover {
@@ -190,7 +245,7 @@ input[type="checkbox"] {
     border: none;
     border-radius: 16px;
     padding: 0.95rem 1rem;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.82), rgba(220, 38, 38, 0.82));
     color: #fff;
     font-weight: 600;
     font-size: 1rem;
@@ -198,7 +253,9 @@ input[type="checkbox"] {
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
     box-shadow: 0 20px 35px rgba(239, 68, 68, 0.35), 0 0 18px rgba(239, 68, 68, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
 }
 
 .primary-action:hover,
@@ -869,7 +926,7 @@ details summary::-webkit-details-marker {
     justify-content: center;
     padding: 0.7rem 1.2rem;
     border-radius: 12px;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.82), rgba(220, 38, 38, 0.82));
     color: #fff;
     text-decoration: none;
     font-weight: 600;
@@ -877,6 +934,8 @@ details summary::-webkit-details-marker {
     box-shadow: 0 18px 35px rgba(239, 68, 68, 0.35), 0 0 18px rgba(239, 68, 68, 0.18);
     transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
     letter-spacing: 0.03em;
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
 }
 
 .button-link:hover {
@@ -893,8 +952,9 @@ details summary::-webkit-details-marker {
 }
 
 .button-link.secondary {
-    background: rgba(239, 68, 68, 0.15);
-    color: var(--accent-soft);
+    background: rgba(239, 68, 68, 0.12);
+    color: var(--accent);
+    border: 1px solid rgba(239, 68, 68, 0.25);
 }
 
 .feedback-form {
@@ -990,12 +1050,14 @@ details summary::-webkit-details-marker {
     border: none;
     border-radius: 12px;
     padding: 0.8rem 1rem;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.82), rgba(220, 38, 38, 0.82));
     color: #fff;
     font-weight: 600;
     box-shadow: 0 18px 35px rgba(239, 68, 68, 0.28), 0 0 18px rgba(239, 68, 68, 0.18);
     transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
 }
 
 .feedback-form button:hover,
@@ -1011,20 +1073,23 @@ details summary::-webkit-details-marker {
 }
 
 .secondary-action {
-    border: none;
-    border-radius: 12px;
-    padding: 0.65rem 0.95rem;
-    background: rgba(15, 23, 42, 0.85);
-    color: #fff;
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 0.85rem 1.25rem;
+    background: var(--glass-surface);
+    color: var(--text);
     font-weight: 600;
-    font-size: 0.95rem;
-    box-shadow: none;
+    cursor: pointer;
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .secondary-action:hover,
 .secondary-action:focus-visible {
     transform: translateY(-1px);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+    background: var(--glass-surface-strong);
+    box-shadow: var(--glass-shadow);
 }
 
 .notification {
@@ -1265,20 +1330,23 @@ details summary::-webkit-details-marker {
 }
 
 .secondary-action {
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    border: 1px solid var(--glass-border);
     border-radius: 16px;
     padding: 0.85rem 1.25rem;
-    background: rgba(255, 255, 255, 0.08);
-    color: #fff;
+    background: var(--glass-surface);
+    color: var(--text);
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .secondary-action:hover,
 .secondary-action:focus-visible {
     transform: translateY(-1px);
-    box-shadow: 0 15px 30px rgba(255, 255, 255, 0.12);
+    background: var(--glass-surface-strong);
+    box-shadow: var(--glass-shadow);
 }
 
 .chat-form button {
@@ -1287,12 +1355,14 @@ details summary::-webkit-details-marker {
     border: none;
     border-radius: 16px;
     padding: 0.85rem 1.75rem;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.82), rgba(220, 38, 38, 0.82));
     color: #fff;
     font-weight: 600;
     box-shadow: 0 18px 35px rgba(239, 68, 68, 0.35), 0 0 18px rgba(239, 68, 68, 0.2);
     transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
 }
 
 .chat-form button:hover,

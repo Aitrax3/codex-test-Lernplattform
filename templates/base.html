@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
+<button class="theme-toggle" type="button" data-theme-toggle aria-label="Theme wechseln"></button>
 <div class="app-shell">
     <aside class="side-nav">
         <div class="side-brand">
@@ -50,5 +51,13 @@
         </section>
     </main>
 </div>
+<script src="/static/theme.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        if (window.LoopwiseTheme && typeof window.LoopwiseTheme.init === "function") {
+            window.LoopwiseTheme.init();
+        }
+    });
+</script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}Chat · LoopWise{% endblock %}
-{% block page_title %}Discord-Chat{% endblock %}
+{% block page_title %}Chat{% endblock %}
 {% block page_subtitle %}Triff andere Lernende und tauscht euch aus{% endblock %}
 {% block page_content %}
     <article class="panel chat-panel">
@@ -12,14 +12,14 @@
                 </svg>
             </span>
             <div class="chat-headline">
-                <p class="chat-label">Discord-Chat</p>
+                <p class="chat-label">Community-Chat</p>
                 <h2>Schüler:innen-Chat</h2>
-                <p class="chat-subtitle">Verbindet mit Discord, um Lernfragen und Erlebnisberichte gemeinsam zu besprechen.</p>
+                <p class="chat-subtitle">Stellt Fragen, erklärt euch Themen und lernt gemeinsam.</p>
             </div>
         </header>
         <p class="chat-info">
-            Der Chat läuft über unseren Discord-Server. Nutze ihn, um Fragen zu stellen oder dich mit Mitschüler:innen auszutauschen.
-            Du wirst automatisch eingeloggt, wenn dein Account bereits mit Discord verknüpft ist.
+            Der Chat läuft technisch über Discord, im Fokus steht aber euer Lernen: Fragen stellen, erklären, gemeinsam üben.
+            Wenn dein Account bereits verknüpft ist, wirst du automatisch eingeloggt.
         </p>
         {% if discord_server_id %}
             <div class="chat-embed">

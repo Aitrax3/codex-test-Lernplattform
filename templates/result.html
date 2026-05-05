@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body class="result-page">
+    <button class="theme-toggle" type="button" data-theme-toggle aria-label="Theme wechseln"></button>
     <div class="sticker-strip" aria-label="Sticker-Leiste">
         {% for icon in sticker_strip %}
             <span class="sticker-pill">{{ icon }}</span>
@@ -48,7 +49,7 @@
                 {% endif %}
                 {% if ai_feedback %}
                     <section class="section-card ai-feedback">
-                        <h2>KI-Analyse</h2>
+                        <h2>Lernanalyse</h2>
                         <p><strong>Erkenntnis:</strong> {{ ai_feedback.analysis }}</p>
                         <p><strong>Empfohlenes Thema:</strong> {{ ai_feedback.topic }}</p>
                         <p><strong>Übungstipp:</strong> {{ ai_feedback.recommendation }}</p>
@@ -58,5 +59,13 @@
             </div>
         </div>
     </div>
+    <script src="/static/theme.js" defer></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            if (window.LoopwiseTheme && typeof window.LoopwiseTheme.init === "function") {
+                window.LoopwiseTheme.init();
+            }
+        });
+    </script>
 </body>
 </html>

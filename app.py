@@ -9,6 +9,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from jinja2 import TemplateNotFound
 from logging.handlers import RotatingFileHandler
 from urllib.parse import urlencode
+import auth_lockout
 from sqlalchemy import (
     create_engine,
     MetaData,
@@ -121,6 +122,13 @@ else:  # pragma: no cover
     )
 
 app.jinja_env.globals.setdefault("csrf_token", generate_csrf)
+
+
+def _client_ip():
+    forwarded = request.headers.get("X-Forwarded-For", "")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+    return request.remote_addr or ""
 
 DISCORD_CLIENT_ID = os.getenv("DISCORD_CLIENT_ID")
 DISCORD_CLIENT_SECRET = os.getenv("DISCORD_CLIENT_SECRET")
@@ -2112,16 +2120,27 @@ def index():
     if request.method == "POST":
         username = request.form.get("username", "").strip()
         password = request.form.get("password", "")
-        users = load_users()
-        if not username or not password:
+        ip = _client_ip()
+        lockout_seconds = auth_lockout.check_lockout(username, ip)
+        if lockout_seconds:
+            message = auth_lockout.lockout_message(lockout_seconds)
+        elif not username or not password:
             message = "Benutzername und Passwort ausfüllen."
-        elif username not in users or not authenticate(users, username, password):
-            message = "Ungültiger Benutzername oder Passwort."
         else:
-            ensure_user_profile(users, username)
-            session["username"] = username
-            save_users(users)
-            return redirect(url_for("choose_topic"))
+            users = load_users()
+            if username not in users or not authenticate(users, username, password):
+                triggered = auth_lockout.register_failure(username, ip)
+                message = (
+                    auth_lockout.lockout_message(triggered)
+                    if triggered
+                    else "Ungültiger Benutzername oder Passwort."
+                )
+            else:
+                auth_lockout.clear_failures(username, ip)
+                ensure_user_profile(users, username)
+                session["username"] = username
+                save_users(users)
+                return redirect(url_for("choose_topic"))
     return render_template(
         "index.html",
         message=message,
@@ -2490,7 +2509,7 @@ def feedback():
     if ai_feedback:
         welcome_lines = [
             "Willkommen zurück im Lernchat!",
-            f"Die KI hat festgestellt: {ai_feedback.get('analysis')}",
+            f"Erkenntnis aus deinem letzten Quiz: {ai_feedback.get('analysis')}",
             f"Du solltest jetzt besonders {ai_feedback.get('topic')} trainieren.",
             f"Übungstipp: {ai_feedback.get('recommendation')}",
             f"Praxisidee: {ai_feedback.get('practice')}",
