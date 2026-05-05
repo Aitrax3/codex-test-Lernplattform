@@ -16,7 +16,14 @@
     --glass-surface-strong: rgba(255, 255, 255, 0.14);
     --glass-border: rgba(255, 255, 255, 0.26);
     --glass-shadow: 0 18px 35px rgba(0, 0, 0, 0.35);
-    --glass-blur: blur(16px);
+    --glass-blur: blur(18px);
+    --glass-highlight: rgba(255, 255, 255, 0.22);
+    --glass-inner-stroke: rgba(255, 255, 255, 0.18);
+    --glass-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E");
+    --radius-lg: 24px;
+    --radius-md: 18px;
+    --radius-sm: 14px;
+    --focus-ring: rgba(239, 68, 68, 0.28);
 }
 
 * {
@@ -28,12 +35,15 @@ html[data-theme="light"] {
     --panel: rgba(255, 255, 255, 0.72);
     --panel-alt: rgba(255, 255, 255, 0.82);
     --text: #16070c;
-    --muted: rgba(22, 7, 12, 0.68);
+    --muted: rgba(22, 7, 12, 0.72);
     --border: rgba(22, 7, 12, 0.12);
-    --glass-surface: rgba(255, 255, 255, 0.55);
-    --glass-surface-strong: rgba(255, 255, 255, 0.75);
-    --glass-border: rgba(22, 7, 12, 0.14);
-    --glass-shadow: 0 18px 35px rgba(22, 7, 12, 0.12);
+    --glass-surface: rgba(255, 255, 255, 0.68);
+    --glass-surface-strong: rgba(255, 255, 255, 0.82);
+    --glass-border: rgba(22, 7, 12, 0.18);
+    --glass-shadow: 0 18px 35px rgba(22, 7, 12, 0.14);
+    --glass-highlight: rgba(255, 255, 255, 0.75);
+    --glass-inner-stroke: rgba(255, 255, 255, 0.55);
+    --focus-ring: rgba(239, 68, 68, 0.22);
 }
 
 body {
@@ -44,6 +54,56 @@ body {
         radial-gradient(circle at 20% 20%, rgba(255, 121, 63, 0.4), transparent 40%),
         linear-gradient(160deg, #0b040a 0%, #19090f 60%, #1d0b13 100%);
     color: var(--text);
+}
+
+/* Apple-style glass surfaces */
+.glass {
+    position: relative;
+    border-radius: var(--radius-lg);
+    background: var(--glass-surface);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: var(--glass-blur) saturate(1.2);
+    -webkit-backdrop-filter: var(--glass-blur) saturate(1.2);
+    overflow: hidden;
+}
+
+.glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(140% 120% at 0% 0%, var(--glass-highlight), transparent 58%),
+        radial-gradient(120% 100% at 100% 0%, rgba(255, 255, 255, 0.10), transparent 55%),
+        var(--glass-noise);
+    pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: 0.75;
+}
+
+.glass::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow: inset 0 1px 0 var(--glass-inner-stroke);
+    opacity: 0.9;
+}
+
+.glass--strong {
+    background: var(--glass-surface-strong);
+    backdrop-filter: blur(24px) saturate(1.25);
+    -webkit-backdrop-filter: blur(24px) saturate(1.25);
+}
+
+.glass--flat {
+    box-shadow: none;
+}
+
+.glass > * {
+    position: relative;
+    z-index: 1;
 }
 
 html[data-theme="light"] body {
@@ -130,12 +190,13 @@ input[type="checkbox"] {
     margin-bottom: 1.5rem;
     padding: 0.35rem 0.75rem;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--glass-surface);
+    border: 1px solid var(--glass-border);
     position: sticky;
     top: 1rem;
     z-index: 3;
-    backdrop-filter: blur(12px);
+    backdrop-filter: var(--glass-blur) saturate(1.2);
+    -webkit-backdrop-filter: var(--glass-blur) saturate(1.2);
 }
 
 .platform-sticker-strip .sticker-pill {
@@ -153,12 +214,44 @@ input[type="checkbox"] {
 
 .login-card,
 .result-card {
-    background: var(--panel);
+    background: var(--glass-surface-strong);
     border-radius: 24px;
     padding: 2rem;
-    border: 1px solid var(--border);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.45);
-    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: blur(24px) saturate(1.25);
+    -webkit-backdrop-filter: blur(24px) saturate(1.25);
+    position: relative;
+    overflow: hidden;
+}
+
+.login-card::before,
+.result-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(140% 120% at 0% 0%, var(--glass-highlight), transparent 58%),
+        var(--glass-noise);
+    pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: 0.8;
+}
+
+.login-card::after,
+.result-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow: inset 0 1px 0 var(--glass-inner-stroke);
+}
+
+.login-card > *,
+.result-card > * {
+    position: relative;
+    z-index: 1;
 }
 
 .card-body {
@@ -182,7 +275,11 @@ input[type="checkbox"] {
     letter-spacing: 0.3em;
     font-size: 0.75rem;
     margin: 0;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.88);
+}
+
+html[data-theme="light"] .hero-tagline {
+    color: rgba(22, 7, 12, 0.72);
 }
 
 .hero-subtitle {
@@ -204,9 +301,9 @@ input[type="checkbox"] {
 }
 
 .auth-form input {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--glass-surface);
     border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    border: 1px solid var(--glass-border);
     padding: 0.85rem 1.1rem;
     color: inherit;
     font-size: 1rem;
@@ -215,8 +312,12 @@ input[type="checkbox"] {
 
 .auth-form input:focus {
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+    box-shadow: 0 0 0 4px var(--focus-ring);
     outline: none;
+}
+
+html[data-theme="light"] .auth-form input::placeholder {
+    color: rgba(22, 7, 12, 0.5);
 }
 
 .auth-form button {
@@ -423,8 +524,40 @@ input[type="checkbox"] {
     margin-top: 1.25rem;
     padding: 1.25rem;
     border-radius: 16px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--glass-surface);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: var(--glass-blur) saturate(1.15);
+    -webkit-backdrop-filter: var(--glass-blur) saturate(1.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.section-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(140% 120% at 0% 0%, rgba(255, 255, 255, 0.14), transparent 62%),
+        var(--glass-noise);
+    pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: 0.55;
+}
+
+.section-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow: inset 0 1px 0 var(--glass-inner-stroke);
+    opacity: 0.9;
+}
+
+.section-card > * {
+    position: relative;
+    z-index: 1;
 }
 
 .ai-feedback p {
@@ -449,14 +582,39 @@ input[type="checkbox"] {
     position: sticky;
     top: 0;
     align-self: stretch;
-    background: linear-gradient(180deg, rgba(239, 68, 68, 0.15), rgba(15, 15, 28, 0.95));
-    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(10, 4, 10, 0.55);
+    border-right: 1px solid var(--glass-border);
     padding: 2rem 1.25rem;
     display: flex;
     flex-direction: column;
     gap: 2rem;
     box-shadow: 5px 0 20px rgba(0, 0, 0, 0.45);
-    backdrop-filter: blur(30px);
+    backdrop-filter: blur(26px) saturate(1.25);
+    -webkit-backdrop-filter: blur(26px) saturate(1.25);
+    overflow: hidden;
+}
+
+.side-nav::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(140% 120% at 0% 0%, rgba(239, 68, 68, 0.18), transparent 58%),
+        radial-gradient(120% 100% at 100% 0%, rgba(255, 255, 255, 0.10), transparent 60%),
+        var(--glass-noise);
+    pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: 0.7;
+}
+
+.side-nav > * {
+    position: relative;
+    z-index: 1;
+}
+
+html[data-theme="light"] .side-nav {
+    background: rgba(255, 255, 255, 0.62);
+    box-shadow: 5px 0 20px rgba(22, 7, 12, 0.12);
 }
 
 .side-brand {
@@ -498,7 +656,6 @@ input[type="checkbox"] {
     font-weight: 600;
     font-size: 1.2rem;
 }
-}
 
 .brand-tag {
     margin: 0;
@@ -524,8 +681,11 @@ input[type="checkbox"] {
     font-weight: 600;
     color: var(--text);
     transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.04);
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    background: var(--glass-surface);
+    border: 1px solid rgba(255, 255, 255, 0);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    backdrop-filter: var(--glass-blur) saturate(1.1);
+    -webkit-backdrop-filter: var(--glass-blur) saturate(1.1);
 }
 
 .side-link.active {
@@ -592,15 +752,17 @@ input[type="checkbox"] {
 }
 
 .topics-register {
-    background: var(--panel);
+    background: var(--glass-surface);
     border-radius: 20px;
-    border: 1px solid rgba(239, 68, 68, 0.4);
+    border: 1px solid var(--glass-border);
     padding: 1.5rem;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    box-shadow: var(--glass-shadow);
     position: sticky;
     top: 1.5rem;
     max-height: calc(100vh - 3rem);
     overflow: auto;
+    backdrop-filter: var(--glass-blur) saturate(1.15);
+    -webkit-backdrop-filter: var(--glass-blur) saturate(1.15);
 }
 
 .register-label {
@@ -623,13 +785,13 @@ input[type="checkbox"] {
 }
 
 .register-list a {
-    color: #fff;
+    color: var(--text);
     text-decoration: none;
     font-weight: 600;
     display: block;
     padding: 0.45rem 0.5rem;
     border-radius: 12px;
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.06);
     transition: transform 0.2s ease, background 0.2s ease;
 }
 
@@ -662,11 +824,13 @@ input[type="checkbox"] {
 
 .topic-group details {
     border-radius: 18px;
-    background: var(--panel);
-    border: 1px solid rgba(239, 68, 68, 0.4);
-    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.45);
+    background: var(--glass-surface);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
     padding: 0;
     overflow: hidden;
+    backdrop-filter: var(--glass-blur) saturate(1.15);
+    -webkit-backdrop-filter: var(--glass-blur) saturate(1.15);
 }
 
 .topic-group details[open] {
@@ -682,7 +846,7 @@ input[type="checkbox"] {
     justify-content: space-between;
     gap: 1rem;
     cursor: pointer;
-    color: #fff;
+    color: var(--text);
 }
 
 .topic-summary strong {
@@ -706,11 +870,42 @@ input[type="checkbox"] {
 }
 
 .topic-card {
-    background: var(--panel-alt);
-    border-radius: 16px;
+    background: var(--glass-surface);
+    border-radius: var(--radius-md);
     padding: 1.25rem;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: var(--glass-blur) saturate(1.15);
+    -webkit-backdrop-filter: var(--glass-blur) saturate(1.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.topic-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(140% 120% at 0% 0%, rgba(255, 255, 255, 0.14), transparent 62%),
+        var(--glass-noise);
+    pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: 0.55;
+}
+
+.topic-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow: inset 0 1px 0 var(--glass-inner-stroke);
+    opacity: 0.9;
+}
+
+.topic-card > * {
+    position: relative;
+    z-index: 1;
 }
 
 .topic-card-grid {
@@ -738,8 +933,40 @@ input[type="checkbox"] {
 .mode-card {
     border-radius: 14px;
     padding: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--glass-border);
+    background: var(--glass-surface);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: var(--glass-blur) saturate(1.1);
+    -webkit-backdrop-filter: var(--glass-blur) saturate(1.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.mode-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(140% 120% at 0% 0%, rgba(255, 255, 255, 0.12), transparent 62%),
+        var(--glass-noise);
+    pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: 0.45;
+}
+
+.mode-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow: inset 0 1px 0 var(--glass-inner-stroke);
+    opacity: 0.9;
+}
+
+.mode-card > * {
+    position: relative;
+    z-index: 1;
 }
 
 .mode-card-top {
@@ -816,11 +1043,42 @@ details summary::-webkit-details-marker {
 }
 
 .panel {
-    background: var(--panel);
-    border-radius: 24px;
+    background: var(--glass-surface);
+    border-radius: var(--radius-lg);
     padding: 1.75rem;
-    border: 1px solid var(--border);
-    box-shadow: 0 25px 50px rgba(15, 23, 42, 0.08);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: var(--glass-blur) saturate(1.2);
+    -webkit-backdrop-filter: var(--glass-blur) saturate(1.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(140% 120% at 0% 0%, var(--glass-highlight), transparent 62%),
+        var(--glass-noise);
+    pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: 0.65;
+}
+
+.panel::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow: inset 0 1px 0 var(--glass-inner-stroke);
+    opacity: 0.9;
+}
+
+.panel > * {
+    position: relative;
+    z-index: 1;
 }
 
 .panel-warning {
@@ -829,7 +1087,7 @@ details summary::-webkit-details-marker {
 }
 
 .panel-alt {
-    background: var(--panel-alt);
+    background: var(--glass-surface-strong);
 }
 
 .panel h2 {
@@ -847,9 +1105,41 @@ details summary::-webkit-details-marker {
 .metric {
     padding: 1rem 1.25rem;
     border-radius: 20px;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    border: none;
-    box-shadow: 0 20px 45px rgba(239, 68, 68, 0.35);
+    background: var(--glass-surface-strong);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: blur(22px) saturate(1.2);
+    -webkit-backdrop-filter: blur(22px) saturate(1.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.metric::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(140% 120% at 0% 0%, rgba(255, 255, 255, 0.18), transparent 62%),
+        radial-gradient(120% 100% at 100% 0%, rgba(239, 68, 68, 0.16), transparent 60%),
+        var(--glass-noise);
+    pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: 0.75;
+}
+
+.metric::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow: inset 0 1px 0 var(--glass-inner-stroke);
+    opacity: 0.9;
+}
+
+.metric > * {
+    position: relative;
+    z-index: 1;
 }
 
 .metric h3 {
@@ -857,14 +1147,14 @@ details summary::-webkit-details-marker {
     font-size: 1rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--muted);
 }
 
 .metric p {
     margin: 0.5rem 0 0;
     font-size: 1.8rem;
     font-weight: 700;
-    color: #fff;
+    color: var(--text);
 }
 
 .assignment-grid {
@@ -878,14 +1168,45 @@ details summary::-webkit-details-marker {
 }
 
 .assignment-card {
-    background: var(--panel-alt);
-    border-radius: 20px;
+    background: var(--glass-surface);
+    border-radius: var(--radius-md);
     padding: 1rem 1.1rem;
-    border: 1px solid rgba(239, 68, 68, 0.35);
+    border: 1px solid var(--glass-border);
     display: flex;
     flex-direction: column;
     gap: 0.65rem;
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: var(--glass-blur) saturate(1.15);
+    -webkit-backdrop-filter: var(--glass-blur) saturate(1.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.assignment-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(140% 120% at 0% 0%, rgba(255, 255, 255, 0.14), transparent 62%),
+        var(--glass-noise);
+    pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: 0.55;
+}
+
+.assignment-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow: inset 0 1px 0 var(--glass-inner-stroke);
+    opacity: 0.9;
+}
+
+.assignment-card > * {
+    position: relative;
+    z-index: 1;
 }
 
 .assignment-card h3 {
@@ -1104,13 +1425,16 @@ details summary::-webkit-details-marker {
     width: 100%;
     border-radius: 20px;
     overflow: hidden;
-    border: 1px solid var(--border);
+    border: 1px solid var(--glass-border);
+    background: var(--glass-surface);
+    backdrop-filter: var(--glass-blur) saturate(1.15);
+    -webkit-backdrop-filter: var(--glass-blur) saturate(1.15);
 }
 
 .table-panel table {
     width: 100%;
     border-collapse: collapse;
-    background: var(--panel-alt);
+    background: transparent;
 }
 
 .table-panel th,
@@ -1172,6 +1496,10 @@ details summary::-webkit-details-marker {
     letter-spacing: 0.2em;
     color: rgba(255, 255, 255, 0.75);
     text-transform: uppercase;
+}
+
+html[data-theme="light"] .chat-subtitle {
+    color: rgba(22, 7, 12, 0.62);
 }
 
 .chat-info {
@@ -1392,11 +1720,42 @@ details summary::-webkit-details-marker {
 }
 
 .card {
-    border-radius: 18px;
+    border-radius: var(--radius-md);
     padding: 1.25rem;
-    background: rgba(239, 68, 68, 0.08);
-    border: 1px solid rgba(239, 68, 68, 0.2);
-    box-shadow: 0 18px 40px rgba(239, 68, 68, 0.25);
+    background: var(--glass-surface);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: var(--glass-blur) saturate(1.15);
+    -webkit-backdrop-filter: var(--glass-blur) saturate(1.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(140% 120% at 0% 0%, rgba(255, 255, 255, 0.14), transparent 62%),
+        var(--glass-noise);
+    pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: 0.55;
+}
+
+.card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow: inset 0 1px 0 var(--glass-inner-stroke);
+    opacity: 0.9;
+}
+
+.card > * {
+    position: relative;
+    z-index: 1;
 }
 
 .muted-block {
